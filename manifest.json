@@ -2,7 +2,7 @@
   "name": "КПС Курс — 30 дней",
   "short_name": "КПС Курс",
   "description": "30-дневная программа для КПС, подвижности таза и растяжки",
-  "start_url": "/",
+  "start_url": "/kps/",
   "display": "standalone",
   "background_color": "#1a1814",
   "theme_color": "#1a1814",
