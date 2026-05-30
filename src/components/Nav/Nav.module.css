@@ -46,6 +46,36 @@
   line-height: 1.6;
 }
 
+/* View Tabs */
+.viewTabs {
+  display: flex;
+  padding: 16px 28px;
+  gap: 8px;
+  border-bottom: 1px solid #2a2824;
+}
+
+.viewTab {
+  flex: 1;
+  padding: 7px 0;
+  background: none;
+  border: 1px solid #2a2824;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6a6560;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.viewTab:hover { border-color: #4a4540; color: var(--paper); }
+
+.viewTabActive {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: var(--paper);
+}
+
 .weekNav {
   padding: 20px 0;
   flex: 1;

@@ -5,9 +5,11 @@ interface AppState {
   currentDay: number
   done: Set<number>
   mobileView: 'list' | 'day'
+  activeView: 'training' | 'checklist'
   setCurrentDay: (day: number) => void
   toggleDone: (day: number) => void
   setMobileView: (view: 'list' | 'day') => void
+  setActiveView: (view: 'training' | 'checklist') => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -16,9 +18,10 @@ export const useAppStore = create<AppState>()(
       currentDay: 1,
       done: new Set<number>(),
       mobileView: 'list',
+      activeView: 'training',
 
       setCurrentDay: (day) =>
-        set({ currentDay: day, mobileView: 'day' }),
+        set({ currentDay: day, mobileView: 'day', activeView: 'training' }),
 
       toggleDone: (day) =>
         set((state) => {
@@ -28,6 +31,7 @@ export const useAppStore = create<AppState>()(
         }),
 
       setMobileView: (view) => set({ mobileView: view }),
+      setActiveView: (view) => set({ activeView: view }),
     }),
     {
       name: 'kps-store',
