@@ -535,12 +535,36 @@ body::after {
 }
 .timer-btn-reset:hover { background: var(--paper3); color: var(--ink); }
 
-  .shell { grid-template-columns: 1fr; }
+/* ─── BACK BUTTON (mobile) ─── */
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0 0 24px 0;
+}
+.back-btn:hover { color: var(--ink); }
+
+@media (max-width: 700px) {
+  .shell { display: block; }
   .sidebar { position: static; height: auto; }
-  .main { padding: 28px 20px 60px; }
+  .main { padding: 28px 20px 60px; max-width: 100%; }
   .day-big-num { font-size: 48px; }
   .ex-body { padding-left: 18px; }
   .ex-pills { flex-direction: column; align-items: flex-end; gap: 3px; }
+
+  /* Mobile view switching */
+  .main { display: none; }
+  .mobile-show-main .sidebar { display: none; }
+  .mobile-show-main .main { display: block; }
+  .back-btn { display: flex; }
 }
 </style>
 </head>
@@ -1114,6 +1138,7 @@ function buildMain(d) {
   const btnClass = isDone ? 'complete-btn done-state' : 'complete-btn';
 
   document.getElementById('mainContent').innerHTML = `
+    <button class="back-btn" onclick="showSidebar()">← Все дни</button>
     <div class="day-header">
       <div class="day-meta">
         <div class="day-big-num">${String(d).padStart(2,'0')}</div>
@@ -1195,7 +1220,6 @@ function timerToggle(exKey, d, i) {
     s.paused = true;
     document.getElementById(`tmr-play-${d}-${i}`).textContent = '▶ Продолжить';
   } else {
-    // Resume
     s.paused = false;
     timerTick(k);
   }
@@ -1203,13 +1227,15 @@ function timerToggle(exKey, d, i) {
 
 function timerTick(k) {
   const s = timerState[k];
-  const { d, i } = s;
+  s.startedAt = Date.now();
+  s.startedRemaining = s.remaining;
   renderTimerUI(k);
 
   s.interval = setInterval(() => {
-    s.remaining--;
+    const elapsed = Math.floor((Date.now() - s.startedAt) / 1000);
+    s.remaining = Math.max(0, s.startedRemaining - elapsed);
+
     if (s.remaining <= 0) {
-      // Phase done
       clearInterval(s.interval);
       s.interval = null;
       const cur = s.seq[s.seqIdx];
@@ -1223,11 +1249,9 @@ function timerTick(k) {
           renderTimerUI(k);
           timerTick(k);
         } else {
-          // No rest — go to next set
           advanceSeq(k);
         }
       } else {
-        // Rest done
         playBeep('work');
         advanceSeq(k);
       }
@@ -1235,7 +1259,7 @@ function timerTick(k) {
       if (s.remaining === 3) playBeep('countdown');
       renderTimerUI(k);
     }
-  }, 1000);
+  }, 500); // 500ms poll — точнее при throttling
 }
 
 function advanceSeq(k) {
@@ -1368,13 +1392,31 @@ function playBeep(type) {
   } catch(e) {}
 }
 
+function isMobile() { return window.innerWidth <= 700; }
+
 function showDay(d) {
   currentDay = d;
   buildNav();
   buildMain(d);
   updateProgress();
-  document.getElementById('mainContent').scrollTop = 0;
+  if (isMobile()) {
+    document.querySelector('.sidebar').style.display = 'none';
+    document.querySelector('.main').style.display = 'block';
+  }
   window.scrollTo(0, 0);
+}
+
+function showSidebar() {
+  document.querySelector('.sidebar').style.display = '';
+  document.querySelector('.main').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+// Init mobile state
+function initLayout() {
+  if (isMobile()) {
+    document.querySelector('.main').style.display = 'none';
+  }
 }
 
 function toggleEx(id) {
@@ -1410,6 +1452,7 @@ if ('serviceWorker' in navigator) {
 buildNav();
 buildMain(currentDay);
 updateProgress();
+initLayout();
 </script>
 </body>
 </html>
