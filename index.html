@@ -1402,7 +1402,7 @@ function updateProgress() {
 // ─── SERVICE WORKER ──────────────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/kps/sw.js', { scope: '/kps/' }).catch(() => {});
   });
 }
 
