@@ -1,0 +1,19 @@
+.shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 700px) {
+  .shell {
+    display: block;
+  }
+
+  /* On mobile: show sidebar by default, hide DayView */
+  .shell > aside { display: flex; }
+  .shell > main { display: none; }
+
+  /* When a day is selected: hide sidebar, show DayView */
+  .shell.showDay > aside { display: none; }
+  .shell.showDay > main { display: block; }
+}
