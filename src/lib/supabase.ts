@@ -9,6 +9,7 @@ export interface ChecklistEntry {
   kps_feeling: number
   left_knee: number
   sitting_symmetry: string
+  foot_feeling?: string
   comment?: string
 }
 
@@ -100,7 +101,7 @@ function interpretEntry(e: Omit<ChecklistEntry, 'id' | 'created_at'>): {
   content: string
   recommendation: AnalysisReport['recommendation']
 } {
-  const { day_number, back_pain, kps_feeling, left_knee, sitting_symmetry, comment } = e
+  const { day_number, back_pain, kps_feeling, left_knee, sitting_symmetry, foot_feeling, comment } = e
 
   // derive recommendation
   let recommendation: AnalysisReport['recommendation'] = 'ok'
@@ -153,12 +154,23 @@ function interpretEntry(e: Omit<ChecklistEntry, 'id' | 'created_at'>): {
   content += `**Поясница**: ${BACK_PAIN_LABEL[back_pain]}\n`
   content += `**Левый КПС**: ${KPS_LABEL[kps_feeling]}\n`
   content += `**Левое колено**: ${KNEE_LABEL[left_knee]}\n`
-  content += `**Симметрия при сидении**: ${sitting_symmetry}\n\n`
-  content += `---\n\n`
+  content += `**Симметрия при сидении**: ${sitting_symmetry}\n`
+  if (foot_feeling) content += `**Левая стопа**: ${foot_feeling}\n`
+  content += `\n---\n\n`
   content += `${kpsText}\n\n`
   content += `${backText}\n\n`
   content += `${kneeText}\n\n`
   content += `${symmText}\n`
+
+  if (foot_feeling) {
+    const footText =
+      foot_feeling === 'нейтраль держится'
+        ? 'Свод левой стопы держится в нейтрали — большеберцовая и малоберцовые в балансе. Продолжай short foot ежедневно.'
+        : foot_feeling === 'чуть нейтральнее'
+          ? 'Свод левой стопы чуть ближе к нейтрали — активация большеберцовой начинает работать. Продолжай упражнения на стопу.'
+          : 'Левая стопа пронирует. Фокус на short foot и растяжке малоберцовых перед тренировкой.'
+    content += `\n${footText}\n`
+  }
 
   if (comment && comment.trim()) {
     content += `\n---\n\n**Твой комментарий**: ${comment.trim()}\n`

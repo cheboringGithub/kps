@@ -24,6 +24,11 @@ const SYMMETRY_OPTS = [
   { value: 'чуть меньше', label: 'Чуть меньше' },
   { value: 'примерно ровно', label: 'Примерно ровно' },
 ]
+const FOOT_OPTS = [
+  { value: 'заваливается внутрь', label: 'Заваливается внутрь' },
+  { value: 'чуть нейтральнее', label: 'Чуть нейтральнее' },
+  { value: 'нейтраль держится', label: 'Нейтраль держится' },
+]
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('ru-RU', {
@@ -34,6 +39,7 @@ function formatDate(iso: string) {
 function backPainLabel(v: number) { return BACK_PAIN_OPTS.find(o => o.value === v)?.label ?? '—' }
 function kpsLabel(v: number) { return KPS_OPTS.find(o => o.value === v)?.label ?? '—' }
 function kneeLabel(v: number) { return KNEE_OPTS.find(o => o.value === v)?.label ?? '—' }
+function footLabel(v: string) { return FOOT_OPTS.find(o => o.value === v)?.label ?? '—' }
 
 function Chips<T extends number | string>({
   options, value, onChange,
@@ -64,6 +70,7 @@ export function Checklist() {
   const [kps, setKps] = useState<number | null>(null)
   const [knee, setKnee] = useState<number | null>(null)
   const [symmetry, setSymmetry] = useState<string | null>(null)
+  const [foot, setFoot] = useState<string | null>(null)
   const [comment, setComment] = useState('')
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
   const [history, setHistory] = useState<ChecklistEntry[]>([])
@@ -76,7 +83,7 @@ export function Checklist() {
       .finally(() => setLoadingHistory(false))
   }, [status])
 
-  const valid = backPain !== null && kps !== null && knee !== null && symmetry !== null
+  const valid = backPain !== null && kps !== null && knee !== null && symmetry !== null && foot !== null
 
   async function handleSubmit() {
     if (!valid) return
@@ -88,6 +95,7 @@ export function Checklist() {
         kps_feeling: kps!,
         left_knee: knee!,
         sitting_symmetry: symmetry!,
+        foot_feeling: foot!,
         comment: comment.trim() || undefined,
       })
       if (!done.has(currentDay)) toggleDone(currentDay)
@@ -105,7 +113,7 @@ export function Checklist() {
       <div className={s.header}>
         <div className={s.tag}>День {currentDay}</div>
         <h2 className={s.title}>Анкета после тренировки</h2>
-        <p className={s.sub}>5 вопросов · ~1 минута</p>
+        <p className={s.sub}>6 вопросов · ~1 минута</p>
       </div>
 
       <div className={s.form}>
@@ -127,6 +135,11 @@ export function Checklist() {
         <div className={s.field}>
           <label className={s.label}>Левая седалищная давит сильнее при сидении?</label>
           <Chips options={SYMMETRY_OPTS} value={symmetry} onChange={setSymmetry} />
+        </div>
+
+        <div className={s.field}>
+          <label className={s.label}>Левая стопа при стойке</label>
+          <Chips options={FOOT_OPTS} value={foot} onChange={setFoot} />
         </div>
 
         <div className={s.field}>
@@ -186,6 +199,12 @@ export function Checklist() {
                 <span className={s.entryKey}>Симметрия</span>
                 <span className={s.entryVal}>{e.sitting_symmetry}</span>
               </div>
+              {e.foot_feeling && (
+                <div className={s.entryRow}>
+                  <span className={s.entryKey}>Стопа</span>
+                  <span className={s.entryVal}>{footLabel(e.foot_feeling)}</span>
+                </div>
+              )}
               {e.comment && (
                 <div className={s.entryRow}>
                   <span className={s.entryKey}>Комментарий</span>
