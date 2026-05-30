@@ -41,11 +41,11 @@ curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?orde
 - Норма: переход 'да' → 'чуть меньше' за 2 недели, 'примерно ровно' к концу фазы 2–3
 - Если 'да' держится >10 записей → перекос не уходит, нужна коррекция асимметричной нагрузки
 
-## 3. Структура выходного файла
+## 3. Сформировать текст анализа
 
-Запиши анализ в `training-analysis.md` в корне проекта. Формат:
+Подготовь строку `content` в формате markdown:
 
-```markdown
+```
 # Анализ прогресса · [дата]
 
 **Записей:** N  
@@ -78,7 +78,48 @@ curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?orde
 - 🔴 Ухудшение в [показателе]. Необходима коррекция — запусти /adjust-program.
 ```
 
-## 4. После записи файла
+Определи значение `recommendation`:
+- `"ok"` — если рекомендация ✅
+- `"warning"` — если ⚠️
+- `"critical"` — если 🔴
+
+## 4. Сохранить анализ в Supabase
+
+```bash
+curl -s -X POST "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/analysis_reports" \
+  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
+  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
+  -H "Content-Type: application/json" \
+  -H "Prefer: return=representation" \
+  -d '{
+    "report_date": "[YYYY-MM-DD]",
+    "entries_count": N,
+    "period_start": "[YYYY-MM-DD]",
+    "period_end": "[YYYY-MM-DD]",
+    "content": "[экранированный markdown]",
+    "recommendation": "[ok|warning|critical]"
+  }'
+```
+
+Если таблица не найдена (ошибка PGRST205) — сообщи пользователю что нужно создать таблицу в Supabase Dashboard, и выведи SQL:
+
+```sql
+create table public.analysis_reports (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz default now(),
+  report_date date not null,
+  entries_count int not null,
+  period_start date not null,
+  period_end date not null,
+  content text not null,
+  recommendation text not null check (recommendation in ('ok', 'warning', 'critical'))
+);
+alter table public.analysis_reports enable row level security;
+create policy "anon read" on public.analysis_reports for select using (true);
+create policy "anon insert" on public.analysis_reports for insert with check (true);
+```
+
+## 5. После сохранения
 
 - Выведи в чат краткое резюме (3–5 предложений): главные находки и вывод
 - Если рекомендация ⚠️ или 🔴 — явно скажи: **"Советую запустить /adjust-program"** и объясни почему именно

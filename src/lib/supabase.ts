@@ -38,3 +38,27 @@ export async function fetchEntries(limit = 10): Promise<ChecklistEntry[]> {
   const res = await req(`/checklist_entries?order=created_at.desc&limit=${limit}`)
   return res.json()
 }
+
+export interface AnalysisReport {
+  id?: string
+  created_at?: string
+  report_date: string
+  entries_count: number
+  period_start: string
+  period_end: string
+  content: string
+  recommendation: 'ok' | 'warning' | 'critical'
+}
+
+export async function insertAnalysis(report: Omit<AnalysisReport, 'id' | 'created_at'>) {
+  const res = await req('/analysis_reports', {
+    method: 'POST',
+    body: JSON.stringify(report),
+  })
+  return res.json() as Promise<AnalysisReport[]>
+}
+
+export async function fetchAnalysis(limit = 10): Promise<AnalysisReport[]> {
+  const res = await req(`/analysis_reports?order=created_at.desc&limit=${limit}`)
+  return res.json()
+}
