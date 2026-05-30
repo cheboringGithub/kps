@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { insertEntry, fetchEntries, ChecklistEntry } from '../../lib/supabase'
+import { useAppStore } from '../../store/useAppStore'
 import s from './Checklist.module.css'
 
 const BACK_PAIN_OPTS = [
@@ -66,6 +67,7 @@ export function Checklist() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
   const [history, setHistory] = useState<ChecklistEntry[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
+  const { done, toggleDone } = useAppStore()
 
   useEffect(() => {
     fetchEntries(5)
@@ -88,6 +90,7 @@ export function Checklist() {
         sitting_symmetry: symmetry!,
       })
       setStatus('done')
+      if (!done.has(day)) toggleDone(day)
       setBackPain(null)
       setKps(null)
       setKnee(null)

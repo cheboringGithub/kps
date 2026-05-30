@@ -31,6 +31,12 @@ export function Nav() {
         >
           Дневник
         </button>
+        <button
+          className={[s.viewTab, activeView === 'analysis' ? s.viewTabActive : ''].join(' ')}
+          onClick={() => setActiveView('analysis')}
+        >
+          Анализ
+        </button>
       </div>
 
       {activeView === 'training' && (

@@ -5,11 +5,11 @@ interface AppState {
   currentDay: number
   done: Set<number>
   mobileView: 'list' | 'day'
-  activeView: 'training' | 'checklist'
+  activeView: 'training' | 'checklist' | 'analysis'
   setCurrentDay: (day: number) => void
   toggleDone: (day: number) => void
   setMobileView: (view: 'list' | 'day') => void
-  setActiveView: (view: 'training' | 'checklist') => void
+  setActiveView: (view: 'training' | 'checklist' | 'analysis') => void
 }
 
 export const useAppStore = create<AppState>()(
