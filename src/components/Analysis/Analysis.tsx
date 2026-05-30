@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchAnalysis, AnalysisReport } from '../../lib/supabase'
+import { useAppStore } from '../../store/useAppStore'
 import s from './Analysis.module.css'
 
 function formatDate(iso: string) {
@@ -49,6 +50,7 @@ export function Analysis() {
   const [reports, setReports] = useState<AnalysisReport[]>([])
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState<string | null>(null)
+  const { setActiveView } = useAppStore()
 
   useEffect(() => {
     fetchAnalysis(20)
@@ -59,6 +61,8 @@ export function Analysis() {
 
   return (
     <main className={s.main}>
+      <button className={s.backBtn} onClick={() => setActiveView('training')} type="button">← Программа</button>
+
       <div className={s.header}>
         <div className={s.tag}>История анализов</div>
         <h2 className={s.title}>Прогресс реабилитации</h2>

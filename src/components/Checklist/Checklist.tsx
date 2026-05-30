@@ -67,7 +67,7 @@ export function Checklist() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
   const [history, setHistory] = useState<ChecklistEntry[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
-  const { done, toggleDone } = useAppStore()
+  const { done, toggleDone, setActiveView } = useAppStore()
 
   useEffect(() => {
     fetchEntries(5)
@@ -102,6 +102,8 @@ export function Checklist() {
 
   return (
     <main className={s.main}>
+      <button className={s.backBtn} onClick={() => setActiveView('training')} type="button">← Программа</button>
+
       <div className={s.header}>
         <div className={s.tag}>Дневник тренировок</div>
         <h2 className={s.title}>Анкета после тренировки</h2>

@@ -3,6 +3,22 @@
   max-width: 740px;
 }
 
+.backBtn {
+  display: inline-block;
+  margin-bottom: 28px;
+  background: none;
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+.backBtn:hover { color: var(--rust); }
+
 .header {
   margin-bottom: 40px;
   padding-bottom: 32px;
