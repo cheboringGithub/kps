@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { insertEntry, fetchEntries, ChecklistEntry } from '../../lib/supabase'
+import { saveEntryWithAnalysis, fetchEntries, ChecklistEntry } from '../../lib/supabase'
 import { useAppStore } from '../../store/useAppStore'
 import s from './Checklist.module.css'
 
@@ -59,15 +59,15 @@ function Chips<T extends number | string>({
 }
 
 export function Checklist() {
-  const [day, setDay] = useState<number>(1)
+  const { currentDay, done, toggleDone, setActiveView } = useAppStore()
   const [backPain, setBackPain] = useState<number | null>(null)
   const [kps, setKps] = useState<number | null>(null)
   const [knee, setKnee] = useState<number | null>(null)
   const [symmetry, setSymmetry] = useState<string | null>(null)
+  const [comment, setComment] = useState('')
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
   const [history, setHistory] = useState<ChecklistEntry[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
-  const { done, toggleDone, setActiveView } = useAppStore()
 
   useEffect(() => {
     fetchEntries(5)
@@ -82,19 +82,17 @@ export function Checklist() {
     if (!valid) return
     setStatus('saving')
     try {
-      await insertEntry({
-        day_number: day,
+      await saveEntryWithAnalysis({
+        day_number: currentDay,
         back_pain: backPain!,
         kps_feeling: kps!,
         left_knee: knee!,
         sitting_symmetry: symmetry!,
+        comment: comment.trim() || undefined,
       })
+      if (!done.has(currentDay)) toggleDone(currentDay)
       setStatus('done')
-      if (!done.has(day)) toggleDone(day)
-      setBackPain(null)
-      setKps(null)
-      setKnee(null)
-      setSymmetry(null)
+      setTimeout(() => setActiveView('analysis'), 800)
     } catch {
       setStatus('error')
     }
@@ -105,21 +103,12 @@ export function Checklist() {
       <button className={s.backBtn} onClick={() => setActiveView('training')} type="button">← Программа</button>
 
       <div className={s.header}>
-        <div className={s.tag}>Дневник тренировок</div>
+        <div className={s.tag}>День {currentDay}</div>
         <h2 className={s.title}>Анкета после тренировки</h2>
         <p className={s.sub}>5 вопросов · ~1 минута</p>
       </div>
 
       <div className={s.form}>
-        <div className={s.field}>
-          <label className={s.label}>День программы</label>
-          <div className={s.dayRow}>
-            <button className={s.stepper} onClick={() => setDay(d => Math.max(1, d - 1))} type="button">−</button>
-            <span className={s.dayNum}>{day}</span>
-            <button className={s.stepper} onClick={() => setDay(d => Math.min(30, d + 1))} type="button">+</button>
-          </div>
-        </div>
-
         <div className={s.field}>
           <label className={s.label}>Поясница утром</label>
           <Chips options={BACK_PAIN_OPTS} value={backPain} onChange={setBackPain} />
@@ -140,8 +129,19 @@ export function Checklist() {
           <Chips options={SYMMETRY_OPTS} value={symmetry} onChange={setSymmetry} />
         </div>
 
+        <div className={s.field}>
+          <label className={s.label}>Комментарий (необязательно)</label>
+          <textarea
+            className={s.textarea}
+            placeholder="Что-то особенное, что заметил во время тренировки..."
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            rows={3}
+          />
+        </div>
+
         {status === 'done' && (
-          <div className={s.success}>✓ Сохранено</div>
+          <div className={s.success}>✓ Сохранено — открываю анализ...</div>
         )}
         {status === 'error' && (
           <div className={s.error}>Ошибка сохранения. Проверь интернет.</div>
@@ -153,7 +153,7 @@ export function Checklist() {
           disabled={!valid || status === 'saving'}
           type="button"
         >
-          {status === 'saving' ? 'Сохраняю...' : '→ Сохранить запись'}
+          {status === 'saving' ? 'Сохраняю...' : '→ Сохранить и посмотреть анализ'}
         </button>
       </div>
 
@@ -186,6 +186,12 @@ export function Checklist() {
                 <span className={s.entryKey}>Симметрия</span>
                 <span className={s.entryVal}>{e.sitting_symmetry}</span>
               </div>
+              {e.comment && (
+                <div className={s.entryRow}>
+                  <span className={s.entryKey}>Комментарий</span>
+                  <span className={s.entryVal}>{e.comment}</span>
+                </div>
+              )}
             </div>
           ))
         )}

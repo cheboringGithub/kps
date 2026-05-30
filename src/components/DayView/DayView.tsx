@@ -6,7 +6,7 @@ import { ExerciseCard } from '../ExerciseCard/ExerciseCard'
 import s from './DayView.module.css'
 
 export function DayView() {
-  const { currentDay, done, toggleDone, setMobileView } = useAppStore()
+  const { currentDay, done, setMobileView, setActiveView } = useAppStore()
   const day = DAYS[currentDay - 1]
   if (!day) return null
   const phase = PHASES[day.phase]
@@ -53,9 +53,10 @@ export function DayView() {
 
       <button
         className={[s.completeBtn, isDone ? s.completeBtnDone : ''].join(' ')}
-        onClick={() => toggleDone(currentDay)}
+        onClick={() => { if (!isDone) setActiveView('checklist') }}
+        disabled={isDone}
       >
-        {isDone ? '✓ День выполнен' : '→ Отметить выполненным'}
+        {isDone ? '✓ День выполнен' : '→ Заполнить анкету'}
       </button>
     </main>
   )
