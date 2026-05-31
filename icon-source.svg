@@ -2,37 +2,53 @@
   <!-- Background -->
   <rect width="512" height="512" rx="96" fill="#1a1814"/>
 
-  <!-- Mat / коврик -->
-  <ellipse cx="256" cy="360" rx="155" ry="38" fill="#f5f0e8"/>
-  <!-- Arrows on mat -->
-  <g fill="#1a1814">
-    <!-- left arrow -->
-    <polygon points="108,358 130,344 130,372"/>
-    <rect x="130" y="352" width="52" height="12" rx="4"/>
-    <!-- right arrow -->
-    <polygon points="404,358 382,344 382,372"/>
-    <rect x="230" y="352" width="52" height="12" rx="4"/>
+  <g fill="#f5f0e8">
+    <!-- Head -->
+    <circle cx="256" cy="148" r="46"/>
+
+    <!-- Left arm raised -->
+    <path d="M 236 188 L 152 108 Q 138 92 150 78 Q 163 64 178 78 L 252 210 Z"/>
+
+    <!-- Right arm raised -->
+    <path d="M 276 188 L 360 108 Q 374 92 362 78 Q 349 64 334 78 L 260 210 Z"/>
+
+    <!-- Torso + crossed legs (one unified shape) -->
+    <path d="
+      M 210 220
+      Q 200 224 168 252
+      Q 130 284 110 296
+      Q 88 310 96 330
+      Q 104 348 132 342
+      Q 168 334 210 310
+      L 256 300
+      L 302 310
+      Q 344 334 380 342
+      Q 408 348 416 330
+      Q 424 310 402 296
+      Q 382 284 344 252
+      Q 312 224 302 220
+      Q 280 212 256 212
+      Q 232 212 210 220
+      Z
+    "/>
+
+    <!-- Mat -->
+    <path d="
+      M 96 348
+      Q 80 356 80 368
+      Q 80 382 100 388
+      L 412 388
+      Q 432 382 432 368
+      Q 432 356 416 348
+      Z
+    "/>
+
+    <!-- Arrow left (cut out from mat — dark) -->
+    <polygon points="112,368 138,354 138,382" fill="#1a1814"/>
+    <rect x="138" y="361" width="68" height="14" rx="4" fill="#1a1814"/>
+
+    <!-- Arrow right (cut out from mat — dark) -->
+    <polygon points="400,368 374,354 374,382" fill="#1a1814"/>
+    <rect x="306" y="361" width="68" height="14" rx="4" fill="#1a1814"/>
   </g>
-
-  <!-- Body sitting cross-legged -->
-  <!-- Torso -->
-  <rect x="212" y="248" width="88" height="90" rx="28" fill="#f5f0e8"/>
-
-  <!-- Head -->
-  <circle cx="256" cy="205" r="42" fill="#f5f0e8"/>
-
-  <!-- Left leg crossed -->
-  <path d="M 218 320 Q 175 335 140 328 Q 120 322 118 310 Q 116 296 140 294 Q 170 292 210 305 Z" fill="#f5f0e8"/>
-  <!-- Right leg crossed -->
-  <path d="M 294 320 Q 337 335 372 328 Q 392 322 394 310 Q 396 296 372 294 Q 342 292 302 305 Z" fill="#f5f0e8"/>
-
-  <!-- Left arm raised -->
-  <path d="M 220 268 Q 185 240 158 195 Q 148 175 160 162 Q 172 150 188 162 Q 208 178 230 215 Q 240 238 228 260 Z" fill="#f5f0e8"/>
-  <!-- Left hand fingers hint -->
-  <ellipse cx="160" cy="155" rx="16" ry="20" fill="#f5f0e8"/>
-
-  <!-- Right arm raised -->
-  <path d="M 292 268 Q 327 240 354 195 Q 364 175 352 162 Q 340 150 324 162 Q 304 178 282 215 Q 272 238 284 260 Z" fill="#f5f0e8"/>
-  <!-- Right hand -->
-  <ellipse cx="352" cy="155" rx="16" ry="20" fill="#f5f0e8"/>
 </svg>
