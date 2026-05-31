@@ -24,29 +24,42 @@ function buildSequence(timer: TimerConfig): TimerStep[] {
   return seq
 }
 
-let audioCtx: AudioContext | null = null
-function playBeep(type: 'work' | 'rest' | 'countdown' | 'done') {
-  try {
-    if (!audioCtx) audioCtx = new AudioContext()
-    const ctx = audioCtx
-    const beep = (freq: number, vol: number, dur: number, delay = 0) => {
-      setTimeout(() => {
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
-        osc.connect(gain)
-        gain.connect(ctx.destination)
-        osc.frequency.value = freq
-        gain.gain.value = vol
-        osc.start()
-        osc.stop(ctx.currentTime + dur)
-      }, delay)
-    }
-    if (type === 'work') { beep(880, 0.3, 0.15); beep(1100, 0.3, 0.2, 180) }
-    else if (type === 'rest') beep(440, 0.2, 0.3)
-    else if (type === 'countdown') beep(660, 0.15, 0.08)
-    else if (type === 'done') { beep(880, 0.25, 0.2); beep(1100, 0.25, 0.2, 220); beep(1320, 0.25, 0.2, 440) }
-  } catch { /* ignore */ }
+// ─── Speech ──────────────────────────────────────────────────────────────────
+
+let ruVoice: SpeechSynthesisVoice | null = null
+
+function loadVoice() {
+  if (!('speechSynthesis' in window)) return
+  const pick = () => {
+    const voices = speechSynthesis.getVoices()
+    ruVoice =
+      voices.find((v) => v.lang.startsWith('ru') && v.localService) ??
+      voices.find((v) => v.lang.startsWith('ru')) ??
+      voices[0] ??
+      null
+  }
+  pick()
+  speechSynthesis.addEventListener('voiceschanged', pick)
 }
+loadVoice()
+
+function speak(text: string, priority = false) {
+  if (!('speechSynthesis' in window)) return
+  if (priority) speechSynthesis.cancel()
+  const utt = new SpeechSynthesisUtterance(text)
+  utt.lang = 'ru-RU'
+  utt.rate = 0.95
+  utt.pitch = 1
+  utt.volume = 1
+  if (ruVoice) utt.voice = ruVoice
+  speechSynthesis.speak(utt)
+}
+
+function stopSpeech() {
+  if ('speechSynthesis' in window) speechSynthesis.cancel()
+}
+
+// ─── Wake Lock ───────────────────────────────────────────────────────────────
 
 let wakeLock: WakeLockSentinel | null = null
 async function requestWakeLock() {
@@ -58,6 +71,8 @@ function releaseWakeLock() {
   wakeLock?.release()
   wakeLock = null
 }
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 interface Props {
   timer: TimerConfig
@@ -76,6 +91,8 @@ export function Timer({ timer, totalRounds }: Props) {
   const startedAt = useRef<number>(0)
   const startedRemaining = useRef<number>(0)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  // track which countdown seconds already spoken
+  const spokenAt = useRef<Set<number>>(new Set())
 
   const cur = seq.current[seqIdx]
 
@@ -87,6 +104,7 @@ export function Timer({ timer, totalRounds }: Props) {
   function startTick(rem: number) {
     startedAt.current = Date.now()
     startedRemaining.current = rem
+    spokenAt.current = new Set()
     intervalRef.current = setInterval(() => {
       const elapsed = Math.floor((Date.now() - startedAt.current) / 1000)
       const next = Math.max(0, startedRemaining.current - elapsed)
@@ -94,27 +112,55 @@ export function Timer({ timer, totalRounds }: Props) {
     }, 500)
   }
 
-  // advance to next step when remaining hits 0
+  // Announce phase start
+  function announcePhaseStart(p: Phase, step: TimerStep, roundNum: number, totalRoundsCount: number) {
+    if (p === 'work') {
+      const mins = Math.floor(step.work / 60)
+      const secs = step.work % 60
+      const durText = mins > 0
+        ? `${mins} минут${mins === 1 ? 'а' : mins < 5 ? 'ы' : ''} ${secs > 0 ? secs + ' секунд' : ''}`
+        : `${secs} секунд`
+      const roundText = totalRoundsCount > 1 ? `, раунд ${roundNum} из ${totalRoundsCount}` : ''
+      speak(`Работа${roundText}. ${step.workLabel}. ${durText}`, true)
+    } else if (p === 'rest') {
+      const secs = step.rest
+      speak(`Отдых, ${secs} секунд. ${step.restLabel}`, true)
+    }
+  }
+
+  // Countdown: announce 10, 5, 3, 2, 1
   useEffect(() => {
     if (phase === 'idle' || phase === 'done') return
-    if (remaining > 0) {
-      if (remaining === 3) playBeep('countdown')
-      return
+    if (remaining <= 0) return
+
+    const milestones = [10, 5, 3, 2, 1]
+    if (milestones.includes(remaining) && !spokenAt.current.has(remaining)) {
+      spokenAt.current.add(remaining)
+      if (remaining <= 3) {
+        speak(String(remaining))
+      } else {
+        speak(`Осталось ${remaining} секунд`)
+      }
     }
+  }, [remaining, phase])
+
+  // Phase transitions when remaining hits 0
+  useEffect(() => {
+    if (phase === 'idle' || phase === 'done') return
+    if (remaining > 0) return
     clear()
 
     if (phase === 'work') {
       const restSec = cur?.rest ?? 0
       if (restSec > 0) {
-        playBeep('rest')
         setPhase('rest')
         setRemaining(restSec)
         startTick(restSec)
+        if (cur) announcePhaseStart('rest', cur, cur.round, totalRounds)
       } else {
         advance()
       }
     } else {
-      playBeep('work')
       advance()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,15 +171,16 @@ export function Timer({ timer, totalRounds }: Props) {
     if (next >= seq.current.length) {
       setPhase('done')
       setRunning(false)
-      playBeep('done')
       releaseWakeLock()
+      speak('Упражнение выполнено. Отличная работа!', true)
       return
     }
+    const nextStep = seq.current[next]!
     setSeqIdx(next)
     setPhase('work')
-    const nextWork = seq.current[next]?.work ?? 0
-    setRemaining(nextWork)
-    startTick(nextWork)
+    setRemaining(nextStep.work)
+    startTick(nextStep.work)
+    announcePhaseStart('work', nextStep, nextStep.round, totalRounds)
   }
 
   function handlePlay() {
@@ -143,24 +190,28 @@ export function Timer({ timer, totalRounds }: Props) {
     }
     if (phase === 'idle') {
       requestWakeLock()
-      const firstWork = cur?.work ?? 0
+      const firstStep = cur!
       setPhase('work')
-      setRemaining(firstWork)
+      setRemaining(firstStep.work)
       setRunning(true)
-      startTick(firstWork)
+      startTick(firstStep.work)
+      announcePhaseStart('work', firstStep, firstStep.round, totalRounds)
       return
     }
     if (running) {
       clear()
       setRunning(false)
+      stopSpeech()
     } else {
       setRunning(true)
       startTick(remaining)
+      speak('Продолжаем')
     }
   }
 
   function reset() {
     clear()
+    stopSpeech()
     setSeqIdx(0)
     setPhase('idle')
     setRemaining(0)
@@ -168,9 +219,8 @@ export function Timer({ timer, totalRounds }: Props) {
     releaseWakeLock()
   }
 
-  useEffect(() => () => { clear(); releaseWakeLock() }, [])
+  useEffect(() => () => { clear(); releaseWakeLock(); stopSpeech() }, [])
 
-  // visibility change — re-acquire wake lock
   useEffect(() => {
     const handler = () => {
       if (document.visibilityState === 'visible' && running) requestWakeLock()
@@ -206,10 +256,7 @@ export function Timer({ timer, totalRounds }: Props) {
       </div>
 
       <div className={s.track}>
-        <div
-          className={[s.fill, isRest ? s.restFill : ''].join(' ')}
-          style={{ width: `${pct}%` }}
-        />
+        <div className={[s.fill, isRest ? s.restFill : ''].join(' ')} style={{ width: `${pct}%` }} />
       </div>
 
       <div className={s.meta}>
