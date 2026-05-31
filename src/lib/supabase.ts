@@ -54,6 +54,11 @@ export async function fetchEntries(limit = 10): Promise<ChecklistEntry[]> {
   return res.json()
 }
 
+export async function fetchEntriesByDay(dayNumber: number): Promise<ChecklistEntry[]> {
+  const res = await req(`/checklist_entries?day_number=eq.${dayNumber}&order=created_at.desc`)
+  return res.json()
+}
+
 export interface AnalysisReport {
   id?: string
   created_at?: string
