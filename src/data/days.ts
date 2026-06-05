@@ -40,16 +40,16 @@ export const DAYS: Day[] = [
 
   // Дни 8–14: добавляем мёртвый жук и птицу-собаку — безопасный кор без нагрузки на колено
   { phase: 1, title: 'Углубление КПС', short: 'КПС × 3 упражнения',
-    desc: 'Три упражнения на КПС подряд. Суставная цепочка. Время удержания немного растёт.',
-    exs: ['warmup_knee', 'kps_decomp', 'kps_traction', 'figure4', 'glute_side_lying', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_dead_bug', 'child_pose'] },
+    desc: 'Три упражнения на КПС подряд. Суставная цепочка. Добавляем растяжку квадратной мышцы поясницы.',
+    exs: ['warmup_knee', 'kps_decomp', 'kps_traction', 'figure4', 'glute_side_lying', 'kps_clock', 'ql_stretch', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_dead_bug', 'child_pose'] },
 
   { phase: 1, title: 'Сгибатели + мост', short: 'ПП-мышца + мост',
     desc: 'Подвздошно-поясничная и мост в связке — так работают в физиотерапии при дисфункции КПС.',
     exs: ['warmup_march', 'il_lunge', 'kps_bridge', 'kps_decomp', 'figure4', 'side_lying_stretch', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_dead_bug', 'savasana'] },
 
-  { phase: 1, title: 'Боковая цепь день', short: 'Межрёберные + ТН',
-    desc: 'Полный день на боковую цепь. КПС в роли декомпрессии до и после.',
-    exs: ['warmup_knee', 'kps_decomp', 'side_lying_stretch', 'it_side_lying', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_bird_dog', 'child_pose'] },
+  { phase: 1, title: 'Боковая цепь + КМП', short: 'Межрёберные + КМП',
+    desc: 'Полный день на боковую цепь. Добавляем прицельную растяжку квадратной мышцы поясницы.',
+    exs: ['warmup_knee', 'kps_decomp', 'side_lying_stretch', 'ql_stretch', 'it_side_lying', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_bird_dog', 'child_pose'] },
 
   { phase: 1, title: 'Хамстринги — шаг вперёд', short: 'Задняя поверхность',
     desc: 'Добавляем наклон сидя — новый угол. Цель на эту неделю: пальцы до середины голени.',
@@ -89,8 +89,8 @@ export const DAYS: Day[] = [
     exs: ['warmup_march', 'kps_traction', 'il_lunge', 'glute_bridge_single', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_reverse_lunge', 'savasana'] },
 
   { phase: 2, title: 'Бабочка и пах', short: 'Паховые связки',
-    desc: 'Добавляем бабочку с наклоном. Силовой мост + боковые шаги в финале.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'butterfly_forward', 'kps_figure4_floor', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_hip_thrust', 'strength_side_steps', 'child_pose'] },
+    desc: 'Добавляем бабочку с наклоном. КМП + силовой мост + боковые шаги в финале.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'butterfly_forward', 'kps_figure4_floor', 'ql_stretch', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_hip_thrust', 'strength_side_steps', 'child_pose'] },
 
   { phase: 2, title: 'Сумо-приседание', short: 'Тазобедренный сустав',
     desc: 'Вводим глубокое сумо-приседание. Добавляем обратный выпад для силовой работы.',
@@ -106,8 +106,8 @@ export const DAYS: Day[] = [
 
   // ── ФАЗА 3: Недели 5–6 — добавляем RDL и сплит-присед ──
   { phase: 3, title: 'Боковая цепь — полный день', short: 'Боковые + ИТ-тяж',
-    desc: 'Фаза 3. Фокус на боковую цепь. Добавляем румынскую тягу на одной ноге.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'side_lying_stretch', 'it_side_lying', 'it_standing', 'kps_90_90', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_single_rdl', 'child_pose'] },
+    desc: 'Фаза 3. Фокус на боковую цепь и КМП. Добавляем румынскую тягу на одной ноге.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'side_lying_stretch', 'ql_stretch', 'it_side_lying', 'it_standing', 'kps_90_90', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_single_rdl', 'child_pose'] },
 
   { phase: 3, title: 'Голубь + ПНФ', short: 'КПС × ПНФ',
     desc: 'Поза голубя с техникой ПНФ — максимальное воздействие на КПС. Боковые шаги в финале.',
