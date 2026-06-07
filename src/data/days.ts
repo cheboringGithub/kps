@@ -48,8 +48,8 @@ export const DAYS: Day[] = [
     exs: ['warmup_march', 'il_lunge', 'kps_bridge', 'kps_decomp', 'figure4', 'side_lying_stretch', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_dead_bug', 'savasana'] },
 
   { phase: 1, title: 'Боковая цепь день', short: 'Межрёберные + ТН',
-    desc: 'Полный день на боковую цепь. КПС в роли декомпрессии до и после.',
-    exs: ['warmup_knee', 'kps_decomp', 'side_lying_stretch', 'it_side_lying', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_bird_dog', 'child_pose'] },
+    desc: 'Полный день на боковую цепь. КПС в роли декомпрессии до и после. Точечная работа с болевым узлом слева на рёбрах — мягко, дыханием, без скрутки.',
+    exs: ['warmup_knee', 'kps_decomp', 'lat_ql_point_release', 'it_side_lying', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_outer', 'foot_short', 'strength_bird_dog', 'child_pose'] },
 
   { phase: 1, title: 'Хамстринги — шаг вперёд', short: 'Задняя поверхность',
     desc: 'Добавляем наклон сидя — новый угол. Цель на эту неделю: пальцы до середины голени.',
