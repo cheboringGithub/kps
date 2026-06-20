@@ -111,30 +111,30 @@ export const DAYS: Day[] = [
 
   { phase: 3, title: 'Голубь + ПНФ', short: 'КПС × ПНФ',
     desc: 'Поза голубя с техникой ПНФ — максимальное воздействие на КПС. Боковые шаги в финале.',
-    exs: ['warmup_knee', 'kps_traction', 'kps_figure4_floor', 'figure4_adv', 'hamstring_pnf', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_side_steps', 'savasana'] },
+    exs: ['hip_knee_circles', 'kps_traction', 'kps_figure4_floor', 'figure4_adv', 'hamstring_pnf', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_side_steps', 'savasana'] },
 
-  { phase: 3, title: 'Сумо + хамстринги', short: 'Глубина диапазона',
-    desc: 'Комбинация сумо и задней поверхности. Добавляем RDL на одной ноге.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'squat_sumo', 'hamstring_wide', 'glute_bridge_single', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_single_rdl', 'child_wide'] },
+  { phase: 3, title: 'Сумо + хамстринги', short: 'Подготовка к присяду',
+    desc: 'День посвящён глубине таза перед присяданием. Активная мобильность тазобедренного + фронтальный контроль вместо одного моста.',
+    exs: ['hip_knee_circles', 'kps_decomp', 'squat_sumo', 'hamstring_wide', 'hip_abduction_3way', 'glute_side_kicks', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_single_rdl', 'child_wide'] },
 
   { phase: 3, title: 'Выравнивание + активация', short: 'Симметрия таза',
-    desc: 'Правая сторона работает интенсивнее. Вводим болгарский сплит-присед.',
-    exs: ['warmup_march', 'kps_decomp', 'il_lunge_adv', 'glute_clamshell', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_split_squat', 'savasana'] },
+    desc: 'Правая сторона работает интенсивнее. Вводим болгарский сплит-присед. Базовую ракушку заменяем на полное 3-плоскостное отведение — та же мышца, но без слепых зон.',
+    exs: ['warmup_march', 'kps_decomp', 'il_lunge_adv', 'hip_abduction_3way', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_split_squat', 'savasana'] },
 
   { phase: 3, title: 'ПНФ-наклон — прорыв', short: 'Ладони к полу',
     desc: 'Основная цель — приблизиться к полу. Добавляем RDL + обратный выпад.',
-    exs: ['warmup_knee', 'kps_traction', 'hamstring_pnf', 'kps_90_90', 'figure4_adv', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'strength_single_rdl', 'child_pose'] },
+    exs: ['hip_knee_circles', 'kps_traction', 'hamstring_pnf', 'kps_90_90', 'figure4_adv', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'strength_single_rdl', 'child_pose'] },
 
-  { phase: 3, title: 'Интеграция фазы 3', short: 'Всё вместе',
-    desc: 'Собираем лучшее из фазы 3. Полный силовой блок: сплит-присед + RDL + боковые шаги.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'kps_figure4_floor', 'it_standing', 'hamstring_wide', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_split_squat', 'strength_single_rdl', 'child_wide'] },
+  { phase: 3, title: 'Интеграция фазы 3', short: 'Подготовка к присяду',
+    desc: 'Собираем лучшее из фазы 3. Статичный боковой наклон на ИТ-тяж меняем на динамические сайд кики — нужен контроль таза в движении, не просто растянутая полоса.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'kps_figure4_floor', 'glute_side_kicks', 'hamstring_wide', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_split_squat', 'strength_single_rdl', 'child_wide'] },
 
   // ── ФАЗА 4: Недели 7–8 — полный комплекс растяжка + сила ──
   { phase: 4, title: 'Поддержание и закрепление', short: 'Фаза 4 старт',
     desc: 'Финальная фаза. Всё закрепляем. Полный силовой блок после растяжки.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'kps_90_90', 'kps_figure4_floor', 'hamstring_pnf', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_hip_thrust', 'strength_split_squat', 'strength_single_rdl', 'savasana'] },
+    exs: ['hip_knee_circles', 'kps_decomp', 'kps_90_90', 'kps_figure4_floor', 'hamstring_pnf', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_hip_thrust', 'strength_split_squat', 'strength_single_rdl', 'savasana'] },
 
   { phase: 4, title: 'День 30 — итог курса', short: 'Финал',
-    desc: 'Последний день. Это твоя новая база — поддерживай 4–5 раз в неделю.',
-    exs: ['warmup_knee', 'kps_decomp', 'kps_traction', 'kps_90_90', 'kps_figure4_floor', 'hamstring_pnf', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'strength_side_steps', 'strength_single_rdl', 'child_wide'] },
+    desc: 'Последний день. Это твоя новая база — поддерживай 4–5 раз в неделю. Отведение в 3 плоскостях и сайд кики — то, что держит таз стабильным в приседе и шаге дальше, после курса.',
+    exs: ['hip_knee_circles', 'kps_decomp', 'kps_traction', 'kps_90_90', 'kps_figure4_floor', 'hamstring_pnf', 'hip_abduction_3way', 'glute_side_kicks', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'strength_single_rdl', 'child_wide'] },
 ]
