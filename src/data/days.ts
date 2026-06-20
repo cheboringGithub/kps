@@ -100,41 +100,41 @@ export const DAYS: Day[] = [
     desc: 'Впервые применяем технику ПНФ на задней поверхности. Прорыв в диапазоне.',
     exs: ['warmup_hip_circle', 'kps_decomp', 'hamstring_pnf', 'kps_90_90', 'glute_bridge_single', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_side_steps', 'savasana'] },
 
-  { phase: 2, title: 'Итог фазы 2', short: 'Интеграция',
-    desc: 'Полный цикл фазы 2. Силовой блок: мост + обратный выпад + боковые шаги.',
-    exs: ['warmup_knee', 'kps_decomp', 'kps_figure4_floor', 'il_lunge_adv', 'hamstring_wide', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_hip_thrust', 'strength_reverse_lunge', 'child_wide'] },
+  { phase: 2, title: 'Итог фазы 2', short: 'Интеграция — без нагрузки на хамстринг',
+    desc: 'Полный цикл фазы 2. Выпад, мост на одной ноге и силовой блок временно убраны — левый хамстринг травмирован, ему нужен полный покой от любой нагрузки и растяжки.',
+    exs: ['warmup_knee', 'kps_decomp', 'kps_figure4_floor', 'hip_abduction_3way', 'glute_side_kicks', 'glute_clamshell', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_bird_dog', 'strength_dead_bug', 'child_wide'] },
 
   // ── ФАЗА 3: Недели 5–6 — добавляем RDL и сплит-присед ──
   { phase: 3, title: 'Боковая цепь — полный день', short: 'Боковые + ИТ-тяж',
-    desc: 'Фаза 3. Фокус на боковую цепь и КМП. Добавляем румынскую тягу на одной ноге.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'side_lying_stretch', 'ql_stretch', 'it_side_lying', 'it_standing', 'kps_90_90', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_single_rdl', 'child_pose'] },
+    desc: 'Фаза 3. Фокус на боковую цепь и КМП. Румынскую тягу убираем — она грузит именно повреждённый хамстринг эксцентрически. Вместо неё фронтальный контроль таза лёжа.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'side_lying_stretch', 'ql_stretch', 'it_side_lying', 'it_standing', 'kps_90_90', 'foot_peroneal', 'foot_eversion', 'foot_short', 'hip_abduction_3way', 'child_pose'] },
 
-  { phase: 3, title: 'Голубь + ПНФ', short: 'КПС × ПНФ',
-    desc: 'Поза голубя с техникой ПНФ — максимальное воздействие на КПС. Боковые шаги в финале.',
-    exs: ['hip_knee_circles', 'kps_traction', 'kps_figure4_floor', 'figure4_adv', 'hamstring_pnf', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_side_steps', 'savasana'] },
+  { phase: 3, title: 'Голубь + ПНФ', short: 'КПС × ПНФ — без хамстринга',
+    desc: 'Поза голубя с техникой ПНФ — максимальное воздействие на КПС. ПНФ здесь только на ягодичную (figure4_adv) — ПНФ на хамстринге убран, это контракция травмированной ткани против сопротивления. Боковые шаги (квартер-сквот, грузит колено) тоже убраны.',
+    exs: ['hip_knee_circles', 'kps_traction', 'kps_figure4_floor', 'figure4_adv', 'glute_side_kicks', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'hip_abduction_3way', 'savasana'] },
 
-  { phase: 3, title: 'Сумо + хамстринги', short: 'Подготовка к присяду',
-    desc: 'День посвящён глубине таза перед присяданием. Активная мобильность тазобедренного + фронтальный контроль вместо одного моста.',
-    exs: ['hip_knee_circles', 'kps_decomp', 'squat_sumo', 'hamstring_wide', 'hip_abduction_3way', 'glute_side_kicks', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_single_rdl', 'child_wide'] },
+  { phase: 3, title: 'Фронтальный контроль таза', short: 'Подготовка к присяду — пауза на хамстринг',
+    desc: 'Сумо-присед (глубокое сгибание колена) и работа на заднюю поверхность бедра убраны на время восстановления левого хамстринга. Подготовка к присяду продолжается через то, что безопасно лёжа и на боку: ротация тазобедренного и фронтальный контроль таза.',
+    exs: ['hip_knee_circles', 'kps_decomp', 'kps_90_90', 'glute_clamshell', 'hip_abduction_3way', 'glute_side_kicks', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_bird_dog', 'child_wide'] },
 
-  { phase: 3, title: 'Выравнивание + активация', short: 'Симметрия таза',
-    desc: 'Правая сторона работает интенсивнее. Вводим болгарский сплит-присед. Базовую ракушку заменяем на полное 3-плоскостное отведение — та же мышца, но без слепых зон.',
-    exs: ['warmup_march', 'kps_decomp', 'il_lunge_adv', 'hip_abduction_3way', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_split_squat', 'savasana'] },
+  { phase: 3, title: 'Выравнивание + активация', short: 'Симметрия таза — без выпадов',
+    desc: 'Сплит-присед и глубокий выпад убраны — оба грузят колено и заднюю поверхность бедра под весом. Базовую ракушку заменяем на полное 3-плоскостное отведение, добавляем динамические сайд кики — та же средняя ягодичная, без риска для хамстринга.',
+    exs: ['warmup_march', 'kps_decomp', 'glute_side_kicks', 'hip_abduction_3way', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_dead_bug', 'savasana'] },
 
-  { phase: 3, title: 'ПНФ-наклон — прорыв', short: 'Ладони к полу',
-    desc: 'Основная цель — приблизиться к полу. Добавляем RDL + обратный выпад.',
-    exs: ['hip_knee_circles', 'kps_traction', 'hamstring_pnf', 'kps_90_90', 'figure4_adv', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'strength_single_rdl', 'child_pose'] },
+  { phase: 3, title: 'Пауза для хамстринга', short: 'КПС и таз — без растяжки задней пов-ти',
+    desc: 'ПНФ-наклон, RDL и обратный выпад — все три прямо нагружают или растягивают повреждённый хамстринг, убраны полностью. Цель «ладони к полу» откладывается на 4 недели — раньше это просто разорвёт восстанавливающуюся ткань. Вместо этого — фронтальный контроль таза и динамическое отведение.',
+    exs: ['hip_knee_circles', 'kps_traction', 'hip_abduction_3way', 'kps_90_90', 'figure4_adv', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'glute_side_kicks', 'strength_bird_dog', 'child_pose'] },
 
-  { phase: 3, title: 'Интеграция фазы 3', short: 'Подготовка к присяду',
-    desc: 'Собираем лучшее из фазы 3. Статичный боковой наклон на ИТ-тяж меняем на динамические сайд кики — нужен контроль таза в движении, не просто растянутая полоса.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'kps_figure4_floor', 'glute_side_kicks', 'hamstring_wide', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_split_squat', 'strength_single_rdl', 'child_wide'] },
+  { phase: 3, title: 'Интеграция фазы 3', short: 'Без нагрузки на хамстринг',
+    desc: 'Собираем лучшее из фазы 3 в безопасном для хамстринга виде. Наклон врозь, мост на одной ноге и сплит-присед/RDL убраны — заменены на отведение в 3 плоскостях, сайд кики и базовый кор.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'kps_figure4_floor', 'glute_side_kicks', 'hip_abduction_3way', 'glute_clamshell', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_dead_bug', 'strength_bird_dog', 'child_wide'] },
 
   // ── ФАЗА 4: Недели 7–8 — полный комплекс растяжка + сила ──
-  { phase: 4, title: 'Поддержание и закрепление', short: 'Фаза 4 старт',
-    desc: 'Финальная фаза. Всё закрепляем. Полный силовой блок после растяжки.',
-    exs: ['hip_knee_circles', 'kps_decomp', 'kps_90_90', 'kps_figure4_floor', 'hamstring_pnf', 'glute_bridge_single', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_hip_thrust', 'strength_split_squat', 'strength_single_rdl', 'savasana'] },
+  { phase: 4, title: 'Поддержание и закрепление', short: 'Фаза 4 старт — без хамстринга',
+    desc: 'Финальная фаза. Силовой блок и ПНФ-наклон временно сняты — левый хамстринг ещё в раннем восстановлении. Закрепляем через таз и среднюю ягодичную: то, что не зависит от задней поверхности бедра.',
+    exs: ['hip_knee_circles', 'kps_decomp', 'kps_90_90', 'kps_figure4_floor', 'hip_abduction_3way', 'glute_clamshell', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_bird_dog', 'strength_dead_bug', 'glute_side_lying', 'savasana'] },
 
-  { phase: 4, title: 'День 30 — итог курса', short: 'Финал',
-    desc: 'Последний день. Это твоя новая база — поддерживай 4–5 раз в неделю. Отведение в 3 плоскостях и сайд кики — то, что держит таз стабильным в приседе и шаге дальше, после курса.',
-    exs: ['hip_knee_circles', 'kps_decomp', 'kps_traction', 'kps_90_90', 'kps_figure4_floor', 'hamstring_pnf', 'hip_abduction_3way', 'glute_side_kicks', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'strength_single_rdl', 'child_wide'] },
+  { phase: 4, title: 'День 30 — итог курса', short: 'Финал — хамстринг ещё на паузе',
+    desc: 'Последний день. Это твоя новая база — поддерживай 4–5 раз в неделю. ВАЖНО: левый хамстринг травмирован — выпады, RDL, сплит-присед, сумо-присед и любую растяжку/ПНФ задней поверхности бедра не возвращай минимум 4 недели с сегодняшнего дня. Держись на этой же ротации лёжа/на боку — отведение в 3 плоскостях, сайд кики, вращение колена — этого достаточно, чтобы таз не разболтался, пока хамстринг заживает.',
+    exs: ['hip_knee_circles', 'kps_decomp', 'kps_traction', 'kps_90_90', 'kps_figure4_floor', 'glute_clamshell', 'hip_abduction_3way', 'glute_side_kicks', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_dead_bug', 'strength_bird_dog', 'child_wide'] },
 ]
