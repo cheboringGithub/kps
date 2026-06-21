@@ -33,7 +33,7 @@ export interface Phase {
 }
 
 export interface Day {
-  phase: 1 | 2 | 3 | 4
+  phase: number
   title: string
   short: string
   desc: string

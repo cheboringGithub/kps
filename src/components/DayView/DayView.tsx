@@ -11,6 +11,7 @@ export function DayView() {
   if (!day) return null
   const phase = PHASES[day.phase]
   const isDone = done.has(currentDay)
+  const totalMin = day.exs.reduce((sum, key) => sum + (parseInt(EX[key]?.time) || 0), 0)
 
   return (
     <main className={s.main}>
@@ -41,7 +42,7 @@ export function DayView() {
       </div>
 
       <div className={s.timeStrip}>
-        <div className={s.timeChip}><strong>~30 мин</strong> общее время</div>
+        <div className={s.timeChip}><strong>~{totalMin} мин</strong> общее время</div>
         <div className={s.timeChip}><strong>{day.exs.length}</strong> упражнений</div>
       </div>
 
