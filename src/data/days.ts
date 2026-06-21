@@ -84,21 +84,21 @@ export const DAYS: Day[] = [
     desc: 'Ноги врозь — новый угол задней поверхности. Добавляем боковые шаги.',
     exs: ['warmup_knee', 'kps_decomp', 'hamstring_wide', 'kps_90_90', 'figure4_adv', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_side_steps', 'child_pose'] },
 
-  { phase: 2, title: 'Симметрия таза', short: 'Коррекция перекоса',
-    desc: 'День посвящён выравниванию. Добавляем обратный выпад — безопасный для колена.',
-    exs: ['warmup_march', 'kps_traction', 'il_lunge', 'glute_bridge_single', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'savasana'] },
+  { phase: 2, title: 'Симметрия таза', short: 'Коррекция перекоса — без осевой нагрузки на колено',
+    desc: 'День посвящён выравниванию. Выпад в шаге и обратный выпад убраны — это осевая нагрузка на воспалённую связку надколенника, врач ограничил её на 2 недели. Подвздошно-поясничную тянем стоя без выпада, мост на одной ноге заменён на абдукцию бедра и сайд кики — та же работа средней ягодичной без сгибания опорного колена под нагрузкой.',
+    exs: ['warmup_march', 'kps_traction', 'il_standing', 'hip_abduction_3way', 'glute_side_kicks', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'savasana'] },
 
-  { phase: 2, title: 'Бабочка и пах', short: 'Паховые связки',
-    desc: 'Добавляем бабочку с наклоном. КМП + силовой мост + боковые шаги в финале.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'butterfly_forward', 'kps_figure4_floor', 'ql_stretch', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_hip_thrust', 'strength_side_steps', 'child_pose'] },
+  { phase: 2, title: 'Бабочка и пах', short: 'Паховые связки — без осевой нагрузки на колено',
+    desc: 'Добавляем бабочку с наклоном. Силовой хип-траст и боковые шаги в приставном шаге убраны — нагрузка через опорное колено на воспалённую связку надколенника, врач ограничил её на 2 недели. Финал — абдукция бедра в 3 положениях и сайд кики лёжа: средняя ягодичная работает, колено без осевой нагрузки.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'butterfly_forward', 'kps_figure4_floor', 'ql_stretch', 'glute_clamshell', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'hip_abduction_3way', 'glute_side_kicks', 'child_pose'] },
 
-  { phase: 2, title: 'Сумо-приседание', short: 'Тазобедренный сустав',
-    desc: 'Вводим глубокое сумо-приседание. Добавляем обратный выпад для силовой работы.',
-    exs: ['warmup_knee', 'kps_bridge', 'squat_sumo', 'figure4_adv', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_reverse_lunge', 'child_wide'] },
+  { phase: 2, title: 'Подготовка к присяду — без осевой нагрузки', short: 'Тазобедренный сустав',
+    desc: 'Сумо-присед и обратный выпад убраны — глубокое сгибание и осевая нагрузка на опорное колено противопоказаны при текущем тендините связки надколенника (ограничение врача — 2 недели). Вместо силовой работы — вращение колена лёжа и абдукция бедра в 3 положениях: та же подвижность тазобедренного сустава и включение средней ягодичной, но без веса тела на колене.',
+    exs: ['warmup_knee', 'kps_bridge', 'hip_knee_circles', 'hip_abduction_3way', 'figure4_adv', 'it_side_lying', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'child_wide'] },
 
-  { phase: 2, title: 'ПНФ — первый раз', short: 'ПНФ хамстринги',
-    desc: 'Впервые применяем технику ПНФ на задней поверхности. Прорыв в диапазоне.',
-    exs: ['warmup_hip_circle', 'kps_decomp', 'hamstring_pnf', 'kps_90_90', 'glute_bridge_single', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'strength_side_steps', 'savasana'] },
+  { phase: 2, title: 'ПНФ — первый раз', short: 'ПНФ хамстринги — без осевой нагрузки на колено',
+    desc: 'Впервые применяем технику ПНФ на задней поверхности — упражнение лёжа, колено не грузит, оставляем без изменений. Мост на одной ноге и боковые шаги убраны — осевая нагрузка на опорное колено при тендините связки надколенника (ограничение врача — 2 недели). Вместо них абдукция бедра в 3 положениях и сайд кики — средняя ягодичная получает работу лёжа.',
+    exs: ['warmup_hip_circle', 'kps_decomp', 'hamstring_pnf', 'kps_90_90', 'hip_abduction_3way', 'glute_side_kicks', 'kps_clock', 'foot_peroneal', 'foot_eversion', 'foot_short', 'savasana'] },
 
   { phase: 2, title: 'Итог фазы 2', short: 'Интеграция — без осевой нагрузки на колено',
     desc: 'Полный цикл фазы 2. Диагноз от травматолога (20.06): тендинит собственной связки надколенника + раздражение бугристости большеберцовой кости слева. Выпад, мост на одной ноге и силовой блок на ногу убраны — это осевая нагрузка на воспалённую связку, врач прямо ограничил такую нагрузку на 2 недели. Растяжка задней поверхности бедра возвращается — она коленный сустав не грузит.',
