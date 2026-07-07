@@ -8,6 +8,9 @@ import { Analysis } from './components/Analysis/Analysis'
 import { fetchEntries } from './lib/supabase'
 import s from './App.module.css'
 
+const VIEW_ORDER: ActiveView[] = ['today', 'training', 'checklist', 'analysis']
+const SWIPE_THRESHOLD = 60
+
 export function App() {
   const { activeView, markDone, setActiveView } = useAppStore()
 
@@ -43,13 +46,39 @@ export function App() {
     return () => window.removeEventListener('popstate', onPopState)
   }, [setActiveView])
 
+  // Swipe left/right between tabs on mobile (matches the .shell mobile breakpoint).
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (!window.matchMedia('(max-width: 700px)').matches) { touchStartRef.current = null; return }
+    const t = e.touches[0]
+    touchStartRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStartRef.current
+    touchStartRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+
+    const currentIndex = VIEW_ORDER.indexOf(activeView)
+    const nextIndex = dx < 0 ? currentIndex + 1 : currentIndex - 1
+    if (nextIndex < 0 || nextIndex >= VIEW_ORDER.length) return
+    setActiveView(VIEW_ORDER[nextIndex])
+  }
+
   return (
     <div className={s.shell}>
       <Nav />
-      {activeView === 'checklist' ? <Checklist />
-        : activeView === 'analysis' ? <Analysis />
-        : activeView === 'training' ? <Program />
-        : <DayView />}
+      <div className={s.content} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+        {activeView === 'checklist' ? <Checklist />
+          : activeView === 'analysis' ? <Analysis />
+          : activeView === 'training' ? <Program />
+          : <DayView />}
+      </div>
     </div>
   )
 }
