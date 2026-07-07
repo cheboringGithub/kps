@@ -112,9 +112,17 @@ export function Timer({ timer, totalRounds }: Props) {
     }, 500)
   }
 
+  // Short intervals get a shorter announcement — the countdown itself
+  // (10, 5, 3, 2, 1) already conveys the duration, no need to say it twice.
+  const SHORT_THRESHOLD = 15
+
   // Announce phase start
   function announcePhaseStart(p: Phase, step: TimerStep, roundNum: number, totalRoundsCount: number) {
     if (p === 'work') {
+      if (step.work <= SHORT_THRESHOLD) {
+        speak(`Работа. ${step.workLabel}`, true)
+        return
+      }
       const mins = Math.floor(step.work / 60)
       const secs = step.work % 60
       const durText = mins > 0
@@ -123,8 +131,11 @@ export function Timer({ timer, totalRounds }: Props) {
       const roundText = totalRoundsCount > 1 ? `, раунд ${roundNum} из ${totalRoundsCount}` : ''
       speak(`Работа${roundText}. ${step.workLabel}. ${durText}`, true)
     } else if (p === 'rest') {
-      const secs = step.rest
-      speak(`Отдых, ${secs} секунд. ${step.restLabel}`, true)
+      if (step.rest <= SHORT_THRESHOLD) {
+        speak(`Отдых. ${step.restLabel}`, true)
+        return
+      }
+      speak(`Отдых, ${step.rest} секунд. ${step.restLabel}`, true)
     }
   }
 
@@ -139,7 +150,7 @@ export function Timer({ timer, totalRounds }: Props) {
       if (remaining <= 3) {
         speak(String(remaining))
       } else {
-        speak(`Осталось ${remaining} секунд`)
+        speak(`${remaining} секунд`)
       }
     }
   }, [remaining, phase])

@@ -48,14 +48,14 @@
 
 /* View Tabs */
 .viewTabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding: 16px 28px;
   gap: 8px;
   border-bottom: 1px solid #2a2824;
 }
 
 .viewTab {
-  flex: 1;
   padding: 7px 0;
   background: none;
   border: 1px solid #2a2824;
@@ -76,75 +76,10 @@
   color: var(--paper);
 }
 
-.weekNav {
-  padding: 20px 0;
-  flex: 1;
-}
-
-.weekSection {
-  margin-bottom: 4px;
-}
-
-.weekLabel {
-  padding: 8px 28px 4px;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #4a4540;
-}
-
-.dayBtn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 28px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  transition: background 0.15s;
-  font-family: 'DM Mono', monospace;
-  color: var(--paper);
-}
-
-.dayBtn:hover { background: #222; }
-.dayBtn.active { background: var(--rust); }
-
-.dayNum {
-  font-size: 11px;
-  color: #4a4540;
-  min-width: 28px;
-  font-weight: 500;
-}
-
-.dayBtn.active .dayNum { color: rgba(255,255,255,0.7); }
-
-.dayTitle {
-  font-size: 12px;
-  color: #8a8278;
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dayBtn.active .dayTitle { color: var(--paper); }
-
-.dayDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #2a2824;
-  flex-shrink: 0;
-}
-
-.dayBtn.done .dayDot { background: var(--sage); }
-.dayBtn.active .dayDot { background: rgba(255,255,255,0.4); }
-
 .progress {
   padding: 20px 28px;
   border-top: 1px solid #2a2824;
+  margin-top: auto;
 }
 
 .progressLabel {
@@ -171,4 +106,12 @@
   background: var(--rust);
   border-radius: 2px;
   transition: width 0.4s ease;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    position: static;
+    height: auto;
+    overflow-y: visible;
+  }
 }

@@ -1,15 +1,15 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type ActiveView = 'today' | 'training' | 'checklist' | 'analysis'
+
 interface AppState {
   currentDay: number
   done: Set<number>
-  mobileView: 'list' | 'day'
-  activeView: 'training' | 'checklist' | 'analysis'
+  activeView: ActiveView
   setCurrentDay: (day: number) => void
   toggleDone: (day: number) => void
-  setMobileView: (view: 'list' | 'day') => void
-  setActiveView: (view: 'training' | 'checklist' | 'analysis') => void
+  setActiveView: (view: ActiveView) => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -17,11 +17,10 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       currentDay: 1,
       done: new Set<number>(),
-      mobileView: 'list',
-      activeView: 'training',
+      activeView: 'today',
 
       setCurrentDay: (day) =>
-        set({ currentDay: day, mobileView: 'day', activeView: 'training' }),
+        set({ currentDay: day, activeView: 'today' }),
 
       toggleDone: (day) =>
         set((state) => {
@@ -30,7 +29,6 @@ export const useAppStore = create<AppState>()(
           return { done }
         }),
 
-      setMobileView: (view) => set({ mobileView: view }),
       setActiveView: (view) => set({ activeView: view }),
     }),
     {

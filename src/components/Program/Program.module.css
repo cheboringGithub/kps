@@ -1,0 +1,161 @@
+.main {
+  padding: 48px 56px 80px;
+  max-width: 740px;
+}
+
+.header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--faint);
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 8px;
+}
+
+.title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.progressSection {
+  margin-bottom: 32px;
+  padding: 20px 24px;
+  background: var(--paper2);
+  border: 1px solid var(--faint);
+}
+
+.progressStats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.progressStat { text-align: left; }
+
+.progressStatNum {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  color: var(--rust);
+  line-height: 1;
+}
+
+.progressStatLabel {
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.progressBar {
+  position: relative;
+  height: 8px;
+  background: var(--paper3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: var(--rust);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.progressBarTick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--paper);
+  opacity: 0.6;
+}
+
+.phaseHeader {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 20px 4px 10px;
+}
+
+.phaseIcon { font-size: 18px; color: var(--rust); flex-shrink: 0; }
+.phaseName { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); margin-bottom: 2px; }
+.phaseTitle { font-size: 12px; color: var(--muted); }
+
+.dayRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 4px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--paper3);
+  text-align: left;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: background 0.15s;
+}
+
+.dayRow:hover { background: var(--paper2); }
+.dayRow.active { background: var(--rust); }
+
+.dayNum {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--faint);
+  min-width: 36px;
+}
+
+.dayRow.active .dayNum { color: rgba(255,255,255,0.7); }
+
+.dayInfo { flex: 1; min-width: 0; }
+
+.dayTitle {
+  font-size: 13px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dayRow.active .dayTitle { color: var(--paper); }
+
+.dayDate {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.dayRow.active .dayDate { color: rgba(255,255,255,0.7); }
+
+.dayDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--faint);
+  flex-shrink: 0;
+}
+
+.dayRow.done .dayDot { background: var(--sage); }
+.dayRow.active .dayDot { background: rgba(255,255,255,0.5); }
+
+@media (max-width: 700px) {
+  .main { padding: 28px 20px 60px; max-width: 100%; }
+}

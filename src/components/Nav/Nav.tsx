@@ -1,14 +1,11 @@
 import { DAYS } from '../../data/days'
-import { PHASES } from '../../data/phases'
 import { useAppStore } from '../../store/useAppStore'
 import s from './Nav.module.css'
 
 export function Nav() {
-  const { currentDay, done, setCurrentDay, activeView, setActiveView } = useAppStore()
+  const { done, activeView, setActiveView } = useAppStore()
   const doneCount = done.size
   const pct = Math.round((doneCount / DAYS.length) * 100)
-
-  let currentPhase: number | null = null
 
   return (
     <aside className={s.sidebar}>
@@ -19,6 +16,12 @@ export function Nav() {
       </div>
 
       <div className={s.viewTabs}>
+        <button
+          className={[s.viewTab, activeView === 'today' ? s.viewTabActive : ''].join(' ')}
+          onClick={() => setActiveView('today')}
+        >
+          Сегодня
+        </button>
         <button
           className={[s.viewTab, activeView === 'training' ? s.viewTabActive : ''].join(' ')}
           onClick={() => setActiveView('training')}
@@ -39,38 +42,9 @@ export function Nav() {
         </button>
       </div>
 
-      {activeView === 'training' && (
-        <nav className={s.weekNav}>
-          {DAYS.map((day, i) => {
-            const d = i + 1
-            const isNewPhase = day.phase !== currentPhase
-            if (isNewPhase) currentPhase = day.phase
-            const phase = PHASES[day.phase]
-
-            return (
-              <div key={d}>
-                {isNewPhase && (
-                  <div className={s.weekSection}>
-                    <div className={s.weekLabel}>{phase.name}</div>
-                  </div>
-                )}
-                <button
-                  className={[s.dayBtn, d === currentDay ? s.active : '', done.has(d) ? s.done : ''].join(' ')}
-                  onClick={() => setCurrentDay(d)}
-                >
-                  <span className={s.dayNum}>д{d}</span>
-                  <span className={s.dayTitle}>{day.short}</span>
-                  <span className={s.dayDot} />
-                </button>
-              </div>
-            )
-          })}
-        </nav>
-      )}
-
       <div className={s.progress}>
         <div className={s.progressLabel}>
-          Прогресс <span>{doneCount} / 30</span>
+          Прогресс <span>{doneCount} / {DAYS.length}</span>
         </div>
         <div className={s.progressTrack}>
           <div className={s.progressFill} style={{ width: `${pct}%` }} />

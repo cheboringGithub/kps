@@ -6,7 +6,7 @@ import { ExerciseCard } from '../ExerciseCard/ExerciseCard'
 import s from './DayView.module.css'
 
 export function DayView() {
-  const { currentDay, done, setMobileView, setActiveView } = useAppStore()
+  const { currentDay, done, setActiveView } = useAppStore()
   const day = DAYS[currentDay - 1]
   if (!day) return null
   const phase = PHASES[day.phase]
@@ -15,8 +15,8 @@ export function DayView() {
 
   return (
     <main className={s.main}>
-      <button className={s.backBtn} onClick={() => setMobileView('list')}>
-        ← Все дни
+      <button className={s.backBtn} onClick={() => setActiveView('training')}>
+        ← Вся программа
       </button>
 
       <div className={s.dayHeader}>
