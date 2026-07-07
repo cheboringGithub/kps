@@ -1,4 +1,4 @@
-const CACHE = 'kps-v10';
+const CACHE = 'kps-v12';
 const BASE = '/kps';
 const ASSETS = [
   BASE + '/',
@@ -7,6 +7,9 @@ const ASSETS = [
   BASE + '/icons/icon-192.png',
   BASE + '/icons/icon-512.png',
   BASE + '/icons/apple-touch-icon.png',
+  BASE + '/favicon.ico',
+  BASE + '/favicon-16x16.png',
+  BASE + '/favicon-32x32.png',
 ];
 
 self.addEventListener('install', e => {

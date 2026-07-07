@@ -3,52 +3,36 @@
   <rect width="512" height="512" rx="96" fill="#1a1814"/>
 
   <g fill="#f5f0e8">
+    <!-- Barbell plates -->
+    <rect x="34"  y="66" width="58" height="90" rx="16" transform="rotate(-10 63 111)"/>
+    <rect x="420" y="66" width="58" height="90" rx="16" transform="rotate(10 449 111)"/>
+
+    <!-- Bar -->
+    <path d="M 88 118 Q 256 96 424 118 L 424 132 Q 256 110 88 132 Z"/>
+
+    <!-- Left arm raised to bar -->
+    <path d="M 224 196 L 108 112 Q 94 96 106 82 Q 119 68 134 82 L 246 210 Z"/>
+    <!-- Right arm raised to bar -->
+    <path d="M 288 196 L 404 112 Q 418 96 406 82 Q 393 68 378 82 L 266 210 Z"/>
+
     <!-- Head -->
-    <circle cx="256" cy="148" r="46"/>
+    <circle cx="256" cy="150" r="42"/>
 
-    <!-- Left arm raised -->
-    <path d="M 236 188 L 152 108 Q 138 92 150 78 Q 163 64 178 78 L 252 210 Z"/>
-
-    <!-- Right arm raised -->
-    <path d="M 276 188 L 360 108 Q 374 92 362 78 Q 349 64 334 78 L 260 210 Z"/>
-
-    <!-- Torso + crossed legs (one unified shape) -->
+    <!-- Torso + wide-stance legs (one unified shape) -->
     <path d="
-      M 210 220
-      Q 200 224 168 252
-      Q 130 284 110 296
-      Q 88 310 96 330
-      Q 104 348 132 342
-      Q 168 334 210 310
-      L 256 300
-      L 302 310
-      Q 344 334 380 342
-      Q 408 348 416 330
-      Q 424 310 402 296
-      Q 382 284 344 252
-      Q 312 224 302 220
-      Q 280 212 256 212
-      Q 232 212 210 220
+      M 222 208
+      L 256 232
+      L 290 208
+      L 292 238
+      Q 330 300 362 382
+      Q 368 402 350 410
+      Q 332 416 320 398
+      Q 292 332 256 274
+      Q 220 332 192 398
+      Q 180 416 162 410
+      Q 144 402 150 382
+      Q 182 300 220 238
       Z
     "/>
-
-    <!-- Mat -->
-    <path d="
-      M 96 348
-      Q 80 356 80 368
-      Q 80 382 100 388
-      L 412 388
-      Q 432 382 432 368
-      Q 432 356 416 348
-      Z
-    "/>
-
-    <!-- Arrow left (cut out from mat — dark) -->
-    <polygon points="112,368 138,354 138,382" fill="#1a1814"/>
-    <rect x="138" y="361" width="68" height="14" rx="4" fill="#1a1814"/>
-
-    <!-- Arrow right (cut out from mat — dark) -->
-    <polygon points="400,368 374,354 374,382" fill="#1a1814"/>
-    <rect x="306" y="361" width="68" height="14" rx="4" fill="#1a1814"/>
   </g>
 </svg>
