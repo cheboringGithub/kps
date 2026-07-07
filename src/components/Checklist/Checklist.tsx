@@ -67,7 +67,7 @@ function resetForm() {
 }
 
 export function Checklist() {
-  const { currentDay, setActiveView } = useAppStore()
+  const { currentDay, setActiveView, markDone } = useAppStore()
 
   const [form, setForm] = useState(resetForm())
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
@@ -101,6 +101,7 @@ export function Checklist() {
       })
       setStatus('done')
       setForm(resetForm())
+      markDone(currentDay)
       loadEntries()
       setTimeout(() => setStatus('idle'), 2000)
     } catch {

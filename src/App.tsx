@@ -9,12 +9,12 @@ import { fetchEntries } from './lib/supabase'
 import s from './App.module.css'
 
 export function App() {
-  const { activeView, done, toggleDone, setActiveView } = useAppStore()
+  const { activeView, markDone, setActiveView } = useAppStore()
 
   useEffect(() => {
     fetchEntries(100).then(entries => {
       const remoteDays = new Set(entries.map(e => e.day_number))
-      remoteDays.forEach(d => { if (!done.has(d)) toggleDone(d) })
+      remoteDays.forEach(d => markDone(d))
     }).catch(() => {})
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 

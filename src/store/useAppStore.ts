@@ -9,6 +9,7 @@ interface AppState {
   activeView: ActiveView
   setCurrentDay: (day: number) => void
   toggleDone: (day: number) => void
+  markDone: (day: number) => void
   setActiveView: (view: ActiveView) => void
 }
 
@@ -26,6 +27,14 @@ export const useAppStore = create<AppState>()(
         set((state) => {
           const done = new Set(state.done)
           done.has(day) ? done.delete(day) : done.add(day)
+          return { done }
+        }),
+
+      markDone: (day) =>
+        set((state) => {
+          if (state.done.has(day)) return state
+          const done = new Set(state.done)
+          done.add(day)
           return { done }
         }),
 
