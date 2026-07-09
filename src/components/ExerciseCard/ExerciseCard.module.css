@@ -7,6 +7,7 @@
 .card:hover { border-color: var(--paper3); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
 .kpsFocus { border-left: 3px solid var(--rust); }
 .secondary { border-left: 3px solid var(--sage); }
+.cardDone { border-left: 3px solid var(--sage); opacity: 0.6; }
 
 .head {
   display: flex;
@@ -28,6 +29,23 @@
 
 .chevron { font-size: 10px; color: var(--faint); transition: transform 0.2s; flex-shrink: 0; }
 .chevronOpen { transform: rotate(180deg); }
+
+.doneToggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--faint);
+  background: none;
+  color: var(--faint);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.doneToggle:hover { border-color: var(--sage); color: var(--sage); }
+.doneToggleActive { background: var(--sage); border-color: var(--sage); color: #fff; }
+.doneToggleActive:hover { color: #fff; }
 
 .body {
   padding: 0 18px 18px 52px;
@@ -51,6 +69,23 @@
   color: var(--rust);
   line-height: 1.7;
 }
+
+.repsCompleteBtn {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.repsCompleteBtn:hover { background: var(--rust); }
+.repsCompleteBtnDone { background: var(--sage); }
+.repsCompleteBtnDone:hover { background: var(--sage); }
 
 @media (max-width: 700px) {
   .body { padding-left: 18px; }

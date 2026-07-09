@@ -77,11 +77,12 @@ function releaseWakeLock() {
 interface Props {
   timer: TimerConfig
   totalRounds: number
+  onComplete?: () => void
 }
 
 type Phase = 'idle' | 'work' | 'rest' | 'done'
 
-export function Timer({ timer, totalRounds }: Props) {
+export function Timer({ timer, totalRounds, onComplete }: Props) {
   const seq = useRef(buildSequence(timer))
   const [seqIdx, setSeqIdx] = useState(0)
   const [phase, setPhase] = useState<Phase>('idle')
@@ -184,6 +185,7 @@ export function Timer({ timer, totalRounds }: Props) {
       setRunning(false)
       releaseWakeLock()
       speak('Упражнение выполнено. Отличная работа!', true)
+      onComplete?.()
       return
     }
     const nextStep = seq.current[next]!

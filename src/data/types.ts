@@ -23,6 +23,8 @@ export interface Exercise {
   timer: TimerConfig
   how: string
   note: string | null
+  /** Reps-based exercise with no meaningful hold duration — show a manual complete toggle instead of a countdown timer. */
+  repsOnly?: boolean
 }
 
 export interface Phase {

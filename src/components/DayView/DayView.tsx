@@ -49,7 +49,7 @@ export function DayView() {
       {day.exs.map((key, i) => {
         const ex = EX[key]
         if (!ex) return null
-        return <ExerciseCard key={key + i} index={i} exercise={ex} />
+        return <ExerciseCard key={key + i} index={i} exercise={ex} exKey={key} />
       })}
 
       <button

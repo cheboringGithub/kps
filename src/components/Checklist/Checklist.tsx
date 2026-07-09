@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { saveEntryWithAnalysis, fetchEntriesByDay, ChecklistEntry } from '../../lib/supabase'
 import { useAppStore } from '../../store/useAppStore'
+import { DAYS } from '../../data/days'
 import s from './Checklist.module.css'
 
 const BACK_PAIN_OPTS = [
@@ -67,7 +68,7 @@ function resetForm() {
 }
 
 export function Checklist() {
-  const { currentDay, setActiveView, markDone } = useAppStore()
+  const { currentDay, done, setActiveView, setCurrentDay, markDone } = useAppStore()
 
   const [form, setForm] = useState(resetForm())
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
@@ -101,8 +102,15 @@ export function Checklist() {
       })
       setStatus('done')
       setForm(resetForm())
+      const wasDone = done.has(currentDay)
       markDone(currentDay)
-      loadEntries()
+      // First completion of the day advances "Сегодня" to the next day.
+      // Extra entries on an already-completed day just stay in place.
+      if (!wasDone && currentDay < DAYS.length) {
+        setCurrentDay(currentDay + 1)
+      } else {
+        loadEntries()
+      }
       setTimeout(() => setStatus('idle'), 2000)
     } catch {
       setStatus('error')

@@ -84,6 +84,7 @@ export const EX: Record<string, Exercise> = {
   glute_clamshell: {
     name: 'Раскрытие ракушки — средняя ягодичная',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 1, sets: [{ work: 45, rest: 10, workLabel: 'ЛЕВАЯ нога вверх × 15 — медленно', restLabel: 'Переворачивайся' }, { work: 35, rest: 0, workLabel: 'ПРАВАЯ нога вверх × 10 — медленно', restLabel: '' }] },
     how: `<strong>Исходное положение:</strong> лёжа на ПРАВОМ боку, колени согнуты под 45°, стопы вместе.<br>
 Медленно поднимай ЛЕВОЕ колено вверх — как открывающаяся раковина. На пике — задержи 2 сек. Медленно опусти.<br>
@@ -94,6 +95,7 @@ export const EX: Record<string, Exercise> = {
   glute_side_lying: {
     name: 'Подъём ноги на боку — отведение',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 1, sets: [{ work: 45, rest: 10, workLabel: 'ЛЕВАЯ нога вверх × 15', restLabel: 'Переворачивайся' }, { work: 35, rest: 0, workLabel: 'ПРАВАЯ нога вверх × 10', restLabel: '' }] },
     how: `<strong>Исходное положение:</strong> лёжа на боку, нижняя нога прямая.<br>
 Подними верхнюю ногу прямой на 40–45° — медленно, без рывка. Держи 2 сек. Опусти без касания нижней ноги.<br>
@@ -103,6 +105,7 @@ export const EX: Record<string, Exercise> = {
   glute_bridge_single: {
     name: 'Одноножный мост — ягодичная активация',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 1, sets: [{ work: 50, rest: 10, workLabel: 'ЛЕВАЯ опора × 10 — таз ровно', restLabel: 'Смена ноги' }, { work: 40, rest: 0, workLabel: 'ПРАВАЯ опора × 6', restLabel: '' }] },
     how: `<strong>Исходное положение:</strong> лёжа на спине, колени согнуты. Вытяни ПРАВУЮ ногу прямо. Поднимай таз, опираясь только на ЛЕВУЮ стопу — левая ягодичная работает как главный двигатель. На пике — таз горизонтален (не перекашивай вправо).<br>
 Держи 3 сек. Медленно опускай.<br>
@@ -271,6 +274,7 @@ export const EX: Record<string, Exercise> = {
   foot_eversion: {
     name: 'Выворачивание стопы — малоберцовые против супинации',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 35, rest: 15, workLabel: 'ЛЕВАЯ: выворот наружу × 12 — медленно', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> сидя на стуле или полу, ЛЕВАЯ нога вытянута вперёд, пятка на полу.<br>
 ① Медленно поверни стопу наружу — подошва смотрит вправо, большой палец идёт вверх. Держи 2 сек.<br>
@@ -300,6 +304,7 @@ export const EX: Record<string, Exercise> = {
   hip_knee_circles: {
     name: 'Вращение колена лёжа — мобилизация тазобедренного',
     time: '4 мин', type: 'kps',
+    repsOnly: true,
     timer: { rounds: 2, sets: [{ work: 50, rest: 8, workLabel: 'ЛЕВОЕ колено — круги по 10 в каждую сторону', restLabel: 'Смена ноги' }, { work: 50, rest: 15, workLabel: 'ПРАВОЕ колено — круги по 8 в каждую сторону', restLabel: 'Пауза между циклами' }] },
     how: `<strong>Исходное положение:</strong> лёжа на спине, ЛЕВОЕ колено согнуто и подтянуто к груди, голень свободно висит в воздухе (не как в 90/90 — никакой опоры). Обхвати бедро руками лёгко, рука направляет, но не тащит.<br>
 ① Рисуй коленом круг: вбок — вниз почти к полу — к противоположному (правому) плечу — вверх к груди. Это движение бедренной кости во всех плоскостях сразу, а не только сгибание-разгибание, как в обычном подъёме колена.<br>
@@ -312,6 +317,7 @@ export const EX: Record<string, Exercise> = {
   hip_abduction_3way: {
     name: 'Отведение бедра в 3 положениях — фронтальный контроль таза',
     time: '6 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 1, sets: [
       { work: 35, rest: 5, workLabel: 'ЛЕВАЯ ровно, носок прямо × 12', restLabel: 'Смена положения' },
       { work: 30, rest: 5, workLabel: 'ЛЕВАЯ ровно, носок вниз-внутрь × 10', restLabel: 'Смена положения' },
@@ -340,6 +346,7 @@ export const EX: Record<string, Exercise> = {
   glute_side_kicks: {
     name: 'Сайд кики — динамическое отведение',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 1, sets: [{ work: 45, rest: 10, workLabel: 'ЛЕВАЯ — кики вперёд-назад × 15', restLabel: 'Переворачивайся' }, { work: 35, rest: 0, workLabel: 'ПРАВАЯ — кики вперёд-назад × 10', restLabel: '' }] },
     how: `<strong>Исходное положение:</strong> лёжа на ПРАВОМ боку, как в отведении выше. Подними ЛЕВУЮ ногу в отведение на ~30° и зафиксируй эту высоту — она не меняется до конца упражнения.<br>
 ① Не опуская ногу, веди её вперёд — бедро сгибается, нога остаётся приподнятой. <strong>Стоп-точка:</strong> момент, когда таз начинает крутиться вперёд за ногой.<br>
@@ -354,6 +361,7 @@ export const EX: Record<string, Exercise> = {
   strength_dead_bug: {
     name: 'Мёртвый жук — стабилизация кора',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 40, rest: 20, workLabel: '× 8 повторов — медленно, спина в полу', restLabel: 'Отдых — дыши' },
     how: `<strong>Исходное положение:</strong> лёжа на спине, руки вертикально вверх, бёдра под 90°, голени параллельны полу. Поясница прижата к полу — держи её там всё время.<br>
 ① Медленно опусти ПРАВУЮ ногу прямой к полу, одновременно ЛЕВУЮ руку за голову. Не касайся пола.<br>
@@ -366,6 +374,7 @@ export const EX: Record<string, Exercise> = {
   strength_bird_dog: {
     name: 'Птица-собака — кор + ягодичная',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 40, rest: 20, workLabel: '× 8 на сторону — держи 2 сек в верхней точке', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> на четвереньках, запястья под плечами, колени под тазом. Спина нейтральная — не прогибайся и не горбись.<br>
 ① Вытяни ЛЕВУЮ руку вперёд и ПРАВУЮ ногу назад одновременно. Держи 2 сек — таз горизонтален.<br>
@@ -377,6 +386,7 @@ export const EX: Record<string, Exercise> = {
   strength_hip_thrust: {
     name: 'Ягодичный мост силовой — × 15',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 50, rest: 20, workLabel: '× 15 повторов — пауза 2 сек наверху', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> лёжа на спине, ступни на полу на ширине таза, руки вдоль тела.<br>
 ① Подними таз — ягодицы сжать максимально в верхней точке. Задержи 2 сек.<br>
@@ -388,6 +398,7 @@ export const EX: Record<string, Exercise> = {
   strength_reverse_lunge: {
     name: 'Обратный выпад — безопасно для колена',
     time: '5 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, sets: [
       { work: 35, rest: 10, workLabel: 'ЛЕВАЯ нога назад × 10 — контроль таза', restLabel: 'Смена' },
       { work: 35, rest: 20, workLabel: 'ПРАВАЯ нога назад × 10', restLabel: 'Отдых' },
@@ -403,6 +414,7 @@ export const EX: Record<string, Exercise> = {
   strength_side_steps: {
     name: 'Боковые шаги — средняя ягодичная',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 45, rest: 20, workLabel: '20 шагов туда-обратно — колени над пальцами', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> стоя, ноги чуть шире таза, лёгкий присед (10–15 см) — держи его всё время.<br>
 ① Шаги вправо — 5 шагов. Потом влево — 5 шагов. Это один цикл. 4 цикла × 3 подхода.<br>
@@ -414,6 +426,7 @@ export const EX: Record<string, Exercise> = {
   strength_single_rdl: {
     name: 'Румынская тяга на одной ноге — хамстринги',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, sets: [
       { work: 35, rest: 10, workLabel: 'ЛЕВАЯ опорная × 8 — таз горизонтально', restLabel: 'Смена' },
       { work: 35, rest: 20, workLabel: 'ПРАВАЯ опорная × 8', restLabel: 'Отдых' },
@@ -429,6 +442,7 @@ export const EX: Record<string, Exercise> = {
   strength_split_squat: {
     name: 'Сплит-присед — болгарский вариант',
     time: '5 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, sets: [
       { work: 40, rest: 10, workLabel: 'ЛЕВАЯ нога сзади × 10 — контроль', restLabel: 'Смена' },
       { work: 40, rest: 20, workLabel: 'ПРАВАЯ нога сзади × 10', restLabel: 'Отдых' },
@@ -456,6 +470,7 @@ export const EX: Record<string, Exercise> = {
   upper_thoracic_ext: {
     name: 'Разгибание грудного отдела на стуле',
     time: '3 мин', type: 'secondary',
+    repsOnly: true,
     timer: { rounds: 8, work: 15, rest: 10, workLabel: 'Прогнись через верх спины — руки за голову', restLabel: 'Вернись в нейтраль' },
     how: `<strong>Исходное положение:</strong> сидя на краю стула, руки за головой, локти в стороны.<br>
 Медленно прогнись назад через ГРУДНОЙ отдел (не через поясницу) — смотри, чтобы движение шло между лопатками, не в пояснице. Задержи 2 сек, вернись.<br>
@@ -466,6 +481,7 @@ export const EX: Record<string, Exercise> = {
   upper_wall_slides: {
     name: 'Скольжение руками по стене — лопатки',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 35, rest: 15, workLabel: '× 10 медленных скольжений вверх-вниз', restLabel: 'Опусти руки' },
     how: `<strong>Исходное положение:</strong> спина, затылок и предплечья плотно прижаты к стене, локти на уровне плеч.<br>
 Медленно скользи руками вверх по стене, не отрывая ничего от поверхности, затем вниз. Если лопатки отрываются от стены — амплитуда слишком большая, уменьши.<br>
@@ -476,6 +492,7 @@ export const EX: Record<string, Exercise> = {
   upper_band_row: {
     name: 'Тяга лёжа на животе — ромбовидные',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 40, rest: 20, workLabel: '× 12 — сжимай лопатки в верхней точке', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> лёжа на животе, лоб на полу, руки вытянуты вперёд (буква «Y»).<br>
 Подними руки и грудь немного вверх, сводя лопатки вместе — локти тянутся к карманам. Задержи 1 сек в верхней точке, медленно опусти.<br>
@@ -486,6 +503,7 @@ export const EX: Record<string, Exercise> = {
   upper_row_dumbbell: {
     name: 'Тяга гантели в наклоне — ромбовидные',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, sets: [
       { work: 35, rest: 8, workLabel: 'ПРАВАЯ рука — тяга к поясу × 10', restLabel: 'Смена руки' },
       { work: 35, rest: 15, workLabel: 'ЛЕВАЯ рука — тяга к поясу × 10', restLabel: 'Отдых' },
@@ -501,6 +519,7 @@ export const EX: Record<string, Exercise> = {
   upper_shoulder_er: {
     name: 'Наружная ротация плеча — лёжа на боку',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 35, rest: 15, workLabel: '× 12 на сторону — локоть прижат к боку', restLabel: 'Смена / отдых' },
     how: `<strong>Исходное положение:</strong> лёжа на боку, нижняя рука согнута под 90°, локоть прижат к боку.<br>
 Подними предплечье вверх, как открывающаяся дверь, локоть всё время у ребёр. Медленно вернись.<br>
@@ -511,6 +530,7 @@ export const EX: Record<string, Exercise> = {
   upper_shoulder_er_weighted: {
     name: 'Наружная ротация плеча с гантелью — лёжа на боку',
     time: '3 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 35, rest: 15, workLabel: '× 12 на сторону — локоть прижат к боку', restLabel: 'Смена / отдых' },
     how: `<strong>Исходное положение:</strong> лёжа на боку, нижняя рука согнута под 90°, локоть прижат к боку, в руке лёгкая гантель (1–2 кг — самый маленький вес из твоего набора: ротаторная манжета маленькая мышца, больше веса не нужно и рискованно для сустава).<br>
 Подними предплечье вверх, как открывающаяся дверь, локоть всё время у рёбер. Медленно вернись, не роняй вес.<br>
@@ -522,6 +542,7 @@ export const EX: Record<string, Exercise> = {
   upper_pushup_incline: {
     name: 'Отжимания с возвышения — силовые',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 40, rest: 20, workLabel: '× 10–12 — грудь к опоре', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> руки на столе/диване/подоконнике (чем выше опора — тем легче), тело прямой линией, на носках.<br>
 Опускай грудь к опоре, локти под 45° от корпуса (не в стороны), затем толкай назад.<br>
@@ -533,6 +554,7 @@ export const EX: Record<string, Exercise> = {
   upper_pushup: {
     name: 'Отжимания классические — с пола',
     time: '4 мин', type: 'fix',
+    repsOnly: true,
     timer: { rounds: 3, work: 45, rest: 20, workLabel: '× 10–15 — грудь к полу, тело прямой линией', restLabel: 'Отдых' },
     how: `<strong>Исходное положение:</strong> руки на полу чуть шире плеч, тело прямой линией от плеч до пяток, на носках.<br>
 Опускай грудь к полу, локти под 45° от корпуса (не в стороны), затем толкай назад.<br>

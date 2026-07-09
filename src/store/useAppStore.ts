@@ -7,10 +7,13 @@ interface AppState {
   currentDay: number
   done: Set<number>
   activeView: ActiveView
+  exerciseDone: Record<number, string[]>
   setCurrentDay: (day: number) => void
   toggleDone: (day: number) => void
   markDone: (day: number) => void
   setActiveView: (view: ActiveView) => void
+  toggleExerciseDone: (day: number, key: string) => void
+  setExerciseDone: (day: number, key: string, isDone: boolean) => void
 }
 
 export const useAppStore = create<AppState>()(
@@ -19,6 +22,7 @@ export const useAppStore = create<AppState>()(
       currentDay: 1,
       done: new Set<number>(),
       activeView: 'today',
+      exerciseDone: {},
 
       setCurrentDay: (day) =>
         set({ currentDay: day, activeView: 'today' }),
@@ -39,14 +43,31 @@ export const useAppStore = create<AppState>()(
         }),
 
       setActiveView: (view) => set({ activeView: view }),
+
+      toggleExerciseDone: (day, key) =>
+        set((state) => {
+          const forDay = state.exerciseDone[day] ?? []
+          const nextForDay = forDay.includes(key) ? forDay.filter((k) => k !== key) : [...forDay, key]
+          return { exerciseDone: { ...state.exerciseDone, [day]: nextForDay } }
+        }),
+
+      setExerciseDone: (day, key, isDone) =>
+        set((state) => {
+          const forDay = state.exerciseDone[day] ?? []
+          const has = forDay.includes(key)
+          if (isDone === has) return state
+          const nextForDay = isDone ? [...forDay, key] : forDay.filter((k) => k !== key)
+          return { exerciseDone: { ...state.exerciseDone, [day]: nextForDay } }
+        }),
     }),
     {
       name: 'kps-store',
-      partialize: (state) => ({ currentDay: state.currentDay, done: [...state.done] }),
+      partialize: (state) => ({ currentDay: state.currentDay, done: [...state.done], exerciseDone: state.exerciseDone }),
       merge: (persisted, current) => ({
         ...current,
         ...(persisted as object),
         done: new Set((persisted as { done?: number[] }).done ?? []),
+        exerciseDone: (persisted as { exerciseDone?: Record<number, string[]> }).exerciseDone ?? {},
       }),
     },
   ),
