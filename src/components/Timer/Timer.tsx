@@ -116,10 +116,11 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
       const elapsed = Math.floor((Date.now() - startedAt.current) / 1000)
       const next = Math.max(0, startedRemaining.current - elapsed)
       setRemaining(next)
-      // Chrome silently stops the speech engine after ~15s of inactivity
-      // between utterances; nudging resume() on every tick keeps it alive
-      // through long work/rest intervals where nothing is spoken in between.
-      if ('speechSynthesis' in window) speechSynthesis.resume()
+      // Chrome silently pauses the speech engine after ~15s of inactivity
+      // between utterances. Only resume when actually paused — calling
+      // resume() while an utterance is already speaking can restart it,
+      // causing the voice to stutter/repeat loudly.
+      if ('speechSynthesis' in window && speechSynthesis.paused) speechSynthesis.resume()
     }, 500)
   }
 
