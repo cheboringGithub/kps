@@ -20,6 +20,12 @@
   box-sizing: border-box;
 }
 
+html, body {
+  /* Chrome on Android treats an edge swipe-right as "navigate back in history" and
+     eats the touch before our custom tab-swipe handler in App.tsx ever sees touchend. */
+  overscroll-behavior-x: none;
+}
+
 body {
   background: var(--paper);
   color: var(--ink);
