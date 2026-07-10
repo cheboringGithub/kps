@@ -110,6 +110,11 @@
 
 .swipeHint {
   display: none;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 @media (max-width: 700px) {
@@ -119,7 +124,29 @@
     overflow-y: visible;
   }
 
-  /* Signals the tabs above also respond to a left/right swipe on the content below. */
+  /* Collapsed by default — only the active tab shows. Tap the strip below
+     (chevrons + dots + arrow) to expand and see/pick from the full menu. */
+  .viewTabs {
+    grid-template-columns: 1fr;
+  }
+
+  .viewTab:not(.viewTabActive) {
+    display: none;
+  }
+
+  .viewTab {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .viewTabsOpen {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .viewTabsOpen .viewTab {
+    display: block;
+  }
+
   .swipeHint {
     display: flex;
     align-items: center;
@@ -145,5 +172,11 @@
     width: 14px;
     border-radius: 3px;
     background: var(--rust-light);
+  }
+
+  .expandArrow {
+    margin-left: 4px;
+    font-size: 9px;
+    color: #4a4540;
   }
 }
