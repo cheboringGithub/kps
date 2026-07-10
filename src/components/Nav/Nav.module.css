@@ -114,4 +114,18 @@
     height: auto;
     overflow-y: visible;
   }
+
+  /* Only the active tab is shown — the rest switch via swipe (App.tsx onTouchEnd). */
+  .viewTabs {
+    grid-template-columns: 1fr;
+  }
+
+  .viewTab:not(.viewTabActive) {
+    display: none;
+  }
+
+  .viewTab {
+    text-align: center;
+    padding: 10px 0;
+  }
 }
