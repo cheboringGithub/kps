@@ -51,14 +51,8 @@ function speak(text: string, priority = false) {
   utt.pitch = 1
   utt.volume = 1
   if (ruVoice) utt.voice = ruVoice
-  if (priority) {
-    speechSynthesis.cancel()
-    // Chrome/Android silently drops an utterance queued in the same tick as
-    // cancel() — deferring to the next tick lets the cancel land first.
-    setTimeout(() => speechSynthesis.speak(utt), 0)
-  } else {
-    speechSynthesis.speak(utt)
-  }
+  if (priority) speechSynthesis.cancel()
+  speechSynthesis.speak(utt)
 }
 
 function stopSpeech() {
