@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useAppStore, type ActiveView } from './store/useAppStore'
+import { useAppStore, VIEW_ORDER, type ActiveView } from './store/useAppStore'
 import { Nav } from './components/Nav/Nav'
 import { DayView } from './components/DayView/DayView'
 import { Program } from './components/Program/Program'
@@ -9,7 +9,6 @@ import { fetchEntries } from './lib/supabase'
 import { DAYS } from './data/days'
 import s from './App.module.css'
 
-const VIEW_ORDER: ActiveView[] = ['today', 'training', 'checklist', 'analysis']
 const SWIPE_THRESHOLD = 60
 
 export function App() {

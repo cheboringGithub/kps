@@ -1,5 +1,5 @@
 import { DAYS } from '../../data/days'
-import { useAppStore } from '../../store/useAppStore'
+import { useAppStore, VIEW_ORDER } from '../../store/useAppStore'
 import s from './Nav.module.css'
 
 export function Nav() {
@@ -40,6 +40,14 @@ export function Nav() {
         >
           Анализ
         </button>
+      </div>
+
+      <div className={s.swipeHint}>
+        <span className={s.swipeChevron}>‹</span>
+        {VIEW_ORDER.map(v => (
+          <span key={v} className={[s.swipeDot, v === activeView ? s.swipeDotActive : ''].join(' ')} />
+        ))}
+        <span className={s.swipeChevron}>›</span>
       </div>
 
       <div className={s.progress}>

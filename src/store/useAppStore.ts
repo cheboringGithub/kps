@@ -3,6 +3,8 @@ import { persist } from 'zustand/middleware'
 
 export type ActiveView = 'today' | 'training' | 'checklist' | 'analysis'
 
+export const VIEW_ORDER: ActiveView[] = ['today', 'training', 'checklist', 'analysis']
+
 interface AppState {
   currentDay: number
   done: Set<number>

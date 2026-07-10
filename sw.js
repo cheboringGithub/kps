@@ -1,4 +1,4 @@
-const CACHE = 'kps-v16';
+const CACHE = 'kps-v17';
 const BASE = '/kps';
 const ASSETS = [
   BASE + '/',

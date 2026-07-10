@@ -108,6 +108,10 @@
   transition: width 0.4s ease;
 }
 
+.swipeHint {
+  display: none;
+}
+
 @media (max-width: 700px) {
   .sidebar {
     position: static;
@@ -115,17 +119,31 @@
     overflow-y: visible;
   }
 
-  /* Only the active tab is shown — the rest switch via swipe (App.tsx onTouchEnd). */
-  .viewTabs {
-    grid-template-columns: 1fr;
+  /* Signals the tabs above also respond to a left/right swipe on the content below. */
+  .swipeHint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 0 4px;
   }
 
-  .viewTab:not(.viewTabActive) {
-    display: none;
+  .swipeChevron {
+    font-size: 11px;
+    color: #4a4540;
   }
 
-  .viewTab {
-    text-align: center;
-    padding: 10px 0;
+  .swipeDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #3a3530;
+    transition: all 0.15s;
+  }
+
+  .swipeDotActive {
+    width: 14px;
+    border-radius: 3px;
+    background: var(--rust-light);
   }
 }
