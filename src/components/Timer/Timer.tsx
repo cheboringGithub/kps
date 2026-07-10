@@ -45,14 +45,20 @@ loadVoice()
 
 function speak(text: string, priority = false) {
   if (!('speechSynthesis' in window)) return
-  if (priority) speechSynthesis.cancel()
   const utt = new SpeechSynthesisUtterance(text)
   utt.lang = 'ru-RU'
   utt.rate = 0.95
   utt.pitch = 1
   utt.volume = 1
   if (ruVoice) utt.voice = ruVoice
-  speechSynthesis.speak(utt)
+  if (priority) {
+    speechSynthesis.cancel()
+    // Chrome/Android silently drops an utterance queued in the same tick as
+    // cancel() — deferring to the next tick lets the cancel land first.
+    setTimeout(() => speechSynthesis.speak(utt), 0)
+  } else {
+    speechSynthesis.speak(utt)
+  }
 }
 
 function stopSpeech() {
@@ -110,6 +116,10 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
       const elapsed = Math.floor((Date.now() - startedAt.current) / 1000)
       const next = Math.max(0, startedRemaining.current - elapsed)
       setRemaining(next)
+      // Chrome silently stops the speech engine after ~15s of inactivity
+      // between utterances; nudging resume() on every tick keeps it alive
+      // through long work/rest intervals where nothing is spoken in between.
+      if ('speechSynthesis' in window) speechSynthesis.resume()
     }, 500)
   }
 
