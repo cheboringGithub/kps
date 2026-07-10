@@ -159,11 +159,7 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
     const milestones = [10, 5, 3, 2, 1]
     if (milestones.includes(remaining) && !spokenAt.current.has(remaining)) {
       spokenAt.current.add(remaining)
-      if (remaining <= 3) {
-        speak(String(remaining))
-      } else {
-        speak(`${remaining} секунд`)
-      }
+      speak(String(remaining))
     }
   }, [remaining, phase])
 
@@ -195,7 +191,7 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
       setPhase('done')
       setRunning(false)
       releaseWakeLock()
-      speak('Упражнение выполнено. Отличная работа!', true)
+      speak('Выполнено. Отличная работа!', true)
       onComplete?.()
       return
     }
