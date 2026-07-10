@@ -6,18 +6,25 @@ import { Program } from './components/Program/Program'
 import { Checklist } from './components/Checklist/Checklist'
 import { Analysis } from './components/Analysis/Analysis'
 import { fetchEntries } from './lib/supabase'
+import { DAYS } from './data/days'
 import s from './App.module.css'
 
 const VIEW_ORDER: ActiveView[] = ['today', 'training', 'checklist', 'analysis']
 const SWIPE_THRESHOLD = 60
 
 export function App() {
-  const { activeView, markDone, setActiveView } = useAppStore()
+  const { activeView, markDone, advanceCurrentDayTo, setActiveView } = useAppStore()
 
   useEffect(() => {
     fetchEntries(100).then(entries => {
-      const remoteDays = new Set(entries.map(e => e.day_number))
+      const remoteDays = entries.map(e => e.day_number)
       remoteDays.forEach(d => markDone(d))
+      // On a fresh device/browser the local "current day" pointer starts at 1 —
+      // catch it up to remote progress so this tab shows the next undone workout
+      // instead of getting stuck on an already-completed day.
+      if (remoteDays.length > 0) {
+        advanceCurrentDayTo(Math.min(Math.max(...remoteDays) + 1, DAYS.length))
+      }
     }).catch(() => {})
   }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 

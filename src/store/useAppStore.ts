@@ -9,6 +9,7 @@ interface AppState {
   activeView: ActiveView
   exerciseDone: Record<number, string[]>
   setCurrentDay: (day: number) => void
+  advanceCurrentDayTo: (day: number) => void
   toggleDone: (day: number) => void
   markDone: (day: number) => void
   setActiveView: (view: ActiveView) => void
@@ -26,6 +27,12 @@ export const useAppStore = create<AppState>()(
 
       setCurrentDay: (day) =>
         set({ currentDay: day, activeView: 'today' }),
+
+      // Catches up the pointer to remote progress (e.g. entries synced from another
+      // device) without forcing a tab switch — unlike setCurrentDay, this only moves
+      // the pointer forward, never back, and never touches activeView.
+      advanceCurrentDayTo: (day) =>
+        set((state) => (day > state.currentDay ? { currentDay: day } : state)),
 
       toggleDone: (day) =>
         set((state) => {
