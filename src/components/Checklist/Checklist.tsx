@@ -104,7 +104,7 @@ export function Checklist() {
       setForm(resetForm())
       const wasDone = done.has(currentDay)
       markDone(currentDay)
-      // First completion of the day advances "Сегодня" to the next day.
+      // First completion of the day advances "Следующая тренировка" to the next day.
       // Extra entries on an already-completed day just stay in place.
       if (!wasDone && currentDay < DAYS.length) {
         setCurrentDay(currentDay + 1)

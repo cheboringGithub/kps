@@ -20,7 +20,7 @@ export function Nav() {
           className={[s.viewTab, activeView === 'today' ? s.viewTabActive : ''].join(' ')}
           onClick={() => setActiveView('today')}
         >
-          Сегодня
+          Следующая тренировка
         </button>
         <button
           className={[s.viewTab, activeView === 'training' ? s.viewTabActive : ''].join(' ')}
