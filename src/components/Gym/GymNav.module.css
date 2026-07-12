@@ -1,0 +1,132 @@
+.sidebar {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 32px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+.brand {
+  padding: 0 28px 28px;
+  border-bottom: 1px solid #2a2824;
+}
+
+.brandBack {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #6a6560;
+  cursor: pointer;
+}
+
+.brandBack:hover {
+  color: var(--rust-light);
+}
+
+.brandTag {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--rust-light);
+  margin-bottom: 8px;
+}
+
+.brandTitle {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--paper);
+}
+
+.brandTitle em {
+  font-style: italic;
+  color: var(--rust-light);
+}
+
+.brandSub {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #6a6560;
+  line-height: 1.6;
+}
+
+.viewTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 16px 28px;
+  gap: 8px;
+  border-bottom: 1px solid #2a2824;
+}
+
+.viewTab {
+  padding: 7px 0;
+  background: none;
+  border: 1px solid #2a2824;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6a6560;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.viewTab:hover { border-color: #4a4540; color: var(--paper); }
+
+.viewTabActive {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: var(--paper);
+}
+
+.progress {
+  padding: 20px 28px;
+  border-top: 1px solid #2a2824;
+  margin-top: auto;
+}
+
+.progressLabel {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #4a4540;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progressLabel span { color: var(--rust-light); }
+
+.progressTrack {
+  height: 3px;
+  background: #2a2824;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--rust);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    position: static;
+    height: auto;
+    overflow-y: visible;
+  }
+}

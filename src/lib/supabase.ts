@@ -13,7 +13,7 @@ export interface ChecklistEntry {
   comment?: string
 }
 
-async function req(path: string, options?: RequestInit) {
+export async function req(path: string, options?: RequestInit) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1${path}`, {
     ...options,
     headers: {

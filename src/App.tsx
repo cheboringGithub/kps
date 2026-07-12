@@ -6,7 +6,7 @@ import { Program } from './components/Program/Program'
 import { Checklist } from './components/Checklist/Checklist'
 import { Analysis } from './components/Analysis/Analysis'
 import { ProgramSelect } from './components/ProgramSelect/ProgramSelect'
-import { GymPlaceholder } from './components/Gym/GymPlaceholder'
+import { GymApp } from './components/Gym/GymApp'
 import { fetchEntries } from './lib/supabase'
 import { DAYS } from './data/days'
 import s from './App.module.css'
@@ -40,19 +40,21 @@ export function App() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    if (activeProgram !== 'kps') return
     if (!mountedRef.current) { mountedRef.current = true; return }
     if (fromPopRef.current) { fromPopRef.current = false; return }
     window.history.pushState({ activeView }, '')
-  }, [activeView])
+  }, [activeView, activeProgram])
 
   useEffect(() => {
     const onPopState = (e: PopStateEvent) => {
+      if (activeProgram !== 'kps') return
       fromPopRef.current = true
       setActiveView((e.state?.activeView as ActiveView) ?? 'today')
     }
     window.addEventListener('popstate', onPopState)
     return () => window.removeEventListener('popstate', onPopState)
-  }, [setActiveView])
+  }, [setActiveView, activeProgram])
 
   // Swipe left/right between tabs on mobile (matches the .shell mobile breakpoint).
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
@@ -79,7 +81,7 @@ export function App() {
   }
 
   if (activeProgram === null) return <ProgramSelect />
-  if (activeProgram === 'gym') return <GymPlaceholder />
+  if (activeProgram === 'gym') return <GymApp />
 
   return (
     <div className={s.shell}>
