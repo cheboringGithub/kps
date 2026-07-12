@@ -5,6 +5,8 @@ import { DayView } from './components/DayView/DayView'
 import { Program } from './components/Program/Program'
 import { Checklist } from './components/Checklist/Checklist'
 import { Analysis } from './components/Analysis/Analysis'
+import { ProgramSelect } from './components/ProgramSelect/ProgramSelect'
+import { GymPlaceholder } from './components/Gym/GymPlaceholder'
 import { fetchEntries } from './lib/supabase'
 import { DAYS } from './data/days'
 import s from './App.module.css'
@@ -12,7 +14,7 @@ import s from './App.module.css'
 const SWIPE_THRESHOLD = 60
 
 export function App() {
-  const { activeView, markDone, advanceCurrentDayTo, setActiveView } = useAppStore()
+  const { activeView, activeProgram, markDone, advanceCurrentDayTo, setActiveView } = useAppStore()
 
   useEffect(() => {
     fetchEntries(100).then(entries => {
@@ -75,6 +77,9 @@ export function App() {
     if (nextIndex < 0 || nextIndex >= VIEW_ORDER.length) return
     setActiveView(VIEW_ORDER[nextIndex])
   }
+
+  if (activeProgram === null) return <ProgramSelect />
+  if (activeProgram === 'gym') return <GymPlaceholder />
 
   return (
     <div className={s.shell}>

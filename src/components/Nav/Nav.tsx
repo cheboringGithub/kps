@@ -11,7 +11,7 @@ const LABELS: Record<ActiveView, string> = {
 }
 
 export function Nav() {
-  const { done, activeView, setActiveView } = useAppStore()
+  const { done, activeView, setActiveView, setActiveProgram } = useAppStore()
   const [expanded, setExpanded] = useState(false)
   const doneCount = done.size
   const pct = Math.round((doneCount / DAYS.length) * 100)
@@ -23,6 +23,9 @@ export function Nav() {
   return (
     <aside className={s.sidebar}>
       <div className={s.brand}>
+        <button type="button" className={s.brandBack} onClick={() => setActiveProgram(null)}>
+          ← Программы
+        </button>
         <div className={s.brandTag}>Курс · 90 дней</div>
         <h1 className={s.brandTitle}>КПС &<br /><em>Подвижность</em></h1>
         <p className={s.brandSub}>Старт: пятница, 29 мая<br />Таз + верх + кор · до 60 мин/день</p>

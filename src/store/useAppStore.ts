@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type ActiveView = 'today' | 'training' | 'checklist' | 'analysis'
+export type ActiveProgram = 'kps' | 'gym'
 
 export const VIEW_ORDER: ActiveView[] = ['today', 'training', 'checklist', 'analysis']
 
@@ -9,12 +10,14 @@ interface AppState {
   currentDay: number
   done: Set<number>
   activeView: ActiveView
+  activeProgram: ActiveProgram | null
   exerciseDone: Record<number, string[]>
   setCurrentDay: (day: number) => void
   advanceCurrentDayTo: (day: number) => void
   toggleDone: (day: number) => void
   markDone: (day: number) => void
   setActiveView: (view: ActiveView) => void
+  setActiveProgram: (program: ActiveProgram | null) => void
   toggleExerciseDone: (day: number, key: string) => void
   setExerciseDone: (day: number, key: string, isDone: boolean) => void
 }
@@ -25,6 +28,7 @@ export const useAppStore = create<AppState>()(
       currentDay: 1,
       done: new Set<number>(),
       activeView: 'today',
+      activeProgram: null,
       exerciseDone: {},
 
       setCurrentDay: (day) =>
@@ -52,6 +56,8 @@ export const useAppStore = create<AppState>()(
         }),
 
       setActiveView: (view) => set({ activeView: view }),
+
+      setActiveProgram: (program) => set({ activeProgram: program }),
 
       toggleExerciseDone: (day, key) =>
         set((state) => {

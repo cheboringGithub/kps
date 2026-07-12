@@ -19,6 +19,22 @@
   border-bottom: 1px solid #2a2824;
 }
 
+.brandBack {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #6a6560;
+  cursor: pointer;
+}
+
+.brandBack:hover {
+  color: var(--rust-light);
+}
+
 .brandTag {
   font-size: 9px;
   letter-spacing: 0.25em;
