@@ -159,7 +159,7 @@ export const DAYS: Day[] = [
     exs: ['warmup_hip_circle', 'kps_decomp', 'ql_stretch', 'glute_side_lying', 'kps_clock', 'foot_eversion', 'core_plank', 'upper_shoulder_er_weighted', 'upper_pushup', 'upper_chest_doorway', 'hip_knee_circles', 'savasana'] },
   { phase: 5, title: 'Полный день · неделя 6 — тракция КПС + верх', short: 'Тракция КПС + грудь и лопатки',
     desc: 'Фулл-бади формат: КПС и таз остаются в приоритете (тракция КПС, средняя ягодичная), добавлены растяжка груди + лопатки для разгрузки верха от сидячей работы, кор и отведение бедра в 3 положениях — без осевой нагрузки на колено (тендинит связки надколенника).',
-    exs: ['warmup_knee', 'kps_decomp', 'kps_traction', 'kps_clock', 'foot_eversion', 'core_side_plank', 'upper_chest_doorway', 'upper_wall_slides', 'upper_thoracic_ext', 'hip_abduction_3way', 'child_pose'] },
+    exs: ['warmup_knee', 'kps_decomp', 'elephant_walk', 'kps_traction', 'kps_clock', 'foot_eversion', 'core_side_plank', 'upper_chest_doorway', 'upper_wall_slides', 'upper_thoracic_ext', 'hip_abduction_3way', 'child_pose'] },
   { phase: 5, title: 'Полный день · неделя 6 — 90/90 + верх', short: '90/90 + грудь и лопатки',
     desc: 'Фулл-бади формат: КПС и таз остаются в приоритете (90/90, средняя ягодичная), добавлены растяжка груди + лопатки для разгрузки верха от сидячей работы, кор и сайд кики — без осевой нагрузки на колено (тендинит связки надколенника).',
     exs: ['warmup_knee', 'kps_decomp', 'kps_90_90', 'glute_clamshell', 'kps_clock', 'foot_eversion', 'strength_bird_dog', 'upper_chest_doorway', 'upper_wall_slides', 'upper_thoracic_ext', 'core_side_plank', 'child_pose'] },
