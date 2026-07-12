@@ -44,6 +44,21 @@
   border-top: 1px solid var(--paper2);
 }
 
+.target {
+  font-size: 12.5px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+.targetLabel {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 500;
+  margin-right: 4px;
+}
+
 .equipment {
   font-size: 10.5px;
   letter-spacing: 0.08em;
@@ -68,6 +83,32 @@
   color: var(--rust);
   line-height: 1.7;
 }
+
+.cues {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(90,122,94,0.05);
+  border-left: 2px solid var(--sage);
+}
+.cuesTitle {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.cues ul { list-style: none; }
+.cues li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: #4a5a4c;
+  margin-bottom: 4px;
+}
+.cues li:last-child { margin-bottom: 0; }
+.cues li::before { content: '→'; position: absolute; left: 0; color: var(--sage); }
 
 .setsHeader {
   display: flex;

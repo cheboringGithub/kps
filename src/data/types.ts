@@ -22,6 +22,8 @@ export interface Exercise {
   type: ExerciseType
   timer: TimerConfig
   how: string
+  /** 2-3 короткие технические подсказки — на что смотреть/чувствовать во время выполнения. */
+  cues: string[]
   note: string | null
   /** Reps-based exercise with no meaningful hold duration — show a manual complete toggle instead of a countdown timer. */
   repsOnly?: boolean

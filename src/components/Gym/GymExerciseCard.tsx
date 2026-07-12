@@ -38,7 +38,16 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
       {open && (
         <div className={s.body}>
           <div className={s.equipment}>{exercise.equipment}</div>
-          <div className={s.how}>{exercise.how}</div>
+          <div className={s.target}><span className={s.targetLabel}>Целевая мышца</span> {exercise.target}</div>
+          <div className={s.how} dangerouslySetInnerHTML={{ __html: exercise.how }} />
+          {exercise.cues.length > 0 && (
+            <div className={s.cues}>
+              <div className={s.cuesTitle}>Техника</div>
+              <ul>
+                {exercise.cues.map((cue, i) => <li key={i}>{cue}</li>)}
+              </ul>
+            </div>
+          )}
           {exercise.note && <div className={s.note}>⚠ {exercise.note}</div>}
 
           <div className={s.setsHeader}>
