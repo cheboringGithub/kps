@@ -17,6 +17,8 @@ curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?orde
 
 Если записей нет — сообщи пользователю что данных ещё нет и предложи заполнить анкету в PWA (вкладка «Дневник»).
 
+Прочитай `src/data/days.ts`, чтобы знать последний день последней фазы — понадобится в разделе 3 для проверки завершения курса.
+
 ## 2. Что анализировать
 
 Для каждого показателя смотри **тренд** (улучшение / стагнация / ухудшение), а не отдельные значения.
@@ -72,16 +74,18 @@ curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?orde
 [2–3 предложения: что работает, что застряло, какой паттерн виден]
 
 ## Рекомендация
-[ОДНО из трёх:]
+[ОДНО из четырёх:]
 - ✅ Программа работает по плану. Продолжай.
 - ⚠️ Есть стагнация в [показателе]. Рекомендую запустить /adjust-program.
 - 🔴 Ухудшение в [показателе]. Необходима коррекция — запусти /adjust-program.
+- 🏁 Курс пройден полностью (max day программы). Рекомендую запустить /plan-next-phase.
 ```
 
 Определи значение `recommendation`:
 - `"ok"` — если рекомендация ✅
 - `"warning"` — если ⚠️
 - `"critical"` — если 🔴
+- `"done"` — если 🏁 (max day в записях достиг последнего дня последней фазы в `days.ts`); это проверяй **до** остальных веток — если курс пройден, `adjust-program` уже не подходящий следующий шаг, даже если по пути были стагнации
 
 ## 4. Сохранить анализ в Supabase
 
@@ -97,9 +101,11 @@ curl -s -X POST "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/analysis_repor
     "period_start": "[YYYY-MM-DD]",
     "period_end": "[YYYY-MM-DD]",
     "content": "[экранированный markdown]",
-    "recommendation": "[ok|warning|critical]"
+    "recommendation": "[ok|warning|critical|done]"
   }'
 ```
+
+Если insert падает с ошибкой check constraint на `recommendation` (таблица создана до появления значения `done`) — выполни `alter table public.analysis_reports drop constraint analysis_reports_recommendation_check, add constraint analysis_reports_recommendation_check check (recommendation in ('ok','warning','critical','done'));` через Supabase MCP или psql, затем повтори insert.
 
 Если таблица не найдена (ошибка PGRST205) — сообщи пользователю что нужно создать таблицу в Supabase Dashboard, и выведи SQL:
 
@@ -112,7 +118,7 @@ create table public.analysis_reports (
   period_start date not null,
   period_end date not null,
   content text not null,
-  recommendation text not null check (recommendation in ('ok', 'warning', 'critical'))
+  recommendation text not null check (recommendation in ('ok', 'warning', 'critical', 'done'))
 );
 alter table public.analysis_reports enable row level security;
 create policy "anon read" on public.analysis_reports for select using (true);
@@ -123,4 +129,5 @@ create policy "anon insert" on public.analysis_reports for insert with check (tr
 
 - Выведи в чат краткое резюме (3–5 предложений): главные находки и вывод
 - Если рекомендация ⚠️ или 🔴 — явно скажи: **"Советую запустить /adjust-program"** и объясни почему именно
+- Если 🏁 — явно скажи: **"Курс пройден, советую запустить /plan-next-phase"** — это отдельный скилл, который смотрит на весь пройденный курс целиком и проектирует следующую фазу, а не точечно правит дни
 - Если ✅ — скажи что делать дальше (продолжать текущий день, когда следующий анализ)

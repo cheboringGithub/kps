@@ -67,16 +67,18 @@ curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_entries?order=crea
 [2–3 предложения: что растёт, что стагнирует, есть ли риск по колену]
 
 ## Рекомендация
-[ОДНО из трёх:]
+[ОДНО из четырёх:]
 - ✅ Программа работает по плану. Продолжай.
 - ⚠️ Есть стагнация/перегруз в [упражнении/показателе]. Рекомендую запустить /gym-adjust-program.
 - 🔴 Колено реагирует / выраженный перегруз. Необходима коррекция — запусти /gym-adjust-program.
+- 🏁 Блок пройден полностью (все тренировки последней недели блока в `workouts.ts`). Рекомендую запустить /gym-plan-next-phase.
 ```
 
 Определи значение `recommendation`:
 - `"ok"` — если рекомендация ✅
 - `"warning"` — если ⚠️
 - `"critical"` — если 🔴 (в том числе всегда при `knee_pain >= 2` в последних записях)
+- `"done"` — если 🏁 (последняя пройденная тренировка — последняя в блоке из `src/data/gym/workouts.ts`); проверяй это **до** остальных веток — если блок пройден, `gym-adjust-program` уже не подходящий следующий шаг
 
 ## 4. Сохранить анализ в Supabase
 
@@ -92,9 +94,11 @@ curl -s -X POST "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_analysis_r
     "period_start": "[YYYY-MM-DD]",
     "period_end": "[YYYY-MM-DD]",
     "content": "[экранированный markdown]",
-    "recommendation": "[ok|warning|critical]"
+    "recommendation": "[ok|warning|critical|done]"
   }'
 ```
+
+Если insert падает с ошибкой check constraint на `recommendation` (таблица создана до появления значения `done`) — выполни `alter table public.gym_analysis_reports drop constraint gym_analysis_reports_recommendation_check, add constraint gym_analysis_reports_recommendation_check check (recommendation in ('ok','warning','critical','done'));` через Supabase MCP или psql, затем повтори insert.
 
 Если таблица не найдена (ошибка PGRST205) — сообщи пользователю что нужно создать таблицу, и предложи выполнить это через Supabase MCP (`apply_migration`) или вручную в Supabase Dashboard с этим SQL:
 
@@ -107,7 +111,7 @@ create table public.gym_analysis_reports (
   period_start date not null,
   period_end date not null,
   content text not null,
-  recommendation text not null check (recommendation in ('ok', 'warning', 'critical'))
+  recommendation text not null check (recommendation in ('ok', 'warning', 'critical', 'done'))
 );
 alter table public.gym_analysis_reports enable row level security;
 create policy "anon read" on public.gym_analysis_reports for select using (true);
@@ -118,4 +122,5 @@ create policy "anon insert" on public.gym_analysis_reports for insert with check
 
 - Выведи в чат краткое резюме (3–5 предложений): главные находки и вывод
 - Если рекомендация ⚠️ или 🔴 — явно скажи: **"Советую запустить /gym-adjust-program"** и объясни почему именно
+- Если 🏁 — явно скажи: **"Блок пройден, советую запустить /gym-plan-next-phase"** — этот скилл смотрит на весь пройденный блок целиком (весовую прогрессию по каждому упражнению) и проектирует следующий мезоцикл, а не точечно правит тренировки
 - Если ✅ — скажи что делать дальше (продолжать текущую тренировку, когда следующий анализ)

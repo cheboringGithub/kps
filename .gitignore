@@ -4,3 +4,5 @@ node_modules/
 dist/
 training-log.md
 training-analysis.md
+gym-training-analysis.md
+health-checkins.md
