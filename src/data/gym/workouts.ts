@@ -6,7 +6,9 @@ import type { GymWorkout } from './types'
 // Прогрессия — double progression: сначала повторы растут к верхней границе
 // диапазона при том же весе, затем вес растёт и повторы сбрасываются к нижней
 // границе (см. workout 7 vs 1, 8 vs 2, 9 vs 3). Осевая нагрузка на согнутое
-// стоя колено исключена везде — см. src/data/gym/exercises.ts.
+// стоя колено исключена везде, как и осевая компрессия позвоночника и
+// нагруженный тазобедренный шарнир (грыжа диска поясницы) —
+// см. src/data/gym/exercises.ts.
 
 export const WORKOUTS: GymWorkout[] = [
   // ── Неделя 1 ──────────────────────────────────────────────────────
@@ -28,12 +30,12 @@ export const WORKOUTS: GymWorkout[] = [
     week: 1,
     title: 'Низ тела (safe) + плечи',
     short: 'Низ (safe) + плечи',
-    desc: 'Низ тела без осевой нагрузки через согнутое стоя колено — только тренажёры с контролируемой амплитудой. Левая нога и левая средняя ягодичная — приоритет объёма.',
+    desc: 'Низ тела без осевой нагрузки через согнутое стоя колено и без осевой компрессии позвоночника. Разгибание ног стартует со сниженного веса — левое колено дало 2 балла на дне 45. Левая нога и левая средняя ягодичная — приоритет объёма.',
     exs: [
-      { id: 'gym_leg_extension', sets: 3, reps: '12-15', weight: '20 кг' },
+      { id: 'gym_leg_extension', sets: 3, reps: '12-15', weight: '15 кг' },
       { id: 'gym_leg_curl_unilateral', sets: 4, reps: '10-12', weight: '12 кг' },
       { id: 'gym_hip_abduction_machine', sets: 4, reps: '15', weight: '5 кг' },
-      { id: 'gym_calf_raise', sets: 3, reps: '15', weight: '30 кг' },
+      { id: 'gym_calf_press_machine', sets: 3, reps: '15', weight: '50 кг' },
       { id: 'gym_lateral_raise', sets: 3, reps: '12-15', weight: '6 кг' },
     ],
   },
@@ -45,8 +47,8 @@ export const WORKOUTS: GymWorkout[] = [
     exs: [
       { id: 'gym_seated_row', sets: 3, reps: '10-12', weight: '35 кг' },
       { id: 'gym_db_row', sets: 4, reps: '10-12', weight: '12 кг' },
-      { id: 'gym_face_pull', sets: 3, reps: '15', weight: '12 кг' },
-      { id: 'gym_rdl_barbell', sets: 3, reps: '8-10', weight: '30 кг' },
+      { id: 'gym_rear_delt_fly_incline', sets: 3, reps: '12-15', weight: '5 кг' },
+      { id: 'gym_leg_curl_seated', sets: 3, reps: '10-12', weight: '25 кг' },
       { id: 'gym_glute_bridge_machine', sets: 3, reps: '12', weight: '40 кг' },
     ],
   },
@@ -70,12 +72,12 @@ export const WORKOUTS: GymWorkout[] = [
     week: 2,
     title: 'Низ тела (safe) + плечи',
     short: 'Низ (safe) + плечи',
-    desc: 'Вес удерживается, повторы растут к верхней границе. Колено — по-прежнему без боли; при дискомфорте не увеличивай амплитуду.',
+    desc: 'Разгибание ног возвращается к 20 кг — только если после недели 1 колено не отреагировало; если отреагировало, оставайся на 15 кг. Остальное: вес удерживается, повторы растут к верхней границе.',
     exs: [
-      { id: 'gym_leg_extension', sets: 3, reps: '15-18', weight: '20 кг' },
+      { id: 'gym_leg_extension', sets: 3, reps: '12-15', weight: '20 кг' },
       { id: 'gym_leg_curl_unilateral', sets: 4, reps: '12-14', weight: '12 кг' },
       { id: 'gym_hip_abduction_machine', sets: 4, reps: '18', weight: '5 кг' },
-      { id: 'gym_calf_raise', sets: 3, reps: '18', weight: '30 кг' },
+      { id: 'gym_calf_press_machine', sets: 3, reps: '18', weight: '50 кг' },
       { id: 'gym_lateral_raise', sets: 3, reps: '15-18', weight: '6 кг' },
     ],
   },
@@ -83,12 +85,12 @@ export const WORKOUTS: GymWorkout[] = [
     week: 2,
     title: 'Верх тела: тяга-акцент + низ (хамстринг/ягодичные)',
     short: 'Тяга + хамстринг/ягодичные',
-    desc: 'Повторы растут к верхней границе на том же весе — RDL проверяй по утренней боли в пояснице, при дискомфорте снижай амплитуду.',
+    desc: 'Повторы растут к верхней границе на том же весе. Сгибание ног сидя проверяй по утренней боли в пояснице — при дискомфорте не тяни повторы, а сбавь вес.',
     exs: [
       { id: 'gym_seated_row', sets: 3, reps: '12-14', weight: '35 кг' },
       { id: 'gym_db_row', sets: 4, reps: '12-14', weight: '12 кг' },
-      { id: 'gym_face_pull', sets: 3, reps: '18', weight: '12 кг' },
-      { id: 'gym_rdl_barbell', sets: 3, reps: '10-12', weight: '30 кг' },
+      { id: 'gym_rear_delt_fly_incline', sets: 3, reps: '15-18', weight: '5 кг' },
+      { id: 'gym_leg_curl_seated', sets: 3, reps: '12-14', weight: '25 кг' },
       { id: 'gym_glute_bridge_machine', sets: 3, reps: '15', weight: '40 кг' },
     ],
   },
@@ -112,12 +114,12 @@ export const WORKOUTS: GymWorkout[] = [
     week: 3,
     title: 'Низ тела (safe) + плечи',
     short: 'Низ (safe) + плечи',
-    desc: 'Разгибание ног получает дополнительный вес — по-прежнему в ограниченной амплитуде. Отведение бедра прибавляет сопротивление, не объём.',
+    desc: 'Разгибание ног прогрессирует повторами, а не весом — связка надколенника не любит скачков нагрузки, а 20 кг здесь только вторая неделя. Отведение бедра и икры прибавляют сопротивление.',
     exs: [
-      { id: 'gym_leg_extension', sets: 3, reps: '12-15', weight: '25 кг' },
+      { id: 'gym_leg_extension', sets: 3, reps: '15-18', weight: '20 кг' },
       { id: 'gym_leg_curl_unilateral', sets: 4, reps: '10-12', weight: '15 кг' },
       { id: 'gym_hip_abduction_machine', sets: 4, reps: '15', weight: '7 кг' },
-      { id: 'gym_calf_raise', sets: 3, reps: '15', weight: '40 кг' },
+      { id: 'gym_calf_press_machine', sets: 3, reps: '15', weight: '65 кг' },
       { id: 'gym_lateral_raise', sets: 3, reps: '12-15', weight: '8 кг' },
     ],
   },
@@ -125,12 +127,12 @@ export const WORKOUTS: GymWorkout[] = [
     week: 3,
     title: 'Верх тела: тяга-акцент + низ (хамстринг/ягодичные)',
     short: 'Тяга + хамстринг/ягодичные',
-    desc: 'Тяга блока сидя и RDL получают дополнительный подход и вес — это точка блока с наибольшей силовой прогрессией перед разгрузкой.',
+    desc: 'Тяга блока сидя и сгибание ног сидя получают дополнительный подход и вес — это точка блока с наибольшей силовой прогрессией перед разгрузкой.',
     exs: [
       { id: 'gym_seated_row', sets: 4, reps: '10-12', weight: '40 кг' },
       { id: 'gym_db_row', sets: 4, reps: '10-12', weight: '14 кг' },
-      { id: 'gym_face_pull', sets: 3, reps: '15', weight: '15 кг' },
-      { id: 'gym_rdl_barbell', sets: 4, reps: '8-10', weight: '40 кг' },
+      { id: 'gym_rear_delt_fly_incline', sets: 3, reps: '12-15', weight: '7 кг' },
+      { id: 'gym_leg_curl_seated', sets: 4, reps: '10-12', weight: '30 кг' },
       { id: 'gym_glute_bridge_machine', sets: 3, reps: '12', weight: '50 кг' },
     ],
   },
@@ -144,9 +146,9 @@ export const WORKOUTS: GymWorkout[] = [
     exs: [
       { id: 'gym_chest_press_machine', sets: 2, reps: '8', weight: '20 кг' },
       { id: 'gym_seated_row', sets: 2, reps: '10', weight: '30 кг' },
-      { id: 'gym_leg_extension', sets: 2, reps: '10', weight: '20 кг' },
+      { id: 'gym_leg_extension', sets: 2, reps: '10', weight: '15 кг' },
       { id: 'gym_hip_abduction_machine', sets: 2, reps: '15', weight: '5 кг' },
-      { id: 'gym_rdl_barbell', sets: 2, reps: '8', weight: '25 кг' },
+      { id: 'gym_leg_curl_seated', sets: 2, reps: '10', weight: '20 кг' },
       { id: 'gym_cable_antirotation', sets: 2, reps: '10/сторона', weight: '10 кг' },
     ],
   },
