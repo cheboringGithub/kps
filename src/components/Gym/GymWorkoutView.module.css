@@ -72,6 +72,15 @@
   align-items: center;
 }
 .timeChip strong { color: var(--ink); }
+.syncChip {
+  border-color: rgba(184,92,56,0.3);
+  color: var(--rust);
+  background: rgba(184,92,56,0.05);
+}
+
+@media (max-width: 700px) {
+  .timeStrip { gap: 10px; flex-wrap: wrap; }
+}
 
 .completeBtn {
   margin-top: 32px;

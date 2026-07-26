@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { WorkoutExercise } from '../../data/gym/types'
 import { GYM_EX } from '../../data/gym/exercises'
 import { useGymStore } from '../../store/useGymStore'
+import { bestSet, formatDate, formatSet, getExerciseHistory } from '../../lib/gymHistory'
+import { flushNow } from '../../lib/gymSetLog'
 import s from './GymExerciseCard.module.css'
 
 interface Props {
@@ -16,6 +18,14 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
   const currentWorkout = useGymStore((st) => st.currentWorkout)
   const loggedSets = useGymStore((st) => st.setLog[currentWorkout]?.[workoutExercise.id])
   const setSetValue = useGymStore((st) => st.setSetValue)
+  const setLog = useGymStore((st) => st.setLog)
+  const workoutDates = useGymStore((st) => st.workoutDates)
+
+  const history = useMemo(
+    () => getExerciseHistory(setLog, workoutDates, workoutExercise.id, currentWorkout, 3),
+    [setLog, workoutDates, workoutExercise.id, currentWorkout],
+  )
+  const lastBest = history.length > 0 ? bestSet(history[0].sets) : null
 
   if (!exercise) return null
 
@@ -27,7 +37,14 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
     <div className={[s.card, isDone ? s.cardDone : ''].join(' ')}>
       <div className={s.head} onClick={() => setOpen((o) => !o)}>
         <span className={s.idx}>{String(index + 1).padStart(2, '0')}</span>
-        <span className={s.name}>{exercise.name}</span>
+        <span className={s.headMain}>
+          <span className={s.name}>{exercise.name}</span>
+          {lastBest && (
+            <span className={s.lastLine}>
+              прошлый раз <b>{formatSet(lastBest)}</b>
+            </span>
+          )}
+        </span>
         <div className={s.pills}>
           <span className={`${s.pill} ${s.pillSets}`}>{workoutExercise.sets}×{workoutExercise.reps}</span>
         </div>
@@ -50,6 +67,24 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
           )}
           {exercise.note && <div className={s.note}>⚠ {exercise.note}</div>}
 
+          {history.length > 0 && (
+            <div className={s.history}>
+              <div className={s.historyTitle}>Прошлые заходы</div>
+              {history.map((h) => (
+                <div key={h.workout} className={s.historyRow}>
+                  <span className={s.historyWhen}>
+                    Тр. {h.workout}{h.date ? ` · ${formatDate(h.date)}` : ''}
+                  </span>
+                  <span className={s.historySets}>
+                    {h.sets.map((set, i) => (
+                      <span key={i} className={s.historySet}>{formatSet(set)}</span>
+                    ))}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className={s.setsHeader}>
             <span className={s.setsHeaderNum}>Сет</span>
             <span className={s.setsHeaderField}>Вес, кг</span>
@@ -66,6 +101,7 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
                   className={s.setInput}
                   placeholder={workoutExercise.weight}
                   value={set?.weightKg ?? ''}
+                  onBlur={flushNow}
                   onChange={(e) => setSetValue(
                     currentWorkout, workoutExercise.id, i, 'weightKg',
                     e.target.value === '' ? null : Number(e.target.value),
@@ -77,6 +113,7 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
                   className={s.setInput}
                   placeholder={workoutExercise.reps}
                   value={set?.reps ?? ''}
+                  onBlur={flushNow}
                   onChange={(e) => setSetValue(
                     currentWorkout, workoutExercise.id, i, 'reps',
                     e.target.value === '' ? null : Number(e.target.value),

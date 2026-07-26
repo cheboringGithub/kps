@@ -4,7 +4,7 @@ import { GymExerciseCard } from './GymExerciseCard'
 import s from './GymWorkoutView.module.css'
 
 export function GymWorkoutView() {
-  const { currentWorkout, done, setActiveView } = useGymStore()
+  const { currentWorkout, done, setActiveView, syncState } = useGymStore()
   const workout = WORKOUTS[currentWorkout - 1]
   if (!workout) return null
   const isDone = done.has(currentWorkout)
@@ -29,6 +29,11 @@ export function GymWorkoutView() {
       <div className={s.timeStrip}>
         <div className={s.timeChip}><strong>{workout.exs.length}</strong> упражнений</div>
         <div className={s.timeChip}><strong>~{60}–90 мин</strong> тренировка</div>
+        {syncState !== 'idle' && (
+          <div className={`${s.timeChip} ${s.syncChip}`}>
+            {syncState === 'saving' ? '⟳ сохраняю подходы' : '● не отправлено — уйдёт при связи'}
+          </div>
+        )}
       </div>
 
       {workout.exs.map((wex, i) => (

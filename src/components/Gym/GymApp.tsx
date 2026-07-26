@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useGymStore } from '../../store/useGymStore'
 import { useAppStore } from '../../store/useAppStore'
+import { applyPendingSets, fetchSetLog, flushNow, flushPendingSets } from '../../lib/gymSetLog'
 import { GymNav } from './GymNav'
 import { GymWorkoutView } from './GymWorkoutView'
 import { GymProgram } from './GymProgram'
@@ -10,7 +11,33 @@ import s from '../../App.module.css'
 
 export function GymApp() {
   const activeView = useGymStore((st) => st.activeView)
+  const hydrateSetLog = useGymStore((st) => st.hydrateSetLog)
   const setActiveProgram = useAppStore((st) => st.setActiveProgram)
+
+  // Подходы живут в gym_set_log — поднимаем их при входе в раздел и накрываем
+  // тем, что ещё не успело уехать из очереди отправки.
+  useEffect(() => {
+    let cancelled = false
+    fetchSetLog()
+      .then(({ log, dates }) => {
+        if (cancelled) return
+        hydrateSetLog(applyPendingSets(log), dates)
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [hydrateSetLog])
+
+  // Дозапись всего, что не ушло: при возврате сети и при сворачивании вкладки.
+  useEffect(() => {
+    const retry = () => void flushPendingSets()
+    const onHide = () => { if (document.visibilityState === 'hidden') flushNow() }
+    window.addEventListener('online', retry)
+    document.addEventListener('visibilitychange', onHide)
+    return () => {
+      window.removeEventListener('online', retry)
+      document.removeEventListener('visibilitychange', onHide)
+    }
+  }, [])
 
   // Minimal history handling for the gym shell: one pushState on entry so the
   // Android back button exits to the program-select screen instead of closing

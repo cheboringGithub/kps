@@ -17,11 +17,28 @@
 }
 
 .idx { font-size: 10px; color: var(--faint); min-width: 20px; font-weight: 500; }
-.name { flex: 1; font-size: 14px; color: var(--ink); font-weight: 500; }
+.headMain { flex: 1; min-width: 0; }
+.name { display: block; font-size: 14px; color: var(--ink); font-weight: 500; }
+
+/* Результат прошлого захода — строкой под названием, а не пилюлей: в шапке
+   и так тесно, вторая пилюля ломала название на четыре строки на телефоне. */
+.lastLine {
+  display: block;
+  margin-top: 3px;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.lastLine b {
+  font-family: 'DM Mono', monospace;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--rust);
+}
 
 .pills { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
 .pill { font-size: 10px; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.04em; }
-.pillSets { background: var(--paper2); color: var(--muted); border: 1px solid var(--faint); }
+.pillSets { background: var(--paper2); color: var(--muted); border: 1px solid var(--faint); white-space: nowrap; }
 
 .chevron { font-size: 10px; color: var(--faint); transition: transform 0.2s; flex-shrink: 0; }
 .chevronOpen { transform: rotate(180deg); }
@@ -110,6 +127,48 @@
 .cues li:last-child { margin-bottom: 0; }
 .cues li::before { content: '→'; position: absolute; left: 0; color: var(--sage); }
 
+.history {
+  margin-top: 18px;
+  border: 1px solid var(--faint);
+  background: var(--paper2);
+}
+.historyTitle {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px 7px;
+  border-bottom: 1px solid var(--faint);
+}
+.historyRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.historyRow:last-child { border-bottom: none; }
+.historyWhen {
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.historySets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 12px;
+}
+.historySet {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
 .setsHeader {
   display: flex;
   gap: 10px;
@@ -155,4 +214,9 @@
   .body { padding-left: 18px; }
   .pills { flex-direction: column; align-items: flex-end; gap: 3px; }
   .setInput { width: 100%; }
+  .head { gap: 10px; padding: 14px; }
+  /* На узком экране дата остаётся сверху строкой, подходы уходят под неё
+     влево — иначе они прижимаются к правому краю и читаются вразнобой. */
+  .historyRow { flex-direction: column; align-items: stretch; gap: 4px; }
+  .historySets { justify-content: flex-start; }
 }
