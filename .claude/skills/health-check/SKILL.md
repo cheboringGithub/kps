@@ -1,6 +1,8 @@
 ---
 name: health-check
 description: Проверка актуального состояния здоровья (колено, КПС, боль, новые симптомы) перед любым изменением домашней или силовой программы. Вызывается как обязательный первый шаг из adjust-program, gym-adjust-program, plan-next-phase, gym-plan-next-phase — а также напрямую, если пользователь просит проверить здоровье / спрашивает "как я сейчас" / хочет внеплановый чек-ап перед тренировкой.
+compatibility: Запускается в репозитории kps-pwa. Данные читаются через MCP-сервер supabase (mcp__supabase__execute_sql); фолбэк без MCP — curl + scripts/supabase-get.sh.
+allowed-tools: mcp__supabase__execute_sql Bash(scripts/supabase-get.sh:*) Read Edit Write
 ---
 
 # Проверка здоровья перед изменением программы
@@ -16,14 +18,15 @@ description: Проверка актуального состояния здор
 **Шаг 1б.** Прочитай `health-checkins.md` в корне проекта — журнал прошлых запусков этого скилла (что спрашивали, что ответили, когда, что изменилось). Если файла нет — это первый запуск, создашь его в разделе 5.
 
 **Шаг 1в.** Получи записи за последние ~14 дней из обеих таблиц Supabase (не весь массив — только свежее, здесь важна текущая картина, а не история):
+Через **MCP-сервер supabase** (`mcp__supabase__execute_sql`), одним запросом на таблицу:
+```sql
+select * from checklist_entries order by created_at desc limit 20;
+select * from gym_entries order by created_at desc limit 20;
+```
+Если инструменты `mcp__supabase__*` недоступны — то же через REST:
 ```bash
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?order=created_at.desc&limit=20" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
-
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_entries?order=created_at.desc&limit=20" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
+scripts/supabase-get.sh checklist_entries 'order=created_at.desc&limit=20'
+scripts/supabase-get.sh gym_entries 'order=created_at.desc&limit=20'
 ```
 Просмотри поля `comment` в обеих выборках на упоминания симптомов, которых нет в структурированных полях (плечо, шея, запястье, другое колено, тазобедренный сустав) — это кандидаты в вопросы раздела 3, даже если формально не спрашивались.
 

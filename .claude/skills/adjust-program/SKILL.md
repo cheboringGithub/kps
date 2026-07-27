@@ -1,6 +1,8 @@
 ---
 name: adjust-program
 description: Коррекция программы тренировок на основе реальных данных из Supabase. Использовать когда пользователь пишет /adjust-program или просит скорректировать / обновить / исправить программу тренировок.
+compatibility: Запускается в репозитории kps-pwa. Данные читаются через MCP-сервер supabase (mcp__supabase__execute_sql); фолбэк без MCP — curl + scripts/supabase-get.sh. Нужен git для пуша.
+allowed-tools: mcp__supabase__execute_sql Bash(scripts/supabase-get.sh:*) Bash(git:*) Read Edit Write
 ---
 
 # Коррекция программы тренировок
@@ -11,11 +13,13 @@ description: Коррекция программы тренировок на о�
 
 **Шаг 1а.** Если `training-analysis.md` существует и создан не более 24 часов назад — прочитай его. Иначе — сначала выполни логику скилла `analyze-results` (получи данные из Supabase, построй анализ), сохрани в `training-analysis.md`, и только потом продолжай.
 
-**Шаг 1б.** Получи свежие данные из Supabase:
+**Шаг 1б.** Получи свежие данные из Supabase через **MCP-сервер supabase** — `mcp__supabase__execute_sql`:
+```sql
+select * from checklist_entries order by created_at asc limit 100;
+```
+Если инструменты `mcp__supabase__*` недоступны (сервер не подключён в этой сессии) — тот же запрос через REST, ключ и URL внутри скрипта (`scripts/supabase-env.sh`):
 ```bash
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?order=created_at.asc&limit=100" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
+scripts/supabase-get.sh checklist_entries 'order=created_at.asc&limit=100'
 ```
 
 **Шаг 1в.** Прочитай текущие `src/data/days.ts` и `src/data/exercises.ts`.

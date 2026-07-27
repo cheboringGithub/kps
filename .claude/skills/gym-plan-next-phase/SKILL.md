@@ -1,6 +1,8 @@
 ---
 name: gym-plan-next-phase
 description: Анализ весовых показателей и фидбэка за весь пройденный силовой блок в зале, проектирование следующего блока/мезоцикла. Использовать когда пользователь закончил текущий блок зала (10 тренировок/4 недели) и просит спланировать следующий этап — не путать с gym-analyze-results (снимок текущего прогресса) и gym-adjust-program (точечная правка ближайших тренировок).
+compatibility: Запускается в репозитории kps-pwa. Данные читаются через MCP-сервер supabase (mcp__supabase__execute_sql); фолбэк без MCP — curl + scripts/supabase-get.sh. Нужен git для пуша.
+allowed-tools: mcp__supabase__execute_sql Bash(scripts/supabase-get.sh:*) Bash(git:*) Read Edit Write
 ---
 
 # Планирование следующего этапа — программа зала
@@ -11,14 +13,15 @@ description: Анализ весовых показателей и фидбэк�
 
 **Шаг 0.** Вызови скилл `health-check` первым делом. Проектирование следующего блока — типичный случай, когда осевая нагрузка на колено может вернуться в программу, поэтому `health-check` обязан переспросить статус ортопеда даже если он подтверждался недавно (см. правило-исключение в разделе 2 `health-check`). Если вердикт 🔴 — дождись правки `CLAUDE.md`, прежде чем продолжать. Советы из вердикта используй в разделе 4 при формулировке вопросов и в разделе 5 при проектировании блока.
 
+Данные — через **MCP-сервер supabase** (`mcp__supabase__execute_sql`):
+```sql
+select * from gym_entries order by created_at asc limit 500;
+select * from gym_analysis_reports order by report_date asc limit 200;
+```
+Если инструменты `mcp__supabase__*` недоступны — то же через REST:
 ```bash
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_entries?order=created_at.asc&limit=500" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
-
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_analysis_reports?order=report_date.asc&limit=200" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
+scripts/supabase-get.sh gym_entries 'order=created_at.asc&limit=500'
+scripts/supabase-get.sh gym_analysis_reports 'order=report_date.asc&limit=200'
 ```
 
 Прочитай `src/data/gym/exercises.ts` (каталог `GYM_EX`) и `src/data/gym/workouts.ts` (весь пройденный блок — плановые вес/повторы по всем 10 тренировкам). Прочитай `CLAUDE.md` (раздел «Зал») и память — **ограничение по колену снимается только по факту осмотра ортопеда**, проверь актуальный статус, а не полагайся на память.

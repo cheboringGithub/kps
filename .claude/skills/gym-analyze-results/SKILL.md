@@ -1,18 +1,24 @@
 ---
 name: gym-analyze-results
 description: Анализ прогресса силовой программы в зале. Использовать когда пользователь пишет /gym-analyze-results или просит проанализировать результаты тренировок в зале, посмотреть силовой прогресс.
+compatibility: Запускается в репозитории kps-pwa. Чтение и запись отчёта — через MCP-сервер supabase (mcp__supabase__execute_sql, apply_migration для DDL); фолбэк без MCP — curl + scripts/supabase-get.sh и scripts/supabase-insert.sh.
+allowed-tools: mcp__supabase__execute_sql mcp__supabase__apply_migration Bash(scripts/supabase-get.sh:*) Bash(scripts/supabase-insert.sh:*) Read Write
 ---
 
 # Анализ результатов тренировок в зале
 
 ## 1. Получить данные из Supabase
 
-Выполни GET-запрос через bash:
+Читай через **MCP-сервер supabase** — `mcp__supabase__execute_sql`:
+
+```sql
+select * from gym_entries order by created_at asc limit 100;
+```
+
+Если инструменты `mcp__supabase__*` недоступны (сервер не подключён в этой сессии) — то же через REST, ключ и URL внутри скрипта (`scripts/supabase-env.sh`):
 
 ```bash
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_entries?order=created_at.asc&limit=100" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
+scripts/supabase-get.sh gym_entries 'order=created_at.asc&limit=100'
 ```
 
 Если записей нет — сообщи пользователю что данных ещё нет и предложи заполнить анкету в PWA (программа «Зал» → вкладка «Дневник»).
@@ -82,23 +88,23 @@ curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_entries?order=crea
 
 ## 4. Сохранить анализ в Supabase
 
-```bash
-curl -s -X POST "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/gym_analysis_reports" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Content-Type: application/json" \
-  -H "Prefer: return=representation" \
-  -d '{
-    "report_date": "[YYYY-MM-DD]",
-    "entries_count": N,
-    "period_start": "[YYYY-MM-DD]",
-    "period_end": "[YYYY-MM-DD]",
-    "content": "[экранированный markdown]",
-    "recommendation": "[ok|warning|critical|done]"
-  }'
+Через `mcp__supabase__execute_sql`. Markdown из раздела 3 оборачивай в dollar-quoting `$md$ … $md$` — тогда кавычки и переносы строк внутри отчёта не нужно экранировать:
+
+```sql
+insert into gym_analysis_reports
+  (report_date, entries_count, period_start, period_end, content, recommendation)
+values
+  ('[YYYY-MM-DD]', N, '[YYYY-MM-DD]', '[YYYY-MM-DD]', $md$[markdown из раздела 3]$md$, '[ok|warning|critical|done]')
+returning id, report_date;
 ```
 
-Если insert падает с ошибкой check constraint на `recommendation` (таблица создана до появления значения `done`) — выполни `alter table public.gym_analysis_reports drop constraint gym_analysis_reports_recommendation_check, add constraint gym_analysis_reports_recommendation_check check (recommendation in ('ok','warning','critical','done'));` через Supabase MCP или psql, затем повтори insert.
+Если MCP недоступен — напиши тело в JSON-файл через `Write` (те же поля) и вставь через REST:
+
+```bash
+scripts/supabase-insert.sh gym_analysis_reports /путь/к/report.json
+```
+
+Если insert падает с ошибкой check constraint на `recommendation` (таблица создана до появления значения `done`) — выполни `alter table public.gym_analysis_reports drop constraint gym_analysis_reports_recommendation_check, add constraint gym_analysis_reports_recommendation_check check (recommendation in ('ok','warning','critical','done'));` через `mcp__supabase__apply_migration` (это DDL — не через `execute_sql`), затем повтори insert.
 
 Если таблица не найдена (ошибка PGRST205) — сообщи пользователю что нужно создать таблицу, и предложи выполнить это через Supabase MCP (`apply_migration`) или вручную в Supabase Dashboard с этим SQL:
 

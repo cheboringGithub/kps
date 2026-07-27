@@ -1,6 +1,8 @@
 ---
 name: plan-next-phase
 description: Анализ полного пройденного курса КПС (весь массив фидбэка) и проектирование следующего этапа/фазы программы. Использовать когда пользователь закончил курс/фазу и просит спланировать дальнейшее развитие программы — не путать с analyze-results (снимок текущего прогресса) и adjust-program (точечная правка ближайших дней).
+compatibility: Запускается в репозитории kps-pwa. Данные читаются через MCP-сервер supabase (mcp__supabase__execute_sql); фолбэк без MCP — curl + scripts/supabase-get.sh. Нужен git для пуша.
+allowed-tools: mcp__supabase__execute_sql Bash(scripts/supabase-get.sh:*) Bash(git:*) Read Edit Write
 ---
 
 # Планирование следующего этапа — домашняя программа КПС
@@ -11,14 +13,15 @@ description: Анализ полного пройденного курса КП�
 
 **Шаг 0.** Вызови скилл `health-check` первым делом. Это особенно важно для этого скилла: проектирование нового этапа почти всегда меняет активные ограничения (например, возврат осевой нагрузки на колено), поэтому `health-check` в этом случае обязан переспросить статус ортопеда даже если он подтверждался недавно (см. правило-исключение в разделе 2 `health-check`). Если вердикт 🔴 — дождись правки `CLAUDE.md`, прежде чем продолжать. Советы из вердикта используй в разделе 4 при формулировке вопросов и в разделе 5 при проектировании этапа.
 
+Данные — через **MCP-сервер supabase** (`mcp__supabase__execute_sql`):
+```sql
+select * from checklist_entries order by created_at asc limit 1000;
+select * from analysis_reports order by report_date asc limit 200;
+```
+Если инструменты `mcp__supabase__*` недоступны — то же через REST:
 ```bash
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/checklist_entries?order=created_at.asc&limit=1000" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
-
-curl -s "https://xfhduoighyjlxstvqhkc.supabase.co/rest/v1/analysis_reports?order=report_date.asc&limit=200" \
-  -H "apikey: sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP" \
-  -H "Authorization: Bearer sb_publishable_ICqU5UrY5_Cr7EQX5OotbA_E6kpv1VP"
+scripts/supabase-get.sh checklist_entries 'order=created_at.asc&limit=1000'
+scripts/supabase-get.sh analysis_reports 'order=report_date.asc&limit=200'
 ```
 
 Прочитай `src/data/phases.ts`, `src/data/days.ts`, `src/data/exercises.ts` — какая фаза сейчас последняя, на каком дне пользователь, что уже покрыто по содержанию.
