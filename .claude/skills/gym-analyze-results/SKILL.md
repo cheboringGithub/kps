@@ -2,7 +2,7 @@
 name: gym-analyze-results
 description: Анализ прогресса силовой программы в зале. Использовать когда пользователь пишет /gym-analyze-results или просит проанализировать результаты тренировок в зале, посмотреть силовой прогресс.
 compatibility: Запускается в репозитории kps-pwa. Чтение и запись отчёта — через MCP-сервер supabase (mcp__supabase__execute_sql, apply_migration для DDL); фолбэк без MCP — curl + scripts/supabase-get.sh и scripts/supabase-insert.sh.
-allowed-tools: mcp__supabase__execute_sql mcp__supabase__apply_migration Bash(scripts/supabase-get.sh:*) Bash(scripts/supabase-insert.sh:*) Read Write
+allowed-tools: mcp__supabase__execute_sql mcp__supabase__apply_migration Bash(scripts/supabase-get.sh:*) Bash(scripts/supabase-insert.sh:*) Read Write Agent
 ---
 
 # Анализ результатов тренировок в зале
@@ -45,6 +45,16 @@ scripts/supabase-get.sh gym_entries 'order=created_at.asc&limit=100'
 - Если «Предел» 2+ тренировки подряд → перегруз, нужна разгрузка
 - Если «Легко» несколько тренировок подряд по всем упражнениям → недогруз, есть запас для прогрессии
 
+### Сверка программы с ограничениями — по решению
+
+Сам анализ ничего не меняет, поэтому аудит здесь не обязателен. Вызывай `program-audit` перед формированием отчёта, если есть повод:
+
+- в записях `knee_pain >= 1` — рост веса при этом выглядит как нормальный прогресс, поэтому смотри не только цифры, но и состав будущих тренировок
+- блок менялся со времени последнего анализа (сверь дату последнего отчёта в `gym_analysis_reports` с коммитами в `workouts.ts`/`gym/exercises.ts`)
+- пользователь просит проверить саму программу, а не только силовую динамику
+
+Если запускал: 🔴 → `recommendation` не может быть `ok` (минимум `warning`; `critical`, если противопоказание в ближайшей незавершённой тренировке), находки идут в отчёт отдельным блоком с номерами тренировок. Исправление — работа `gym-adjust-program`/`gym-exercise-review`, не этого скилла. Если не запускал — так и напиши в блоке отчёта.
+
 ## 3. Сформировать текст анализа
 
 Подготовь строку `content` в формате markdown:
@@ -68,6 +78,9 @@ scripts/supabase-get.sh gym_entries 'order=created_at.asc&limit=100'
 [тренд + конкретные значения]
 
 ---
+
+## Расхождения программы с ограничениями
+[находки program-audit с номерами тренировок; «аудит чист»; или «аудит не запускался — нет повода»]
 
 ## Общая картина
 [2–3 предложения: что растёт, что стагнирует, есть ли риск по колену]

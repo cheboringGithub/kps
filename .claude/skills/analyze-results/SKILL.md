@@ -2,7 +2,7 @@
 name: analyze-results
 description: Анализ прогресса реабилитации КПС. Использовать когда пользователь пишет /analyze-results или просит проанализировать результаты тренировок, посмотреть прогресс, оценить динамику.
 compatibility: Запускается в репозитории kps-pwa. Чтение и запись отчёта — через MCP-сервер supabase (mcp__supabase__execute_sql, apply_migration для DDL); фолбэк без MCP — curl + scripts/supabase-get.sh и scripts/supabase-insert.sh.
-allowed-tools: mcp__supabase__execute_sql mcp__supabase__apply_migration Bash(scripts/supabase-get.sh:*) Bash(scripts/supabase-insert.sh:*) Read Write
+allowed-tools: mcp__supabase__execute_sql mcp__supabase__apply_migration Bash(scripts/supabase-get.sh:*) Bash(scripts/supabase-insert.sh:*) Read Write Agent
 ---
 
 # Анализ результатов тренировок
@@ -49,6 +49,16 @@ scripts/supabase-get.sh checklist_entries 'order=created_at.asc&limit=100'
 - Норма: переход 'да' → 'чуть меньше' за 2 недели, 'примерно ровно' к концу фазы 2–3
 - Если 'да' держится >10 записей → перекос не уходит, нужна коррекция асимметричной нагрузки
 
+### Сверка программы с ограничениями — по решению
+
+Сам анализ ничего не меняет, поэтому аудит здесь не обязателен. Вызывай `program-audit` перед формированием отчёта, если есть повод:
+
+- в записях `left_knee >= 1` или растёт `back_pain` — данные намекают, что программа грузит то, что грузить нельзя, и стоит посмотреть состав будущих дней, а не только тренд
+- программа менялась со времени последнего анализа (сверь дату последнего отчёта в `analysis_reports` с последними коммитами в `days.ts`/`exercises.ts`)
+- пользователь просит проверить саму программу, а не только динамику
+
+Если запускал: 🔴 → `recommendation` не может быть `ok` (минимум `warning`; `critical`, если противопоказание попадает в ближайшие 7 дней), находки идут в отчёт отдельным блоком с номерами дней. Исправление — работа `adjust-program`/`exercise-review`, не этого скилла. Если не запускал — так и напиши в блоке отчёта.
+
 ## 3. Сформировать текст анализа
 
 Подготовь строку `content` в формате markdown:
@@ -75,6 +85,9 @@ scripts/supabase-get.sh checklist_entries 'order=created_at.asc&limit=100'
 [тренд + переходы между значениями]
 
 ---
+
+## Расхождения программы с ограничениями
+[находки program-audit с номерами дней; «аудит чист»; или «аудит не запускался — нет повода»]
 
 ## Общая картина
 [2–3 предложения: что работает, что застряло, какой паттерн виден]
