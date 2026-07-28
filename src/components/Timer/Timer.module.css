@@ -6,7 +6,7 @@
 }
 
 .phaseLabel {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -17,7 +17,7 @@
 .done { color: var(--muted); }
 
 .instruction {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--ink);
   font-weight: 500;
   margin-bottom: 12px;
@@ -27,7 +27,7 @@
 
 .display {
   font-family: 'DM Serif Display', serif;
-  font-size: 56px;
+  font-size: 64px;
   line-height: 1;
   letter-spacing: -2px;
   color: var(--ink);
@@ -53,26 +53,30 @@
 .restFill { background: var(--sage); }
 
 .meta {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   margin-bottom: 14px;
 }
 
 .controls {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .btn {
+  min-height: var(--tap);
   padding: 9px 20px;
   border: none;
   font-family: 'DM Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
-.btnPlay { background: var(--ink); color: var(--paper); }
+/* Play is the primary action and takes the room; Reset stays secondary. */
+.btnPlay { flex: 1; background: var(--ink); color: var(--paper); }
 .btnPlay:hover { background: var(--rust); }
-.btnReset { background: var(--faint); color: var(--muted); }
+.btnReset { background: none; border: 1px solid var(--faint); color: var(--muted); }
 .btnReset:hover { background: var(--paper3); color: var(--ink); }
+.btnResetArmed { background: var(--rust); border-color: var(--rust); color: var(--paper); }
+.btnResetArmed:hover { background: var(--rust); color: var(--paper); }

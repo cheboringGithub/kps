@@ -77,7 +77,15 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'kps-store',
-      partialize: (state) => ({ currentDay: state.currentDay, done: [...state.done], exerciseDone: state.exerciseDone }),
+      // activeProgram is persisted so a cold launch reopens the program the user
+      // was actually training — it used to drop them back on the picker every
+      // time the PWA was reopened.
+      partialize: (state) => ({
+        currentDay: state.currentDay,
+        done: [...state.done],
+        exerciseDone: state.exerciseDone,
+        activeProgram: state.activeProgram,
+      }),
       merge: (persisted, current) => ({
         ...current,
         ...(persisted as object),

@@ -16,7 +16,7 @@
   user-select: none;
 }
 
-.idx { font-size: 10px; color: var(--faint); min-width: 20px; font-weight: 500; }
+.idx { font-size: 12px; color: var(--muted); min-width: 20px; font-weight: 500; }
 .headMain { flex: 1; min-width: 0; }
 .name { display: block; font-size: 14px; color: var(--ink); font-weight: 500; }
 
@@ -25,7 +25,7 @@
 .lastLine {
   display: block;
   margin-top: 3px;
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--muted);
 }
@@ -37,20 +37,20 @@
 }
 
 .pills { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-.pill { font-size: 10px; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.04em; }
+.pill { font-size: 12px; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.04em; }
 .pillSets { background: var(--paper2); color: var(--muted); border: 1px solid var(--faint); white-space: nowrap; }
 
-.chevron { font-size: 10px; color: var(--faint); transition: transform 0.2s; flex-shrink: 0; }
+.chevron { font-size: 12px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
 .chevronOpen { transform: rotate(180deg); }
 
 .doneMark {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--faint);
-  color: var(--faint);
-  font-size: 12px;
-  line-height: 22px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 24px;
   text-align: center;
   border-radius: 2px;
 }
@@ -62,13 +62,13 @@
 }
 
 .target {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--ink);
   line-height: 1.6;
   margin-top: 6px;
 }
 .targetLabel {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--rust);
@@ -77,7 +77,7 @@
 }
 
 .equipment {
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -85,18 +85,18 @@
 }
 
 .how {
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.85;
-  color: #5a5450;
+  color: #4f4a46;
   margin-top: 8px;
 }
 
 .note {
   margin-top: 12px;
   padding: 10px 14px;
-  background: rgba(184,92,56,0.05);
+  background: rgba(168,80,46,0.05);
   border-left: 2px solid var(--rust);
-  font-size: 11.5px;
+  font-size: 13px;
   color: var(--rust);
   line-height: 1.7;
 }
@@ -104,11 +104,11 @@
 .cues {
   margin-top: 12px;
   padding: 10px 14px;
-  background: rgba(90,122,94,0.05);
+  background: rgba(81,112,79,0.05);
   border-left: 2px solid var(--sage);
 }
 .cuesTitle {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sage);
@@ -119,7 +119,7 @@
 .cues li {
   position: relative;
   padding-left: 14px;
-  font-size: 11.5px;
+  font-size: 13px;
   line-height: 1.6;
   color: #4a5a4c;
   margin-bottom: 4px;
@@ -133,7 +133,7 @@
   background: var(--paper2);
 }
 .historyTitle {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -150,7 +150,7 @@
 }
 .historyRow:last-child { border-bottom: none; }
 .historyWhen {
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--muted);
   white-space: nowrap;
@@ -174,13 +174,19 @@
   gap: 10px;
   margin-top: 18px;
   padding-bottom: 6px;
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .setsHeaderNum { width: 26px; }
 .setsHeaderField { width: 84px; }
+
+/* The prescribed target, promoted out of the placeholder. */
+.setsTarget {
+  color: var(--rust);
+  font-weight: 500;
+}
 
 .setRow {
   display: flex;
@@ -193,22 +199,25 @@
   width: 26px;
   font-family: 'DM Serif Display', serif;
   font-size: 15px;
-  color: var(--faint);
+  color: var(--muted);
 }
 
 .setInput {
   width: 84px;
+  min-height: var(--tap);
   padding: 8px 10px;
   background: var(--paper2);
   border: 1px solid var(--faint);
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  /* Must stay >= 16px: iOS Safari force-zooms the page on focus below that,
+     which fired on every single logged set. */
+  font-size: 16px;
   color: var(--ink);
   box-sizing: border-box;
   transition: border-color 0.15s;
 }
-.setInput:focus { outline: none; border-color: var(--rust); }
-.setInput::placeholder { color: var(--faint); }
+.setInput:focus { border-color: var(--rust); }
+.setInput::placeholder { color: var(--muted); opacity: 0.75; }
 
 @media (max-width: 700px) {
   .body { padding-left: 18px; }

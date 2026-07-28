@@ -10,7 +10,7 @@
 }
 
 .eyebrow {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--rust);
@@ -55,7 +55,7 @@
 
 .progressStatLabel {
   margin-top: 4px;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--muted);
@@ -83,7 +83,7 @@
   padding: 20px 4px 10px;
 }
 
-.weekName { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); }
+.weekName { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); }
 
 .workoutRow {
   display: flex;
@@ -105,8 +105,10 @@
 
 .workoutNum {
   font-family: 'DM Serif Display', serif;
-  font-size: 22px;
-  color: var(--faint);
+  /* 24px is the WCAG large-text threshold, where --numeral's 3.28:1 passes.
+     Below it the same colour would need 4.5:1 and stop reading as recessive. */
+  font-size: 24px;
+  color: var(--numeral);
   min-width: 36px;
 }
 

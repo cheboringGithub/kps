@@ -40,20 +40,25 @@ function kpsLabel(v: number) { return KPS_OPTS.find(o => o.value === v)?.label ?
 function kneeLabel(v: number) { return KNEE_OPTS.find(o => o.value === v)?.label ?? '—' }
 function footLabel(v: string) { return FOOT_OPTS.find(o => o.value === v)?.label ?? '—' }
 
+// A single-choice group. Rendered as a radiogroup rather than loose buttons so
+// a screen reader announces "2 of 4, selected" instead of just "button".
 function Chips<T extends number | string>({
-  options, value, onChange,
+  options, value, onChange, labelledBy,
 }: {
   options: { value: T; label: string }[]
   value: T | null
   onChange: (v: T) => void
+  labelledBy: string
 }) {
   return (
-    <div className={s.chips}>
+    <div className={s.chips} role="radiogroup" aria-labelledby={labelledBy}>
       {options.map(o => (
         <button
           key={String(o.value)}
           className={[s.chip, value === o.value ? s.chipActive : ''].join(' ')}
           onClick={() => onChange(o.value)}
+          role="radio"
+          aria-checked={value === o.value}
           type="button"
         >
           {o.label}
@@ -74,18 +79,33 @@ export function Checklist() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'done' | 'error'>('idle')
   const [entries, setEntries] = useState<ChecklistEntry[]>([])
   const [loading, setLoading] = useState(true)
+  // A swallowed fetch error used to render "записей пока нет" — telling the
+  // user their log was empty when it had only failed to load.
+  const [loadFailed, setLoadFailed] = useState(false)
 
   const loadEntries = useCallback(() => {
     setLoading(true)
+    setLoadFailed(false)
     fetchEntriesByDay(currentDay)
       .then(setEntries)
-      .catch(() => {})
+      .catch(() => setLoadFailed(true))
       .finally(() => setLoading(false))
   }, [currentDay])
 
   useEffect(() => { loadEntries() }, [loadEntries])
 
   const valid = form.backPain !== null && form.kps !== null && form.knee !== null && form.symmetry !== null && form.foot !== null
+
+  // Which required questions are still unanswered, in page order — the submit
+  // button used to just sit there greyed out with no way to tell what was
+  // missing, five questions further up the page.
+  const missing = [
+    form.backPain === null && 'Поясница утром',
+    form.kps === null && 'Левый КПС',
+    form.knee === null && 'Левое колено',
+    form.symmetry === null && 'Левая седалищная',
+    form.foot === null && 'Левая стопа',
+  ].filter(Boolean) as string[]
 
   async function handleSubmit() {
     if (!valid) return
@@ -134,6 +154,11 @@ export function Checklist() {
       <div className={s.entriesSection}>
         {loading ? (
           <div className={s.empty}>Загружаю...</div>
+        ) : loadFailed ? (
+          <div className={s.loadError}>
+            Не удалось загрузить записи за день {currentDay}. Записи на месте — не открылся доступ к сети.
+            <button type="button" className={s.retryBtn} onClick={loadEntries}>↻ Повторить</button>
+          </div>
         ) : entries.length === 0 ? (
           <div className={s.empty}>Записей за день {currentDay} пока нет</div>
         ) : (
@@ -167,33 +192,34 @@ export function Checklist() {
       <div className={s.formTitle}>+ Новая запись</div>
       <div className={s.form}>
         <div className={s.field}>
-          <label className={s.label}>Поясница утром</label>
-          <Chips options={BACK_PAIN_OPTS} value={form.backPain} onChange={v => setForm(f => ({ ...f, backPain: v }))} />
+          <span className={s.label} id="f-back">Поясница утром</span>
+          <Chips labelledBy="f-back" options={BACK_PAIN_OPTS} value={form.backPain} onChange={v => setForm(f => ({ ...f, backPain: v }))} />
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Левый КПС — ощущение при тракции</label>
-          <Chips options={KPS_OPTS} value={form.kps} onChange={v => setForm(f => ({ ...f, kps: v }))} />
+          <span className={s.label} id="f-kps">Левый КПС — ощущение при тракции</span>
+          <Chips labelledBy="f-kps" options={KPS_OPTS} value={form.kps} onChange={v => setForm(f => ({ ...f, kps: v }))} />
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Левое колено сегодня</label>
-          <Chips options={KNEE_OPTS} value={form.knee} onChange={v => setForm(f => ({ ...f, knee: v }))} />
+          <span className={s.label} id="f-knee">Левое колено сегодня</span>
+          <Chips labelledBy="f-knee" options={KNEE_OPTS} value={form.knee} onChange={v => setForm(f => ({ ...f, knee: v }))} />
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Левая седалищная давит сильнее при сидении?</label>
-          <Chips options={SYMMETRY_OPTS} value={form.symmetry} onChange={v => setForm(f => ({ ...f, symmetry: v }))} />
+          <span className={s.label} id="f-sym">Левая седалищная давит сильнее при сидении?</span>
+          <Chips labelledBy="f-sym" options={SYMMETRY_OPTS} value={form.symmetry} onChange={v => setForm(f => ({ ...f, symmetry: v }))} />
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Левая стопа при стойке</label>
-          <Chips options={FOOT_OPTS} value={form.foot} onChange={v => setForm(f => ({ ...f, foot: v }))} />
+          <span className={s.label} id="f-foot">Левая стопа при стойке</span>
+          <Chips labelledBy="f-foot" options={FOOT_OPTS} value={form.foot} onChange={v => setForm(f => ({ ...f, foot: v }))} />
         </div>
 
         <div className={s.field}>
-          <label className={s.label}>Комментарий (необязательно)</label>
+          <label className={s.label} htmlFor="f-comment">Комментарий (необязательно)</label>
           <textarea
+            id="f-comment"
             className={s.textarea}
             placeholder="Что-то особенное, что заметил..."
             value={form.comment}
@@ -203,7 +229,16 @@ export function Checklist() {
         </div>
 
         {status === 'done' && <div className={s.success}>✓ Запись сохранена</div>}
-        {status === 'error' && <div className={s.error}>Ошибка сохранения. Проверь интернет.</div>}
+        {status === 'error' && (
+          <div className={s.error}>
+            Не сохранилось — нет связи. Ответы остались в форме, нажми ещё раз, когда сеть вернётся.
+          </div>
+        )}
+        {!valid && (
+          <div className={s.missing}>
+            Осталось ответить: {missing.join(', ')}
+          </div>
+        )}
 
         <div className={s.actions}>
           <button

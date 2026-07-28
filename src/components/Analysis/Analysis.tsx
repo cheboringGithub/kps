@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { fetchAnalysis, AnalysisReport } from '../../lib/supabase'
 import { useAppStore } from '../../store/useAppStore'
 import { MarkdownContent } from '../MarkdownContent/MarkdownContent'
@@ -26,14 +26,21 @@ export function Analysis() {
   const [reports, setReports] = useState<AnalysisReport[]>([])
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState<string | null>(null)
+  // Without this a failed fetch rendered the "no analyses yet" empty state,
+  // which reads as "your history is gone" rather than "the network is down".
+  const [loadFailed, setLoadFailed] = useState(false)
   const { setActiveView } = useAppStore()
 
-  useEffect(() => {
+  const load = useCallback(() => {
+    setLoading(true)
+    setLoadFailed(false)
     fetchAnalysis(20)
       .then(data => { setReports(data); if (data.length > 0) setOpen(data[0].id!) })
-      .catch(() => {})
+      .catch(() => setLoadFailed(true))
       .finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => { load() }, [load])
 
   return (
     <main className={s.main}>
@@ -46,8 +53,13 @@ export function Analysis() {
 
       {loading ? (
         <div className={s.loading}>Загружаю...</div>
+      ) : loadFailed ? (
+        <div className={s.loadError}>
+          Не удалось загрузить анализы — нет связи. История цела.
+          <button type="button" className={s.retryBtn} onClick={load}>↻ Повторить</button>
+        </div>
       ) : reports.length === 0 ? (
-        <div className={s.empty}>Анализов пока нет. Запусти <strong>/analyze-results</strong> после нескольких тренировок.</div>
+        <div className={s.empty}>Анализов пока нет — первый появится после разбора накопленных записей дневника.</div>
       ) : (
         <div className={s.list}>
           {reports.map(r => (

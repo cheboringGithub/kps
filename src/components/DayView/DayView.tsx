@@ -27,9 +27,6 @@ export function DayView() {
             <div className={s.dayTitle} dangerouslySetInnerHTML={{ __html: day.title.replace('—', '—<em>') + '</em>' }} />
           </div>
         </div>
-        <div className={s.dayFocus}>
-          <strong>{phase.icon} {phase.name.split('·')[1]?.trim()}</strong>
-        </div>
         <p className={s.dayDesc}>{day.desc}</p>
       </div>
 

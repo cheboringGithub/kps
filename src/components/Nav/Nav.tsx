@@ -26,6 +26,10 @@ export function Nav() {
         <button type="button" className={s.brandBack} onClick={() => setActiveProgram(null)}>
           ← Программы
         </button>
+        {/* Mobile-only progress readout. On a phone the full .progress block at
+            the bottom of the sidebar is reduced to its 3px track, so the numbers
+            ride up here to keep the compact header to a single line. */}
+        <span className={s.brandProgress}>{doneCount} / {DAYS.length}</span>
         <div className={s.brandTag}>Курс · 90 дней</div>
         <h1 className={s.brandTitle}>КПС &<br /><em>Подвижность</em></h1>
         <p className={s.brandSub}>Старт: пятница, 29 мая<br />Таз + верх + кор · до 60 мин/день</p>

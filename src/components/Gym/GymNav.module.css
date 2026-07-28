@@ -16,7 +16,7 @@
 
 .brand {
   padding: 0 28px 28px;
-  border-bottom: 1px solid #2a2824;
+  border-bottom: 1px solid var(--ink-line);
 }
 
 .brandBack {
@@ -25,9 +25,9 @@
   padding: 0;
   margin-bottom: 12px;
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
-  color: #6a6560;
+  color: var(--ink-dim);
   cursor: pointer;
 }
 
@@ -35,8 +35,16 @@
   color: var(--rust-light);
 }
 
+/* Shown only on mobile — see the media query at the foot of this file. */
+.brandProgress {
+  display: none;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--rust-light);
+}
+
 .brandTag {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--rust-light);
@@ -57,8 +65,8 @@
 
 .brandSub {
   margin-top: 8px;
-  font-size: 11px;
-  color: #6a6560;
+  font-size: 12px;
+  color: var(--ink-dim);
   line-height: 1.6;
 }
 
@@ -67,23 +75,24 @@
   grid-template-columns: 1fr 1fr;
   padding: 16px 28px;
   gap: 8px;
-  border-bottom: 1px solid #2a2824;
+  border-bottom: 1px solid var(--ink-line);
 }
 
 .viewTab {
-  padding: 7px 0;
+  min-height: var(--tap);
+  padding: 7px 4px;
   background: none;
-  border: 1px solid #2a2824;
+  border: 1px solid var(--ink-line);
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6a6560;
+  color: var(--ink-dim);
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.viewTab:hover { border-color: #4a4540; color: var(--paper); }
+.viewTab:hover { border-color: #5a534a; color: var(--paper); }
 
 .viewTabActive {
   background: var(--rust);
@@ -93,15 +102,15 @@
 
 .progress {
   padding: 20px 28px;
-  border-top: 1px solid #2a2824;
+  border-top: 1px solid var(--ink-line);
   margin-top: auto;
 }
 
 .progressLabel {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #4a4540;
+  color: var(--ink-dim);
   margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
@@ -111,7 +120,7 @@
 
 .progressTrack {
   height: 3px;
-  background: #2a2824;
+  background: var(--ink-line);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -124,9 +133,53 @@
 }
 
 @media (max-width: 700px) {
+  /* Same treatment as the KPS sidebar: the brand block is dead weight on a
+     phone, so the header collapses to a sticky bar of back + progress + tabs. */
   .sidebar {
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 50;
     height: auto;
     overflow-y: visible;
+    padding: 0;
   }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 16px;
+    border-bottom: none;
+  }
+
+  .brandBack {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  .brandProgress { display: block; }
+
+  .brandTag,
+  .brandTitle,
+  .brandSub { display: none; }
+
+  .viewTabs {
+    padding: 0 16px 8px;
+    gap: 6px;
+    border-bottom: none;
+  }
+
+  .progress {
+    padding: 0;
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .progressLabel { display: none; }
+
+  .progressTrack { border-radius: 0; }
 }

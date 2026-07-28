@@ -22,6 +22,8 @@ export function GymNav() {
         <button type="button" className={s.brandBack} onClick={() => setActiveProgram(null)}>
           ← Программы
         </button>
+        {/* Mobile-only progress readout — see the media query in GymNav.module.css. */}
+        <span className={s.brandProgress}>{doneCount} / {WORKOUTS.length}</span>
         <div className={s.brandTag}>Зал · 30 дней / 10 тренировок</div>
         <h1 className={s.brandTitle}>Сила &<br /><em>Мобильность</em></h1>
         <p className={s.brandSub}>3 тренировки в неделю · 60–90 мин<br />Колено под защитой, таз в приоритете</p>

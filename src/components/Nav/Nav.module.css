@@ -16,7 +16,7 @@
 
 .brand {
   padding: 0 28px 28px;
-  border-bottom: 1px solid #2a2824;
+  border-bottom: 1px solid var(--ink-line);
 }
 
 .brandBack {
@@ -25,9 +25,9 @@
   padding: 0;
   margin-bottom: 12px;
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
-  color: #6a6560;
+  color: var(--ink-dim);
   cursor: pointer;
 }
 
@@ -35,9 +35,17 @@
   color: var(--rust-light);
 }
 
+/* Shown only on mobile — see the media query at the foot of this file. */
+.brandProgress {
+  display: none;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--rust-light);
+}
+
 .brandTag {
-  font-size: 9px;
-  letter-spacing: 0.25em;
+  font-size: 11px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--rust-light);
   margin-bottom: 8px;
@@ -57,8 +65,8 @@
 
 .brandSub {
   margin-top: 8px;
-  font-size: 11px;
-  color: #6a6560;
+  font-size: 12px;
+  color: var(--ink-dim);
   line-height: 1.6;
 }
 
@@ -68,23 +76,25 @@
   grid-template-columns: 1fr 1fr;
   padding: 16px 28px;
   gap: 8px;
-  border-bottom: 1px solid #2a2824;
+  border-bottom: 1px solid var(--ink-line);
 }
 
 .viewTab {
-  padding: 7px 0;
+  min-height: var(--tap);
+  padding: 7px 4px;
   background: none;
-  border: 1px solid #2a2824;
+  border: 1px solid var(--ink-line);
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  line-height: 1.35;
   text-transform: uppercase;
-  color: #6a6560;
+  color: var(--ink-dim);
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.viewTab:hover { border-color: #4a4540; color: var(--paper); }
+.viewTab:hover { border-color: #5a534a; color: var(--paper); }
 
 .viewTabActive {
   background: var(--rust);
@@ -94,15 +104,15 @@
 
 .progress {
   padding: 20px 28px;
-  border-top: 1px solid #2a2824;
+  border-top: 1px solid var(--ink-line);
   margin-top: auto;
 }
 
 .progressLabel {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #4a4540;
+  color: var(--ink-dim);
   margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
@@ -112,7 +122,7 @@
 
 .progressTrack {
   height: 3px;
-  background: #2a2824;
+  background: var(--ink-line);
   border-radius: 2px;
   overflow: hidden;
 }
@@ -134,16 +144,50 @@
 }
 
 @media (max-width: 700px) {
+  /* The header used to be a 400px brand block — 49% of an iPhone viewport —
+     that the user scrolled past before reaching a single exercise, every
+     session. It is now a ~105px bar, and sticky, so switching tabs no longer
+     means scrolling back to the top of a 2400px page. */
   .sidebar {
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 50;
     height: auto;
     overflow-y: visible;
+    padding: 0;
   }
+
+  /* Brand identity is already established by the program picker — on mobile
+     this row keeps only what is actionable (back) and live (progress). */
+  .brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 16px;
+    border-bottom: none;
+  }
+
+  .brandBack {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    margin-bottom: 0;
+    padding: 0;
+  }
+
+  .brandProgress { display: block; }
+
+  .brandTag,
+  .brandTitle,
+  .brandSub { display: none; }
 
   /* Collapsed by default — only the active tab shows. Tap the strip below
      (chevrons + dots + arrow) to expand and see/pick from the full menu. */
   .viewTabs {
     grid-template-columns: 1fr;
+    padding: 0 16px;
+    border-bottom: none;
   }
 
   .viewTab:not(.viewTabActive) {
@@ -152,11 +196,12 @@
 
   .viewTab {
     text-align: center;
-    padding: 10px 0;
+    padding: 10px 4px;
   }
 
   .viewTabsOpen {
     grid-template-columns: 1fr 1fr;
+    gap: 6px;
   }
 
   .viewTabsOpen .viewTab {
@@ -168,19 +213,22 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 10px 0 4px;
+    /* Padding, not content height, carries the tap area so the strip stays
+       visually thin while remaining comfortably tappable. */
+    min-height: var(--tap);
+    padding: 0;
   }
 
   .swipeChevron {
-    font-size: 11px;
-    color: #4a4540;
+    font-size: 12px;
+    color: var(--ink-dim);
   }
 
   .swipeDot {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #3a3530;
+    background: #5a534a;
     transition: all 0.15s;
   }
 
@@ -192,7 +240,18 @@
 
   .expandArrow {
     margin-left: 4px;
-    font-size: 9px;
-    color: #4a4540;
+    font-size: 10px;
+    color: var(--ink-dim);
   }
+
+  /* Reduced to its bar: the numbers now live in .brandProgress above. */
+  .progress {
+    padding: 0;
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .progressLabel { display: none; }
+
+  .progressTrack { border-radius: 0; }
 }

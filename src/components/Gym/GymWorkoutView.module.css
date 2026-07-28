@@ -5,15 +5,18 @@
 
 .backBtn {
   display: none;
+  align-items: center;
+  min-height: var(--tap);
   background: none;
   border: none;
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
   cursor: pointer;
-  padding: 0 0 24px 0;
+  padding: 0;
+  margin-bottom: 8px;
 }
 .backBtn:hover { color: var(--ink); }
 
@@ -34,12 +37,12 @@
   font-family: 'DM Serif Display', serif;
   font-size: 72px;
   line-height: 1;
-  color: var(--faint);
+  color: var(--numeral);
   letter-spacing: -4px;
 }
 
 .week {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
@@ -63,7 +66,7 @@
 
 .timeStrip { display: flex; gap: 20px; margin-bottom: 28px; }
 .timeChip {
-  font-size: 11px;
+  font-size: 12px;
   padding: 4px 12px;
   border: 1px solid var(--faint);
   color: var(--muted);
@@ -73,9 +76,9 @@
 }
 .timeChip strong { color: var(--ink); }
 .syncChip {
-  border-color: rgba(184,92,56,0.3);
+  border-color: rgba(168,80,46,0.3);
   color: var(--rust);
-  background: rgba(184,92,56,0.05);
+  background: rgba(168,80,46,0.05);
 }
 
 @media (max-width: 700px) {
@@ -84,6 +87,7 @@
 
 .completeBtn {
   margin-top: 32px;
+  min-height: var(--tap);
   padding: 14px 32px;
   background: var(--ink);
   color: var(--paper);
@@ -102,7 +106,8 @@
 .completeBtnDone { background: var(--sage); }
 
 @media (max-width: 700px) {
-  .main { padding: 28px 20px 60px; max-width: 100%; }
-  .bigNum { font-size: 48px; }
+  .main { padding: 8px 16px 60px; max-width: 100%; }
+  .bigNum { font-size: 40px; }
   .backBtn { display: flex; }
+  .header { margin-bottom: 24px; padding-bottom: 20px; }
 }

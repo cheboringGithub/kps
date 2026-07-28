@@ -31,7 +31,16 @@ export function ExerciseCard({ index, exercise, exKey }: Props) {
 
   return (
     <div className={[s.card, TYPE_CLASS[exercise.type] ?? '', isDone ? s.cardDone : ''].join(' ')}>
-      <div className={s.head} onClick={() => setOpen((o) => !o)}>
+      <div
+        className={s.head}
+        onClick={() => setOpen((o) => !o)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o) }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+      >
         <span className={s.idx}>{String(index + 1).padStart(2, '0')}</span>
         <span className={s.name}>{exercise.name}</span>
         <div className={s.pills}>
@@ -43,11 +52,11 @@ export function ExerciseCard({ index, exercise, exKey }: Props) {
           className={[s.doneToggle, isDone ? s.doneToggleActive : ''].join(' ')}
           onClick={(e) => { e.stopPropagation(); toggleExerciseDone(currentDay, exKey) }}
           aria-pressed={isDone}
-          title={isDone ? 'Снять отметку выполнения' : 'Отметить выполненным'}
+          aria-label={`${exercise.name} — ${isDone ? 'снять отметку выполнения' : 'отметить выполненным'}`}
         >
           ✓
         </button>
-        <span className={[s.chevron, open ? s.chevronOpen : ''].join(' ')}>▼</span>
+        <span className={[s.chevron, open ? s.chevronOpen : ''].join(' ')} aria-hidden="true">▼</span>
       </div>
 
       {open && (

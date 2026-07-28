@@ -35,7 +35,16 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
 
   return (
     <div className={[s.card, isDone ? s.cardDone : ''].join(' ')}>
-      <div className={s.head} onClick={() => setOpen((o) => !o)}>
+      <div
+        className={s.head}
+        onClick={() => setOpen((o) => !o)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o) }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+      >
         <span className={s.idx}>{String(index + 1).padStart(2, '0')}</span>
         <span className={s.headMain}>
           <span className={s.name}>{exercise.name}</span>
@@ -48,8 +57,12 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
         <div className={s.pills}>
           <span className={`${s.pill} ${s.pillSets}`}>{workoutExercise.sets}×{workoutExercise.reps}</span>
         </div>
-        <span className={[s.doneMark, isDone ? s.doneMarkActive : ''].join(' ')}>✓</span>
-        <span className={[s.chevron, open ? s.chevronOpen : ''].join(' ')}>▼</span>
+        <span
+          className={[s.doneMark, isDone ? s.doneMarkActive : ''].join(' ')}
+          role="img"
+          aria-label={isDone ? 'Подходы записаны' : 'Подходы не записаны'}
+        >✓</span>
+        <span className={[s.chevron, open ? s.chevronOpen : ''].join(' ')} aria-hidden="true">▼</span>
       </div>
 
       {open && (
@@ -85,10 +98,17 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
             </div>
           )}
 
+          {/* The prescribed target used to live only in the inputs' placeholder
+              at 1.39:1 contrast — the number you are meant to hit was the least
+              readable thing on the screen. It is a visible label now. */}
           <div className={s.setsHeader}>
             <span className={s.setsHeaderNum}>Сет</span>
-            <span className={s.setsHeaderField}>Вес, кг</span>
-            <span className={s.setsHeaderField}>Повторы</span>
+            <span className={s.setsHeaderField}>
+              Вес, кг <strong className={s.setsTarget}>{workoutExercise.weight}</strong>
+            </span>
+            <span className={s.setsHeaderField}>
+              Повторы <strong className={s.setsTarget}>{workoutExercise.reps}</strong>
+            </span>
           </div>
           {Array.from({ length: workoutExercise.sets }).map((_, i) => {
             const set = loggedSets?.[i]

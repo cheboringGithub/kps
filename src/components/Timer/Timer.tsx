@@ -88,6 +88,8 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
   const [phase, setPhase] = useState<Phase>('idle')
   const [remaining, setRemaining] = useState(0)
   const [running, setRunning] = useState(false)
+  const [resetArmed, setResetArmed] = useState(false)
+  const armTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const startedAt = useRef<number>(0)
   const startedRemaining = useRef<number>(0)
@@ -230,10 +232,23 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
     setPhase('idle')
     setRemaining(0)
     setRunning(false)
+    setResetArmed(false)
     releaseWakeLock()
   }
 
-  useEffect(() => () => { clear(); releaseWakeLock(); stopSpeech() }, [])
+  // First tap arms, second confirms; disarms itself after 3s so the button
+  // never stays in a scary state.
+  function handleReset() {
+    if (resetArmed) { reset(); return }
+    setResetArmed(true)
+    if (armTimer.current) clearTimeout(armTimer.current)
+    armTimer.current = setTimeout(() => setResetArmed(false), 3000)
+  }
+
+  useEffect(() => () => {
+    clear(); releaseWakeLock(); stopSpeech()
+    if (armTimer.current) clearTimeout(armTimer.current)
+  }, [])
 
   useEffect(() => {
     const handler = () => {
@@ -247,10 +262,18 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
   const isRest = phase === 'rest'
   const isDone = phase === 'done'
   const total = isWork ? (cur?.work ?? 1) : (cur?.rest ?? 1)
-  const pct = phase === 'idle' || isDone ? 100 : Math.max(0, (remaining / total) * 100)
+  // Idle must read as "nothing has happened yet", not as a finished bar — a
+  // full rust track before starting looked like the exercise was already done.
+  const pct = phase === 'idle' ? 0 : isDone ? 100 : Math.max(0, (remaining / total) * 100)
   const mins = Math.floor(remaining / 60)
   const secs = remaining % 60
-  const timeStr = phase === 'idle' ? '—' : isDone ? '✓' : mins > 0 ? `${mins}:${String(secs).padStart(2, '0')}` : `${secs}`
+  // Idle previews the first interval's duration instead of showing a bare "—",
+  // so the user knows what they are about to commit to.
+  const idleSec = cur?.work ?? 0
+  const idleStr = idleSec >= 60
+    ? `${Math.floor(idleSec / 60)}:${String(idleSec % 60).padStart(2, '0')}`
+    : `${idleSec}`
+  const timeStr = phase === 'idle' ? idleStr : isDone ? '✓' : mins > 0 ? `${mins}:${String(secs).padStart(2, '0')}` : `${secs}`
 
   return (
     <div className={s.block}>
@@ -259,7 +282,7 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
       </div>
 
       <div className={s.instruction}>
-        {phase === 'idle' && 'Нажми Play для начала'}
+        {phase === 'idle' && 'Нажми «Старт» для начала'}
         {isWork && cur?.workLabel}
         {isRest && cur?.restLabel}
         {isDone && '✓ Упражнение выполнено'}
@@ -283,7 +306,17 @@ export function Timer({ timer, totalRounds, onComplete }: Props) {
         <button className={`${s.btn} ${s.btnPlay}`} onClick={handlePlay}>
           {phase === 'idle' ? '▶ Старт' : isDone ? '↺ Ещё раз' : running ? '⏸ Пауза' : '▶ Продолжить'}
         </button>
-        <button className={`${s.btn} ${s.btnReset}`} onClick={reset}>↺ Сброс</button>
+        {/* Reset destroys an in-progress sequence, so it is hidden while idle
+            (nothing to reset) and needs a second tap to confirm otherwise — it
+            sits right beside Pause, where a mistap used to cost the round. */}
+        {phase !== 'idle' && (
+          <button
+            className={[s.btn, s.btnReset, resetArmed ? s.btnResetArmed : ''].join(' ')}
+            onClick={handleReset}
+          >
+            {resetArmed ? 'Точно? Сброс' : '↺ Сброс'}
+          </button>
+        )}
       </div>
     </div>
   )

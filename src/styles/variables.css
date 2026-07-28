@@ -3,15 +3,30 @@
   --paper: #f5f0e8;
   --paper2: #ede8dd;
   --paper3: #e4ddd0;
-  --rust: #b85c38;
+  /* Text-safe brand colours: every value below clears WCAG AA (4.5:1) as small
+     text on --paper, --paper2 AND --paper3 (the darkest surface these sit on),
+     and --paper clears AA as the label on a --rust/--sage filled button. */
+  --rust: #9d4a29;
   --rust-light: #d4724e;
-  --sage: #5a7a5e;
+  --sage: #4a6849;
   --sage-light: #7a9e7e;
   --gold: #c49a3c;
-  --muted: #8a8278;
+  --muted: #6b6359;
+  /* --faint is a BORDER/divider token only — at 1.7:1 on white it must never
+     carry text or an icon glyph. Use --muted for those. */
   --faint: #ccc6bb;
+  /* For the oversized display numerals only — clears the 3:1 large-text bar
+     while staying visibly recessive against the day title beside it. */
+  --numeral: #8d8375;
+
+  /* On the dark sidebar. --ink-dim replaces the old #6a6560 (3.08:1). */
+  --ink-dim: #938b80;
+  --ink-line: #2a2824;
 
   --sidebar-width: 280px;
+  /* Minimum comfortable touch target — the app is used on a phone, on the
+     floor, mid-exercise. Applies to every control. */
+  --tap: 44px;
 }
 
 * {
@@ -31,6 +46,45 @@ body {
   color: var(--ink);
   font-family: 'DM Mono', monospace;
   min-height: 100vh;
+}
+
+/* ── Interaction baseline ──────────────────────────────────────────────────
+   :hover never fires on a touchscreen, and every control in this app used to
+   rely on it for feedback — taps felt dead until React re-rendered. Press
+   feedback now comes from :active, which does fire on touch. */
+button, [role='button'] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button:active, [role='button']:active {
+  transform: scale(0.97);
+}
+
+button {
+  transition: transform 0.06s ease-out;
+}
+
+/* Keyboard/switch-access users had no focus indicator anywhere — the only
+   three :focus rules in the app all did `outline: none`. */
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* iOS Safari force-zooms the page whenever a focused field is under 16px.
+   That fired on every logged gym set and every diary comment. */
+input, textarea, select {
+  font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  button:active, [role='button']:active { transform: none; }
 }
 
 body::after {

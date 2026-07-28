@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { DAYS, getDayDate } from '../../data/days'
 import { PHASES } from '../../data/phases'
 import { useAppStore } from '../../store/useAppStore'
@@ -6,6 +7,16 @@ import s from './Program.module.css'
 export function Program() {
   const { currentDay, done, setCurrentDay } = useAppStore()
   let currentPhase: number | null = null
+
+  // The list is 90 rows / ~6400px tall. Opening it used to land wherever the
+  // last scroll position happened to be, leaving the user to hunt for today
+  // somewhere in the middle — and it gets worse the further into the course
+  // they are. Centre today's row on mount instead.
+  const activeRef = useRef<HTMLButtonElement | null>(null)
+
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ block: 'center' })
+  }, [])
 
   const totalDays = DAYS.length
   const doneCount = done.size
@@ -73,14 +84,17 @@ export function Program() {
               </div>
             )}
             <button
+              ref={d === currentDay ? activeRef : undefined}
               className={[s.dayRow, d === currentDay ? s.active : '', done.has(d) ? s.done : ''].join(' ')}
               onClick={() => setCurrentDay(d)}
+              aria-current={d === currentDay ? 'true' : undefined}
             >
               <span className={s.dayNum}>{String(d).padStart(2, '0')}</span>
               <div className={s.dayInfo}>
                 <div className={s.dayTitle}>{day.short}</div>
                 <div className={s.dayDate}>{getDayDate(d)}</div>
               </div>
+              {d === currentDay && <span className={s.dayNow}>сегодня</span>}
               <span className={s.dayDot} />
             </button>
           </div>
