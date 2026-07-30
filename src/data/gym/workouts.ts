@@ -9,6 +9,12 @@ import type { GymWorkout } from './types'
 // стоя колено исключена везде, как и осевая компрессия позвоночника и
 // нагруженный тазобедренный шарнир (грыжа диска поясницы) —
 // см. src/data/gym/exercises.ts.
+//
+// Каждая тренировка заканчивается кардио-блоком: 30 минут велотренажёра
+// (gym_bike_cardio). Прогрессия по неделям идёт в первую очередь скоростью и
+// каденсом, уровень сопротивления растёт мягче — тяжёлый уровень нагружает
+// связку надколенника сильнее, чем частота педалирования. Неделя 4 —
+// разгрузочный уровень, время не сокращаем.
 
 export const WORKOUTS: GymWorkout[] = [
   // ── Неделя 1 ──────────────────────────────────────────────────────
@@ -24,6 +30,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_biceps_curl', sets: 3, reps: '10-12', weight: '8 кг' },
       { id: 'gym_triceps_pushdown', sets: 3, reps: '10-12', weight: '15 кг' },
       { id: 'gym_cable_antirotation', sets: 3, reps: '10/сторона', weight: '10 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '18-20', incline: '3-4' } },
     ],
   },
   {
@@ -37,6 +44,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_hip_abduction_machine', sets: 4, reps: '15', weight: '5 кг' },
       { id: 'gym_calf_press_machine', sets: 3, reps: '15', weight: '50 кг' },
       { id: 'gym_lateral_raise', sets: 3, reps: '12-15', weight: '6 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '18-20', incline: '3-4' } },
     ],
   },
   {
@@ -50,6 +58,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_rear_delt_fly_incline', sets: 3, reps: '12-15', weight: '5 кг' },
       { id: 'gym_leg_curl_seated', sets: 3, reps: '10-12', weight: '25 кг' },
       { id: 'gym_glute_bridge_machine', sets: 3, reps: '12', weight: '40 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '18-20', incline: '3-4' } },
     ],
   },
 
@@ -66,6 +75,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_biceps_curl', sets: 3, reps: '12-15', weight: '8 кг' },
       { id: 'gym_triceps_pushdown', sets: 3, reps: '12-15', weight: '15 кг' },
       { id: 'gym_cable_antirotation', sets: 3, reps: '12/сторона', weight: '10 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '20-22', incline: '3-4' } },
     ],
   },
   {
@@ -79,6 +89,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_hip_abduction_machine', sets: 4, reps: '18', weight: '5 кг' },
       { id: 'gym_calf_press_machine', sets: 3, reps: '18', weight: '50 кг' },
       { id: 'gym_lateral_raise', sets: 3, reps: '15-18', weight: '6 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '20-22', incline: '3-4' } },
     ],
   },
   {
@@ -92,6 +103,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_rear_delt_fly_incline', sets: 3, reps: '15-18', weight: '5 кг' },
       { id: 'gym_leg_curl_seated', sets: 3, reps: '12-14', weight: '25 кг' },
       { id: 'gym_glute_bridge_machine', sets: 3, reps: '15', weight: '40 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '20-22', incline: '3-4' } },
     ],
   },
 
@@ -108,6 +120,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_biceps_curl', sets: 3, reps: '10-12', weight: '10 кг' },
       { id: 'gym_triceps_pushdown', sets: 3, reps: '10-12', weight: '20 кг' },
       { id: 'gym_cable_antirotation', sets: 3, reps: '10/сторона', weight: '12 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '22-24', incline: '4-5' } },
     ],
   },
   {
@@ -121,6 +134,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_hip_abduction_machine', sets: 4, reps: '15', weight: '7 кг' },
       { id: 'gym_calf_press_machine', sets: 3, reps: '15', weight: '65 кг' },
       { id: 'gym_lateral_raise', sets: 3, reps: '12-15', weight: '8 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '22-24', incline: '4-5' } },
     ],
   },
   {
@@ -134,6 +148,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_rear_delt_fly_incline', sets: 3, reps: '12-15', weight: '7 кг' },
       { id: 'gym_leg_curl_seated', sets: 4, reps: '10-12', weight: '30 кг' },
       { id: 'gym_glute_bridge_machine', sets: 3, reps: '12', weight: '50 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '22-24', incline: '4-5' } },
     ],
   },
 
@@ -150,6 +165,7 @@ export const WORKOUTS: GymWorkout[] = [
       { id: 'gym_hip_abduction_machine', sets: 2, reps: '15', weight: '5 кг' },
       { id: 'gym_leg_curl_seated', sets: 2, reps: '10', weight: '20 кг' },
       { id: 'gym_cable_antirotation', sets: 2, reps: '10/сторона', weight: '10 кг' },
+      { id: 'gym_bike_cardio', sets: 1, cardio: { minutes: 30, speed: '18-19', incline: '2-3' } },
     ],
   },
 ]

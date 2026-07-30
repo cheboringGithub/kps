@@ -6,6 +6,9 @@ export interface GymSetLogEntry {
   set_index: number
   reps: number | null
   weight_kg: number | null
+  /** Кардио: скорость и уровень подъёма вместо веса и повторов. */
+  speed_kmh?: number | null
+  incline?: number | null
 }
 
 export type GymRpe = 'Легко' | 'Норм' | 'Тяжело' | 'Предел'
@@ -122,7 +125,12 @@ function interpretGymEntry(e: Omit<GymEntry, 'id' | 'created_at'>): {
     const name = GYM_EX[exerciseId]?.name ?? exerciseId
     const logged = exSets
       .sort((a, b) => a.set_index - b.set_index)
-      .map(s => (s.reps != null && s.weight_kg != null ? `${s.weight_kg}кг×${s.reps}` : '—'))
+      .map(s => {
+        if (s.speed_kmh != null || s.incline != null) {
+          return `${s.speed_kmh ?? '—'} км/ч · ур. ${s.incline ?? '—'}`
+        }
+        return s.reps != null && s.weight_kg != null ? `${s.weight_kg}кг×${s.reps}` : '—'
+      })
       .join(', ')
     content += `**${name}**: ${logged}\n`
   }

@@ -58,8 +58,15 @@ export function GymChecklist() {
       const forWorkout = setLog[currentWorkout] ?? {}
       const sets: GymSetLogEntry[] = Object.entries(forWorkout).flatMap(([exerciseId, exSets]) =>
         exSets
-          .map((set, i) => ({ exercise_id: exerciseId, set_index: i, reps: set.reps, weight_kg: set.weightKg }))
-          .filter(s => s.reps !== null || s.weight_kg !== null),
+          .map((set, i) => ({
+            exercise_id: exerciseId,
+            set_index: i,
+            reps: set.reps,
+            weight_kg: set.weightKg,
+            speed_kmh: set.speedKmh,
+            incline: set.incline,
+          }))
+          .filter(s => s.reps !== null || s.weight_kg !== null || s.speed_kmh !== null || s.incline !== null),
       )
 
       await saveGymEntryWithAnalysis({

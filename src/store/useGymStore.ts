@@ -9,6 +9,14 @@ export const GYM_VIEW_ORDER: GymActiveView[] = ['workout', 'program', 'checklist
 export interface GymSet {
   reps: number | null
   weightKg: number | null
+  /** Кардио: средняя скорость за сессию, км/ч. У силовых упражнений всегда null. */
+  speedKmh: number | null
+  /** Кардио: уровень подъёма/сопротивления на тренажёре. У силовых всегда null. */
+  incline: number | null
+}
+
+export function emptySet(): GymSet {
+  return { reps: null, weightKg: null, speedKmh: null, incline: null }
 }
 
 // тренировка → упражнение → массив подходов (индекс = номер подхода)
@@ -44,7 +52,7 @@ interface GymState {
 
 function padSets(sets: GymSet[], length: number): GymSet[] {
   if (sets.length >= length) return sets
-  return [...sets, ...Array.from({ length: length - sets.length }, () => ({ reps: null, weightKg: null }))]
+  return [...sets, ...Array.from({ length: length - sets.length }, emptySet)]
 }
 
 export const useGymStore = create<GymState>()(

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { WorkoutExercise } from '../../data/gym/types'
 import { GYM_EX } from '../../data/gym/exercises'
-import { useGymStore } from '../../store/useGymStore'
+import { useGymStore, type GymSet } from '../../store/useGymStore'
 import { bestSet, formatDate, formatSet, getExerciseHistory } from '../../lib/gymHistory'
 import { flushNow } from '../../lib/gymSetLog'
 import s from './GymExerciseCard.module.css'
@@ -9,6 +9,31 @@ import s from './GymExerciseCard.module.css'
 interface Props {
   index: number
   workoutExercise: WorkoutExercise
+}
+
+interface SetField {
+  key: keyof GymSet
+  label: string
+  /** Плановая цифра — она же плейсхолдер инпута. */
+  target: string
+  inputMode: 'decimal' | 'numeric'
+}
+
+/**
+ * Силовое пишется весом и повторами, кардио — скоростью и подъёмом. Поля и
+ * порядок берём отсюда, чтобы разметка ввода была одна на оба типа.
+ */
+function setFields(wex: WorkoutExercise): SetField[] {
+  if (wex.cardio) {
+    return [
+      { key: 'speedKmh', label: 'Скорость, км/ч', target: wex.cardio.speed, inputMode: 'decimal' },
+      { key: 'incline', label: 'Подъём', target: wex.cardio.incline, inputMode: 'decimal' },
+    ]
+  }
+  return [
+    { key: 'weightKg', label: 'Вес, кг', target: wex.weight, inputMode: 'decimal' },
+    { key: 'reps', label: 'Повторы', target: wex.reps, inputMode: 'numeric' },
+  ]
 }
 
 export function GymExerciseCard({ index, workoutExercise }: Props) {
@@ -29,8 +54,12 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
 
   if (!exercise) return null
 
+  const fields = setFields(workoutExercise)
+  // Заход считается записанным по первому полю: у силового это повторы, у
+  // кардио — скорость (уровень подъёма можно и не менять от раза к разу).
+  const doneField: keyof GymSet = workoutExercise.cardio ? 'speedKmh' : 'reps'
   const isDone = Array.from({ length: workoutExercise.sets }).every(
-    (_, i) => loggedSets?.[i]?.reps != null,
+    (_, i) => loggedSets?.[i]?.[doneField] != null,
   )
 
   return (
@@ -55,7 +84,11 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
           )}
         </span>
         <div className={s.pills}>
-          <span className={`${s.pill} ${s.pillSets}`}>{workoutExercise.sets}×{workoutExercise.reps}</span>
+          <span className={`${s.pill} ${s.pillSets}`}>
+            {workoutExercise.cardio
+              ? `${workoutExercise.cardio.minutes} мин`
+              : `${workoutExercise.sets}×${workoutExercise.reps}`}
+          </span>
         </div>
         <span
           className={[s.doneMark, isDone ? s.doneMarkActive : ''].join(' ')}
@@ -103,42 +136,33 @@ export function GymExerciseCard({ index, workoutExercise }: Props) {
               readable thing on the screen. It is a visible label now. */}
           <div className={s.setsHeader}>
             <span className={s.setsHeaderNum}>Сет</span>
-            <span className={s.setsHeaderField}>
-              Вес, кг <strong className={s.setsTarget}>{workoutExercise.weight}</strong>
-            </span>
-            <span className={s.setsHeaderField}>
-              Повторы <strong className={s.setsTarget}>{workoutExercise.reps}</strong>
-            </span>
+            {fields.map((field) => (
+              <span key={field.key} className={s.setsHeaderField}>
+                {field.label} <strong className={s.setsTarget}>{field.target}</strong>
+              </span>
+            ))}
           </div>
           {Array.from({ length: workoutExercise.sets }).map((_, i) => {
             const set = loggedSets?.[i]
             return (
               <div key={i} className={s.setRow}>
                 <span className={s.setNum}>{i + 1}</span>
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  className={s.setInput}
-                  placeholder={workoutExercise.weight}
-                  value={set?.weightKg ?? ''}
-                  onBlur={flushNow}
-                  onChange={(e) => setSetValue(
-                    currentWorkout, workoutExercise.id, i, 'weightKg',
-                    e.target.value === '' ? null : Number(e.target.value),
-                  )}
-                />
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  className={s.setInput}
-                  placeholder={workoutExercise.reps}
-                  value={set?.reps ?? ''}
-                  onBlur={flushNow}
-                  onChange={(e) => setSetValue(
-                    currentWorkout, workoutExercise.id, i, 'reps',
-                    e.target.value === '' ? null : Number(e.target.value),
-                  )}
-                />
+                {fields.map((field) => (
+                  <input
+                    key={field.key}
+                    type="number"
+                    inputMode={field.inputMode}
+                    className={s.setInput}
+                    placeholder={field.target}
+                    aria-label={field.label}
+                    value={set?.[field.key] ?? ''}
+                    onBlur={flushNow}
+                    onChange={(e) => setSetValue(
+                      currentWorkout, workoutExercise.id, i, field.key,
+                      e.target.value === '' ? null : Number(e.target.value),
+                    )}
+                  />
+                ))}
               </div>
             )
           })}

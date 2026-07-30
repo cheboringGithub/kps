@@ -1,5 +1,5 @@
 import { req } from './supabase'
-import type { GymSet, GymSetLog } from '../store/useGymStore'
+import { emptySet, type GymSet, type GymSetLog } from '../store/useGymStore'
 
 export interface GymSetLogRow {
   workout_number: number
@@ -7,6 +7,9 @@ export interface GymSetLogRow {
   set_index: number
   reps: number | null
   weight_kg: number | null
+  /** Кардио: скорость и уровень подъёма. У силовых подходов остаются null. */
+  speed_kmh: number | null
+  incline: number | null
   performed_at?: string
 }
 
@@ -101,6 +104,8 @@ export function queueSetWrite(
     set_index: setIndex,
     reps: set.reps,
     weight_kg: set.weightKg,
+    speed_kmh: set.speedKmh,
+    incline: set.incline,
   }
   saveQueue()
   emit()
@@ -121,7 +126,7 @@ export async function fetchSetLog(): Promise<{
   dates: Record<number, string>
 }> {
   const res = await req(
-    '/gym_set_log?select=workout_number,exercise_id,set_index,reps,weight_kg,performed_at' +
+    '/gym_set_log?select=workout_number,exercise_id,set_index,reps,weight_kg,speed_kmh,incline,performed_at' +
     '&order=workout_number.asc,exercise_id.asc,set_index.asc',
   )
   const rows = (await res.json()) as GymSetLogRow[]
@@ -132,8 +137,10 @@ export async function fetchSetLog(): Promise<{
   for (const r of rows) {
     const forWorkout = log[r.workout_number] ?? (log[r.workout_number] = {})
     const sets = forWorkout[r.exercise_id] ?? (forWorkout[r.exercise_id] = [])
-    while (sets.length <= r.set_index) sets.push({ reps: null, weightKg: null })
-    sets[r.set_index] = { reps: r.reps, weightKg: r.weight_kg }
+    while (sets.length <= r.set_index) sets.push(emptySet())
+    sets[r.set_index] = {
+      reps: r.reps, weightKg: r.weight_kg, speedKmh: r.speed_kmh, incline: r.incline,
+    }
     if (r.performed_at && (!dates[r.workout_number] || r.performed_at > dates[r.workout_number])) {
       dates[r.workout_number] = r.performed_at
     }
@@ -147,8 +154,10 @@ export function applyPendingSets(log: GymSetLog): GymSetLog {
   for (const row of Object.values(queue)) {
     const forWorkout = log[row.workout_number] ?? (log[row.workout_number] = {})
     const sets = forWorkout[row.exercise_id] ?? (forWorkout[row.exercise_id] = [])
-    while (sets.length <= row.set_index) sets.push({ reps: null, weightKg: null })
-    sets[row.set_index] = { reps: row.reps, weightKg: row.weight_kg }
+    while (sets.length <= row.set_index) sets.push(emptySet())
+    sets[row.set_index] = {
+      reps: row.reps, weightKg: row.weight_kg, speedKmh: row.speed_kmh, incline: row.incline,
+    }
   }
   return log
 }

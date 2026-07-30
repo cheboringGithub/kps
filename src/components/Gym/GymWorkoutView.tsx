@@ -9,6 +9,11 @@ export function GymWorkoutView() {
   if (!workout) return null
   const isDone = done.has(currentWorkout)
 
+  // Силовая часть — 60-90 минут; кардио-блок в конце добавляется к ним, а не
+  // втискивается внутрь, поэтому время тренировки считаем с ним.
+  const cardioMin = workout.exs.reduce((sum, wex) => sum + (wex.cardio?.minutes ?? 0), 0)
+  const strengthCount = workout.exs.filter((wex) => !wex.cardio).length
+
   return (
     <main className={s.main}>
       <button className={s.backBtn} onClick={() => setActiveView('program')}>
@@ -27,8 +32,11 @@ export function GymWorkoutView() {
       </div>
 
       <div className={s.timeStrip}>
-        <div className={s.timeChip}><strong>{workout.exs.length}</strong> упражнений</div>
-        <div className={s.timeChip}><strong>~{60}–90 мин</strong> тренировка</div>
+        <div className={s.timeChip}><strong>{strengthCount}</strong> упражнений</div>
+        <div className={s.timeChip}><strong>~{60 + cardioMin}–{90 + cardioMin} мин</strong> тренировка</div>
+        {cardioMin > 0 && (
+          <div className={s.timeChip}><strong>{cardioMin} мин</strong> велотренажёр в конце</div>
+        )}
         {syncState !== 'idle' && (
           <div className={`${s.timeChip} ${s.syncChip}`}>
             {syncState === 'saving' ? '⟳ сохраняю подходы' : '● не отправлено — уйдёт при связи'}
